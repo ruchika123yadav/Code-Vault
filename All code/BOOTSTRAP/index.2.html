@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.2.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Grid System</h2>
+        <!-- jab bhi banate hai ham to row class deke banate hai uske andr bhoot sare fir div add krte hai -->
+        <div class="row">
+            <!-- XL mtlb extra large or bg me ham color dete hai -->
+            <div class="col-xl-4 bg-danger">One</div>
+            <div class="col-xl-5 bg-primary">two</div>
+            <div class="col-xl-3 bg-info">two</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <hr>
+        <!-- agr sabko col col de diya to eually divide agr koi number de diya to ush hissab se divivde hoga fir -->
+
+        <!-- md jese hi medium hit nhi hoga tab tak 100% width occupy krega uske baad mid wala chalega -->
+        <div class="col-md-6 col-md-4 bg-success">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
+            iusto fugit enim iure, quo dignissimos quam officia alias possimus velit, veniam accusamus dolorum?</div>
+        <div class="col-md-6 col-md-4  bg-danger">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam
+            cumque doloremque autem dolores? Quo atque fuga in quam quidem deleniti iusto. Magni veritatis qui minima
+            minus, delectus eveniet ipsum sint, id illum obcaecati iure?</div>
+        <div class="col-md-6 col-md-4  bg-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At fuga quidem
+            facilis pariatur voluptate obcaecati beatae officiis illum magni nulla? Ut, optio?</div>
+        <br><br>
+        <hr>
+
+        <div class="row align-items-top">
+            <div class="col  bg-success">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae iusto
+                fugit enim iure, quo dignissimos quam officia alias possimus velit, veniam accusamus dolorum?</div>
+            <div class="col   bg-danger">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam cumque
+                doloremque autem dolores? Quo atque fuga in quam quidem deleniti iusto. Magni veritatis qui minima
+                minus, delectus eveniet ipsum sint, id illum obcaecati iure?</div>
+            <div class="col align-self-end  bg-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At fuga
+                quidem facilis
+                pariatur voluptate obcaecati beatae officiis illum magni nulla? Ut, optio?</div>
+
+        </div>
+        <hr>
+
+        <!-- FORM######################## -->
+        <!-- class mb-3,input class=form-control,label class=form-label -->
+        <div class="container">
+            <h2>Form demo</h2>
+
+            <form action="#" class="md-3">
+                <div class="row">
+                    <div class="md-3 col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control " placeholder="email" id="email">
+                    </div>
+                    <div class="md-3 col-md-6">
+                        <label for="pass" class="form-label">Password</label>
+                        <input type="password" class="form-control " placeholder="password" id="pass">
+                    </div>
+                </div>
+                <label for="Address" class="form-label">Addrees</label>
+                <input type="Addrees" class="form-control-lg" placeholder="Addrees" id="Address">
+
+            </form>
+
+            <!-- FORM SELECT##### -->
+            <div class="mb-3">
+                <select class="form-select bg-primary">
+                    <option selected value="0">Select Stream</option>
+                    <option value="1">Computer Science</option>
+                    <option value="2">Electronics</option>
+                    <option value="3">Electrical</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CHECHBOX,RADIO,ON/OFF -->
+        <div class="container">
+            <div class="mb-3 form-check">
+                <input type="checkbox" id="check" class="form-check-input">
+                <label for="check" class="form-check-label">Yes</label>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="radio" id="radio" class="form-check-input">
+                <label for="radio" class="form-check-label">Yes</label>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <input type="checkbox" id="switch" role="switch" class="form-check-input">
+                <label for="switch" class="form-check-label">on/off</label>
+            </div>
+        </div>
+
+
+
+
+
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In asperiores ducimus minima saepe quaerat, error
+            mollitia reiciendis velit, incidunt facilis eligendi dolor officia nisi praesentium obcaecati vitae quis
+            tenetur culpa, assumenda laboriosam tempore vero! Velit error eligendi recusandae, quaerat aliquam iste
+            laborum sunt unde maxime!</p>
+
+
+
+
+
+
+
+
+
+
+        <script scr="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

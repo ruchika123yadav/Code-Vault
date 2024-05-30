@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsapp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>All Chats!</h1>
+   <% for(c of chat ){%>
+    <div class="chat-body">
+         <p>From: <b><i><%=c.from%></i></b></p>
+         <div class="msg">
+            <p><%=c.msg%></p>
+         </div>
+         <p>From: <b><i><%=c.to%></i></b></p>
+         
+</div><br>
+   <% }%>
+   <form action="/chat/new">
+    <button>Add Chat</button>
+   </form>
+</body>
+</html>

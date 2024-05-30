@@ -1,0 +1,48 @@
+/* * FOR THE RAINBOW DIV */  
+#container{
+    height: 700px;
+    width: 600px;
+    background-color: azure;
+    margin: 20px auto;
+    border: 5px solid black;
+    display: flex;
+    /* flex-direction: column; */
+    flex-direction: row ;
+    /* flex-direction: column-reverse; */
+    /* justify-content: flex-start; */
+    /* justify-content: center; */
+    /* justify-content:  space-between; */
+   /* justify-content:  space-around; */
+    justify-content: space-evenly;  
+    /* flex-wrap: wrap; */
+    /* flex-wrap: wrap-reverse;  */
+ align-items: baseline;
+ align-content: flex-end; /* bottom se top ki traf jaa rha sab*/
+ align-content: center;
+ align-content: space-evenly;
+ 
+}
+h1{
+    text-align: center;
+}
+
+#container div{
+    height: 100px;
+    width: 200px; 
+    text-align: center;
+    color: brown;
+    font-weight: bold;
+}
+#green{
+    /* align-self: flex-end;
+    align-self: center; */
+    /* flex-grow: 5; */
+    flex: 2 1 100px;
+    /* min-width: 400px; */
+}
+#orange{
+    /* flex-basis: 500px; */
+    /* flex-grow: 1; */
+    flex-shrink: 2;
+     
+}

@@ -1,0 +1,86 @@
+<!-- action^ what action is need to be performes whena form is submitted -->
+<!-- input(input type=)^ used to create multiple form contro; -->
+<!-- type^(text,passwrod,number,time,color) -->
+<!-- form element(placeholder^ means like koi bhi alka sa phele likha hua hota hai or jab ip dete hai to hat jata hai) -->
+<!-- label^ means agr iske andr koi bhi ip text likha to direct corsor box ke andr le ayega -->
+<!-- Button(button submit button)^ means sara data wha chala jayega jo link di hai-->
+<!-- Button^(submit,button,reset) -->
+<!-- input ke ande Name^ means input box ke andr jo bhi enter krungi usko access krne ke liye jis naam ka ham use krenge use ha name attribute ke andr define krenge -->
+<!-- input (checkbox^ means box me right wala sign) -->
+<!-- input(Radio^ means bhoot sare  button me se ek hi button select hona ho tab use krte hai) -->
+<!-- difference between checkbox and radio -->
+ <!-- select(Dropdown^ jab bhi state jese cheeze fill krni hoti hai tab use krte hai -->
+ <!-- input(Rangr^ means kis level se kis level tak value kya honi chahiye) -->
+ <!-- textarea((ishme ham text space dete hai like feedback dena) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body>
+  <form action="/action"><!--action kha jake save hoga ye form-->
+    <input><br>
+    <div>
+    <label >
+    Username
+    <input type="text" placeholder="Enter Username"> <br>
+   </label>
+</div>
+<div>
+    <label for="Password">password</label>
+    <input type="password" placeholder="Enter Password" id="Password"><br>
+    
+</div>
+<div>
+      <label for="Number">Number</label>
+    <input type="number" id="Number"><br>
+</div>
+ <div>
+    <label for="time">time</label>
+    <input type="time" id="time"><br>
+   </div>
+     colour
+    <input type="color">
+    <!-- <button>submit</button><br> -->
+    <button type="button">button </button><br>
+    <button type="reset">reset</button><br>
+    <input type="button" value="Click me" >  <!-- but ham input element ki madad se kabhi button create nhi krennge usko button taah=g ki madad se hi banayenge-->
+    <input type="Submit" value="Click me 2" >
+  </form>  
+
+
+  <!-- ############################################################### -->
+  <form action=" https://www.youtube.com ">
+  <input type="text" placeholder = "search in youtube"name="/search_query" >
+  <input type="Submit" value="search" >
+  <br></form>
+  <input type="checkbox" id="age" name="age" checked>  <!--agr ish checked ke age checked likh du to by default checked ke age tick lag jayega-->
+  <label for="age"> I am 18+</label><br>
+<div>
+  <input type="radio" name="Fruit" id="apple"  value="apple"> <!--vauue se url me pata chal jayega konsa tick kiya hai-->
+  <label for="apple">Apple</label><br>
+  <input type="radio" name="Fruit" id="mango" value="mango"> <!--ishme mene name me fruit common rakha hai ishliye ye ek dusre se link hai-->
+  <label for="mango">mango</label><br>
+  <input type="radio" name="Fruit" id="orange" value="orange">
+  <label for="orange">orange</label>
+</div>
+<div> Choose your Profession
+    <select name="Profession" id="Profession">
+        <option > Select you Option</option>
+        <option value="stu">Student</option> <!-- yha hamra ye student pass nhi hota blki value pass ho rhi hoti hai jese stu-->
+         <option value="Dev">Developer</option>
+
+        </select>
+        <button>submit</button>
+        <div>
+            <label for="vol">Select you volume level</label>
+            <input type="range" id="vol" min="0" max="100" name="vol" step="10" value="50">  <!-- value is for by default step me hamre value hamesha 10 times me badegi volume ke box me-->
+        </div>
+</div>
+<label for="feedback">Please give your feed back</label>
+<textarea name="feed" id="feedback" cols="30" rows="10" placeholder="          write something"></textarea>
+ 
+</body>
+</html>

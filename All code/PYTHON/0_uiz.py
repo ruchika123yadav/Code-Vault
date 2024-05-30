@@ -1,0 +1,1 @@
+# chapter 6 practice set uestion 7 previous notes padke krna hai

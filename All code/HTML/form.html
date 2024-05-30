@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <h3>Your trijality form</h3>
+   <form action="/action.php">  <!--this is for the backend use you understand it later-->
+   <input type="text" placeholder="enter your name buddy"><br> <br>       <!--yha  INPUT jese jo block ke ander rakhenge ham uske liye hai like RADIO CHECBOX TEXT , PASSWORD etc-->
+   <input type="password" placeholder="password"><br>      <!-- PLACEHOLDERr like box ke andr kuch likha hoga aur jese hi ham likhna statrt krenge to hat jayege ex ENTER YOUR NAME-->
+   <h4>Enter you level of experince</h4>
+   <label for="101">                         <!--label is like agr ham text pe bhi click kre to option click ho jaye AUR BHOTT IMPORTANT KI LABEL ME HAME USKI ID HI LIKNI PADEGI TABHI WRNA TEXT PE CLICK KRNE SE KUCH NHI HOGA  -->
+    <input type="radio" value="pro" name="game" id="101">PRO    <!--  RADIO ko ham wha use krte hai jha hame kisi do option me se ek choose krna ho-->
+</label>                                                                  <!-- JO HAMm tag ke bhr likhte hia wo option hame show HOTA hai-->
+<label for="102">                                                       <!--ID is like roll no. jisse comp hame ek alg usse classify krr lega-->
+    <input type="radio" value="noob" name="game" id="102"> NOOB   <br><!-- NAME is like ek classroom jisme bhott sare bacche ho-->
+        <h4>Enters yours Subjects</h4> 
+   </label>
+   <label for="103">
+    <input type="checkbox" value="Math" name="subject" id="103">Math  <br>    <!-- CHECKBOX is like multiple tick lagane ke liye use hota hai-->
+   </label>
+   <label for="104">
+    <input type="checkbox" value="chem" name="subject" id="104">chem <br>     <!---->
+   </label>
+   <label for="105">
+    <input type="checkbox" value="physics" name="subject" id="105">physics  <br>    <!---->
+   </label>
+   <label for=" 106">
+    <input type="checkbox" value="cs" name="subject" id="106">cs  <br>
+   </label>
+   <h4>enter your State</h4>
+   <select name="city" >  
+    <option value="Uttarpradesh">Uttarpradesh</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Mumbai">Mumbai</option>
+    <option value="Goa">Goa</option>
+    <option value="Punjab">Punjab</option>
+ </select>
+<br><br>
+   <textarea name ="feedback" id ="23" placeholder="please give your     Feedback"  rows="6">Feedback</textarea>         <!--TEXTAREA  is like wo jagah jha hame kuch likhna ho kisi cheex ke bare me like your feedback-->   
+   <br><br>
+    
+    <input type="submit" value="submit"><br>  <!-- This for submit any form-->
+<!--iframe dusri website ko apke website pe la ate hai-->
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/BsDoLVMnmZs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<iframe src="https://wikipedia.com" width="450" height="300" title=" Wikipedia website" frameborder="0"></iframe>
+
+<!-- ek video tag bhi ahi jisme ham apne system se koi bhi video dall skte hai apni websire pe  -->
+
+</form>   
+</body>
+</html>

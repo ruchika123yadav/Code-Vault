@@ -1,0 +1,13 @@
+.lottery{
+    border: 5px solid black;
+    height: 30px;
+    width: 350px;
+    border-radius: 10px;
+}
+
+.lottery span{
+    text-align: center;
+    color: aqua;
+    font-weight: bolder;
+     
+}

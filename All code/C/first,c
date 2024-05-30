@@ -1,0 +1,4 @@
+#include<stdio.h>
+int main(){
+printf("hello ,here i am ruchika yadav which is learning a c language");
+return 0;

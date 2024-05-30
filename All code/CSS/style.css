@@ -1,0 +1,56 @@
+/* color Property^ means ruppe rupee foreground hai or background iska alag hoga */
+/* RGH^ means red green blue uantity between o to 255 */
+/* HEX code^ means hexadecimal similar like rgb phelee to lettes red dusre do green and last blue */
+/* text-align^ means sara text left me aye ,centere me aye ya  right me aye */
+/* font weight^ means konsa text jada bold hona chahiye konsa ligth hina chaiye */
+/* text decoration^ means kisi bhi text ko underline de skte hai overline krr skte hai text ko and bhoot kuch */
+/* line height^ means do line ke text ke beechme kitna distnace hona chahiye wo */
+/* letter spacing^ means text ke beech me spacing krna */
+/* font size^ jitn bhi text likha hai hamne wo kitna bada ya kitna chota hona chaiye */
+/* font style like curve normal laterla etc */
+
+h1{ /*selector*/
+    /* color: aqua; */  
+    /* color: rgb(0, 255, 0); */
+    /* color: #000;;
+    background-color: black ; */
+     text-align: center;
+     /* width: 50% */
+     font-weight: 900;
+     text-decoration: double red underline;
+     font-size: 50px;
+     font-family: Arial, Helvetica, sans-serif;
+}
+h2{
+    text-align: end;
+     font-weight: bold;
+     text-decoration: dashed blue line-through;
+     font-family:  Impact;
+}
+
+h3{
+    text-align: left;
+    text-decoration:wavy pink  overline;
+ }
+
+p{
+    /* color: black; */
+    /* color: rgb(255, 255, 0) ; /*jab teeno ko 0 lenge to balck   */
+     /* color:#00f  ;
+    background-color: aquamarine; */
+    text-align: center;
+    line-height: 2;
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-family: copperplate;
+}
+
+button{
+    /* color: blueviolet;*/
+    background-color: antiquewhite; /*  bacground bhi likh skte hai khali */
+    text-align: justify;
+        font-weight: 900;
+}
+a{
+    text-decoration: none;
+}

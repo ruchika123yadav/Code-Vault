@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Handle</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+ 
+<body>
+    <h1>Here is your Insta page: @<%=data.name%> </h1>
+    <button>click</button>
+     <p>Following  <%=data.following%> &nbsp;&nbsp;&nbsp;&nbsp;
+     Followes  <%=data.followers%> </p>
+ 
+     <%for(user of data.posts){%>
+         <img src="<%=user.image%>" alt="">
+         <p>Likes  <%=user.likes%> &nbsp;&nbsp;&nbsp;&nbsp;
+            Comments  <%=user.comments%> </p>
+    <%}%>
+    <script src="/app.js"></script>
+</body>
+</html>

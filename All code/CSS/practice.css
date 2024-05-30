@@ -1,0 +1,94 @@
+/* *{
+    font-family: 'Courier New', Courier, monospace;
+}
+h1{
+    color: #1b74e4;
+}
+#searchbtn{
+    background-color: black;
+    color: aliceblue;
+}
+.userbtn{
+    background-color: aqua;
+} */
+
+/* next uestionss */
+
+/* div{
+    height:100 ;
+    width: 200;
+    border: 5px solid black;
+    margin: 10px;
+    display: inline-block;
+    background-color: aqua;
+} */
+/* #div{
+    display: none;  jese kabhi kabhi koi bhi block hatana ho  tab use krte hai 
+} */
+
+/* ######## */
+/* #outer{
+    height: 100px;
+    width: 300px;
+    background-color: aqua;
+    margin: 50px;
+    font-size: 10px;
+}
+#inner{
+    height: 30px;
+    width:50px;
+    background-color: rgb(194, 60, 140);
+    margin-left: 10%;   /* ish % ne ishe parent ke respect me ishe height or width di haii*/
+    /* font-size:2em;
+    padding: 1em;
+}
+
+button{
+font-size: 50px;
+border-radius: 15px;
+border: 5px solid green;
+padding-left: 1em;
+padding-right: 1em;
+} */ 
+
+
+/* section{
+    height: 100px;
+    width: 300px;
+    font-size: 20px; 
+}
+div{
+    font-size: 2rmem;
+} */
+
+
+div{
+    width: 400px;
+    height: 400px;
+    background-color: orange;
+    border-radius: 50%;
+}
+.mouth{
+  width: 200px;  
+  height:100px ;
+  background-color: brown;
+  border-radius: 0 0 50px 50px;
+  position: absolute;
+  top:250px;
+  left: 100px;
+}
+
+.left,.right{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: black;
+    display: inline-block;
+    position: absolute;
+    left:100px;
+    top:100px;
+
+}
+.right{
+    left:250px ;
+}
