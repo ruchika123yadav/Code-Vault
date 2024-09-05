@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Chai Form{% endblock %}
+
+{% block content %} 
+<h2>Chai Forms</h2>
+<p>Chai forms is here</p>
+  <form method="POST" class="text-black">
+{% csrf_token %}
+{{form.as_p}} 
+{% comment %} as a paragrah render kra rhe form ko {% endcomment %}
+<button type>Search Store</button>
+
+{%if stores%}
+{%for store in stores %}
+<ul>
+  <li>{{store.name}}-{{store.location}}</li> 
+</ul>
+{%endfor%}
+{%endif%}
+  </form>
+
+{% endblock %}
+</div>

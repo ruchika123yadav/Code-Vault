@@ -1,5 +1,5 @@
 {% load static tailwind_tags %}
-{% load static %}
+   {% load static %} {% comment %} for the static files  {% endcomment %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +11,7 @@
         Defualt value
         {% endblock %}
      </title>
+     {% comment %} for the importing the style.css {% endcomment %}
     <link rel="stylesheet" href="{%static 'style.css'%}">
     {%tailwind_css%}
 

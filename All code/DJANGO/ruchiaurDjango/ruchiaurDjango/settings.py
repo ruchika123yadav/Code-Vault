@@ -130,6 +130,11 @@ STATIC_URL = "static/"
 # mera static yha rakha hai or jbb bhi ishe load kro to complete path load kro
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 
+# FOR THE IMAGE SETTINGS
+MEDIA_URL = '/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
