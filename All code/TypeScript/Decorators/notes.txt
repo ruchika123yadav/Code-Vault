@@ -1,0 +1,16 @@
+//Allow us to dynamically inject code into the class definition before the 
+// instance of class is created
+
+// Types of decorators
+/* 
+Class decorators
+Property decorators
+Method   decorators
+Parameter decorators */
+
+/* Decorator Evaluation
+ Parameter Decorators, followed by Method, or Property Decorators are applied for each instance member.
+ Parameter Decorators, followed by Method, or Property Decorators are applied for each static member.
+ Parameter Decorators are applied for the constructor.
+ Class Decorators are applied for the class.
+*/
