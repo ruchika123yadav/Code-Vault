@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Data Factory — Interview Notes</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#1a2230;
+    --muted:#5a6678;
+    --brand:#0b6bcb;        /* ADF blue */
+    --brand2:#2a9fd6;
+    --accent:#e8501f;
+    --line:#e4e9f0;
+    --soft:#f3f8fd;
+    --svc-bg:#fff3cd;       /* highlight for azure services/terms */
+    --svc-border:#f0c94b;
+    --q-bg:#eef4fb;
+    --good:#1f9d57;
+    --bad:#d3422e;
+    --purple:#7a4fd0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:#eef2f7;
+    line-height:1.62;
+    font-size:16px;
+  }
+  .page{
+    max-width:880px;
+    margin:28px auto;
+    background:var(--bg);
+    padding:54px 60px;
+    box-shadow:0 6px 28px rgba(20,40,80,.10);
+    border-radius:10px;
+  }
+
+  /* ---- Cover ---- */
+  .cover{
+    background:linear-gradient(135deg,#06335f 0%,#0b6bcb 50%,#2a9fd6 100%);
+    color:#fff;
+    border-radius:14px;
+    padding:58px 52px;
+    margin-bottom:30px;
+    box-shadow:0 10px 30px rgba(11,107,203,.35);
+  }
+  .cover .kicker{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.9;margin:0 0 10px;}
+  .cover h1{font-size:44px;margin:0 0 8px;line-height:1.1;font-weight:800;}
+  .cover h2{font-size:19px;font-weight:500;margin:0 0 22px;opacity:.95;}
+  .cover .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+  .cover .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:30px;font-size:13px;font-weight:600;}
+
+  h2.section{font-size:26px;color:var(--brand);border-bottom:3px solid var(--brand2);padding-bottom:8px;margin:46px 0 18px;font-weight:800;}
+  h3{font-size:20px;color:#08406f;margin:30px 0 8px;font-weight:700;}
+  h4{font-size:16.5px;color:var(--accent);margin:20px 0 6px;font-weight:700;}
+  p{margin:10px 0;}
+  ul,ol{margin:8px 0 14px;padding-left:24px;}
+  li{margin:6px 0;}
+
+  .svc{background:var(--svc-bg);border:1px solid var(--svc-border);border-radius:5px;padding:1px 7px;font-weight:700;color:#7a5a00;white-space:nowrap;}
+  .term{color:var(--brand);font-weight:700;}
+  code{background:#eef2f7;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-family:"Consolas","Monaco",monospace;font-size:13px;color:#b5246e;}
+
+  /* callout boxes */
+  .note,.tip,.warn,.exam,.q{border-radius:9px;padding:14px 18px;margin:18px 0;font-size:15px;}
+  .note{background:var(--soft);border-left:5px solid var(--brand2);}
+  .tip{background:#eafaf1;border-left:5px solid var(--good);}
+  .warn{background:#fdecea;border-left:5px solid var(--bad);}
+  .exam{background:#fff8e6;border-left:5px solid var(--svc-border);}
+
+  /* interview question box */
+  .q{background:#eef4fb;border:1px solid #cfe0f2;border-left:5px solid var(--brand);}
+  .q .qlabel{display:inline-block;background:var(--brand);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:2px 9px;border-radius:20px;margin-bottom:6px;text-transform:uppercase;}
+  .q .qtext{font-weight:700;color:#08406f;font-size:15.5px;margin-bottom:4px;}
+  .q .why{font-size:13.5px;color:var(--purple);font-style:italic;margin:4px 0 8px;}
+
+  /* analogy */
+  .analogy{background:#f0f5ff;border:1px dashed #9bbef0;border-radius:10px;padding:14px 18px;margin:16px 0;font-style:italic;color:#324a6b;}
+  .analogy::before{content:"🧠 Analogy";display:block;font-style:normal;font-weight:700;color:var(--brand);margin-bottom:4px;font-size:13px;letter-spacing:.5px;}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14.5px;overflow:hidden;border-radius:8px;box-shadow:0 1px 0 var(--line);}
+  th,td{border:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top;}
+  th{background:var(--brand);color:#fff;font-weight:700;}
+  tr:nth-child(even) td{background:var(--soft);}
+
+  .twocol{display:flex;gap:18px;flex-wrap:wrap;}
+  .twocol > div{flex:1;min-width:240px;}
+  .card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:#fff;}
+  .card.green{border-top:4px solid var(--good);}
+  .card.blue{border-top:4px solid var(--brand2);}
+  .card.red{border-top:4px solid var(--bad);}
+  .pro{color:var(--good);font-weight:700;}
+  .con{color:var(--bad);font-weight:700;}
+
+  .legend{font-size:13px;color:var(--muted);margin:6px 0 0;}
+
+  /* ADF architecture diagram */
+  .adfdiagram{background:#0e1726;border-radius:12px;padding:22px 18px;margin:18px 0;}
+  .adf-row{display:flex;gap:12px;justify-content:center;align-items:stretch;flex-wrap:wrap;}
+  .adf-box{border:2px solid;border-radius:9px;padding:12px;text-align:center;}
+  .adf-box.factory{border-color:#2a9fd6;width:100%;background:rgba(42,159,214,.06);}
+  .adf-box.pipe{border-color:#7ed957;width:100%;background:rgba(126,217,87,.05);}
+  .adf-t{color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.5px;margin-bottom:10px;}
+  .adf-mini{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .adf-act{background:#1b2a40;border:1.5px solid #f0c94b;border-radius:7px;padding:8px 12px;color:#f0c94b;font-weight:700;font-size:12px;}
+  .adf-act span{color:#cfd8e6;font-weight:500;font-size:11px;}
+  .adf-arrow{color:#fff;font-weight:700;font-size:16px;}
+  .adf-box.small{flex:1;min-width:120px;font-size:11.5px;font-weight:700;color:#fff;}
+  .adf-box.small span{display:block;color:#aebed3;font-weight:500;font-size:10.5px;margin-top:3px;}
+  .adf-box.ds{border-color:#7ed957;}
+  .adf-box.ls{border-color:#e8814a;}
+  .adf-box.tr{border-color:#d36ad0;}
+  .adf-box.ir{border-color:#3db0d6;}
+
+  /* incremental load step diagram */
+  .incdiagram{background:#0e1726;border-radius:12px;padding:20px 16px;margin:18px 0;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .inc-step{background:#1b2a40;border:1.5px solid #2a9fd6;border-radius:8px;padding:10px 16px;color:#fff;font-size:13.5px;font-weight:600;text-align:center;max-width:520px;width:100%;}
+  .inc-step span{display:block;color:#aebed3;font-weight:400;font-size:12px;margin-top:3px;}
+  .inc-n{display:inline-block;background:#2a9fd6;color:#fff;width:20px;height:20px;line-height:20px;border-radius:50%;font-size:12px;font-weight:700;margin-right:6px;}
+  .inc-arrow{color:#7ed957;font-size:18px;font-weight:700;}
+
+  .toc{background:var(--soft);border-radius:10px;padding:18px 26px;margin:24px 0;}
+  .toc h3{margin-top:0;color:var(--brand);}
+  .toc ol{columns:2;column-gap:40px;}
+  .toc a{color:var(--ink);text-decoration:none;}
+  .toc a:hover{color:var(--brand);text-decoration:underline;}
+
+  .footer{margin-top:50px;border-top:2px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;text-align:center;}
+
+  @media print{
+    body{background:#fff;}
+    .page{box-shadow:none;margin:0;border-radius:0;max-width:100%;padding:24px 30px;}
+    .cover{box-shadow:none;}
+    h2.section{page-break-after:avoid;}
+    table,.analogy,.card,.q,.note,.exam{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ========== COVER ========== -->
+  <div class="cover">
+    <p class="kicker">Azure Data Engineering · Interview Prep</p>
+    <h1>Azure Data Factory</h1>
+    <h2>Complete Interview Notes for 1–2 Years Experience</h2>
+    <div class="badge-row">
+      <span class="badge">🏭 Core Concepts</span>
+      <span class="badge">🔧 Components</span>
+      <span class="badge">🔄 Pipelines &amp; Activities</span>
+      <span class="badge">💬 Real Interview Q&amp;A</span>
+      <span class="badge">🎯 Scenarios</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>How to use this doc:</b> <span class="svc">Yellow boxes</span> are <b>ADF services/components</b> — know these cold. Blue words are <span class="term">key terms</span>. The blue <b>"Interview Q"</b> boxes are <b>questions interviewers actually ask</b>, with what they're really testing and how a strong candidate answers. <b>Exam/Interview Tip</b> boxes hold the points that separate a learner from a real data engineer.
+  </div>
+
+  <div class="tip">
+    <b>The #1 thing to remember:</b> Interviewers don't want memorized definitions — they want to see <b>how you think about data flow, design pipelines, handle failures, and optimize cost/performance</b>. Always answer with <i>business relevance</i> and a real example, not textbook wording.
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#what">What is ADF &amp; Why Companies Use It</a></li>
+      <li><a href="#etl">ETL vs ELT &amp; Where ADF Fits</a></li>
+      <li><a href="#components">Core Components (Architecture)</a></li>
+      <li><a href="#pipeline">Pipelines &amp; Activities</a></li>
+      <li><a href="#linked-dataset">Linked Services vs Datasets</a></li>
+      <li><a href="#ir">Integration Runtime (IR)</a></li>
+      <li><a href="#copy">Copy Activity (Data Movement)</a></li>
+      <li><a href="#dataflow">Mapping Data Flows &amp; Wrangling</a></li>
+      <li><a href="#copy-vs-flow">Copy Activity vs Data Flow</a></li>
+      <li><a href="#triggers">Triggers &amp; Scheduling</a></li>
+      <li><a href="#params">Parameters vs Variables</a></li>
+      <li><a href="#dynamic">Dynamic / Metadata-Driven Pipelines</a></li>
+      <li><a href="#control">Control Flow Activities</a></li>
+      <li><a href="#incremental">Incremental Load (Watermark) ⭐</a></li>
+      <li><a href="#scd">Slowly Changing Dimensions (SCD)</a></li>
+      <li><a href="#error">Error Handling &amp; Debugging</a></li>
+      <li><a href="#monitor">Monitoring</a></li>
+      <li><a href="#perf">Performance Optimization</a></li>
+      <li><a href="#cost">Cost Optimization</a></li>
+      <li><a href="#security">Security &amp; Key Vault</a></li>
+      <li><a href="#cicd">CI/CD &amp; Git Integration</a></li>
+      <li><a href="#ecosystem">ADF vs Synapse / Databricks / SSIS</a></li>
+      <li><a href="#limits">Important Limits (Interviewers Love These) ⭐</a></li>
+      <li><a href="#scenarios">Real Scenario-Based Questions</a></li>
+      <li><a href="#rapidfire">Rapid-Fire Revision Q&amp;A</a></li>
+    </ol>
+  </div>
+
+  <!-- ========== 1. WHAT IS ADF ========== -->
+  <h2 class="section" id="what">1. What is Azure Data Factory &amp; Why Companies Use It</h2>
+  <p><span class="svc">Azure Data Factory (ADF)</span> is a <span class="term">cloud-based, serverless data integration and orchestration service</span>. In plain words: it's a tool that <b>moves data from many sources to a destination, transforms it on the way, and schedules + monitors the whole workflow</b> — without you managing any servers.</p>
+
+  <div class="analogy">
+    Think of ADF as a <b>factory assembly line for data</b>. Raw materials (data) come in from many suppliers (databases, files, APIs). The assembly line (pipeline) moves them station to station, cleans and reshapes them (transformation), and ships the finished product (clean data) to a warehouse (Azure SQL, Synapse, Data Lake) where business teams use it for reports and dashboards.
+  </div>
+
+  <h4>Why companies use it (say this in the interview)</h4>
+  <ul>
+    <li>It supports <b>both on-premises and cloud</b> sources (90+ built-in connectors).</li>
+    <li>It <b>separates orchestration from processing</b> — ADF coordinates the work, while heavy compute can be pushed to Databricks/Synapse.</li>
+    <li>It <b>scales automatically</b> and is serverless (you pay per use, no infrastructure to manage).</li>
+    <li>It <b>integrates tightly with the Azure ecosystem</b> (Data Lake, Synapse, Key Vault, Monitor, DevOps).</li>
+  </ul>
+
+  <div class="exam">
+    <b>Interview Tip:</b> A weak candidate says "ADF is an ETL tool." A strong candidate says "ADF is a serverless orchestration service that ingests data from many sources, coordinates movement and transformation, and schedules/monitors the workflow — companies use it because it handles hybrid sources and scales without infrastructure management." Always add the <i>why</i>.
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What is Azure Data Factory and why do companies use it?"</div>
+    <div class="why">Why they ask: to check if you understand ADF's <i>purpose</i>, not just a definition.</div>
+    Answer with the serverless orchestration definition + the 4 "why" points above + one real example like "we used it to ingest daily sales files from on-prem SQL Server into Azure Data Lake."
+  </div>
+
+  <!-- ========== 2. ETL vs ELT ========== -->
+  <h2 class="section" id="etl">2. ETL vs ELT &amp; Where ADF Fits</h2>
+  <p><span class="term">ETL</span> = <b>Extract, Transform, Load</b>. <span class="term">ELT</span> = <b>Extract, Load, Transform</b>. The difference is <i>when</i> you transform the data.</p>
+  <table>
+    <tr><th>Aspect</th><th>ETL</th><th>ELT</th></tr>
+    <tr><td>Order</td><td>Transform <b>before</b> loading into target</td><td>Load raw first, transform <b>inside</b> the target</td></tr>
+    <tr><td>Transform happens in</td><td>A separate engine (e.g., Data Flow / Databricks)</td><td>The powerful target system (Synapse, SQL, Spark)</td></tr>
+    <tr><td>Best when</td><td>Target is less powerful, or you need clean data on arrival</td><td>Target is a powerful warehouse / lake that can crunch raw data</td></tr>
+  </table>
+  <p>ADF supports <b>both</b> patterns. It can transform in flight (Mapping Data Flows) for ETL, or just load raw data and call Databricks/Synapse to transform for ELT. Modern cloud projects often lean <b>ELT</b> because cloud warehouses are cheap and powerful.</p>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What's the difference between ETL and ELT, and which does ADF use?"</div>
+    <div class="why">Why they ask: to test if you understand modern cloud data patterns.</div>
+    Explain the order difference, then say "ADF supports both; in cloud projects we often prefer ELT because the warehouse (Synapse/Databricks) can transform raw data at scale cheaply."
+  </div>
+
+  <!-- ========== 3. COMPONENTS ========== -->
+  <h2 class="section" id="components">3. Core Components (Architecture)</h2>
+  <p>This is the <b>most asked foundational question</b>. ADF is built from a few building blocks. Know not just what they are, but <b>how they fit together</b>.</p>
+
+  <div class="adfdiagram">
+    <div class="adf-row">
+      <div class="adf-box factory">
+        <div class="adf-t">DATA FACTORY (top-level resource)</div>
+        <div class="adf-row">
+          <div class="adf-box pipe">
+            <div class="adf-t">PIPELINE (workflow)</div>
+            <div class="adf-mini">
+              <div class="adf-act">Activity 1<br><span>Copy</span></div>
+              <div class="adf-arrow">→</div>
+              <div class="adf-act">Activity 2<br><span>Data Flow</span></div>
+              <div class="adf-arrow">→</div>
+              <div class="adf-act">Activity 3<br><span>Stored Proc</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="adf-row" style="margin-top:10px;">
+          <div class="adf-box small ds">DATASET<br><span>shape of data<br>(table/file)</span></div>
+          <div class="adf-box small ls">LINKED SERVICE<br><span>connection string<br>(the "where")</span></div>
+          <div class="adf-box small tr">TRIGGER<br><span>when to run<br>(schedule/event)</span></div>
+          <div class="adf-box small ir">INTEGRATION<br>RUNTIME<br><span>the compute<br>(the "engine")</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="legend">A <b>Data Factory</b> holds <b>Pipelines</b>. A pipeline is a chain of <b>Activities</b>. Activities read/write <b>Datasets</b> (which sit on top of <b>Linked Services</b>). <b>Triggers</b> decide when a pipeline runs, and the <b>Integration Runtime</b> provides the compute that actually does the work.</p>
+
+  <table>
+    <tr><th>Component</th><th>What it is (one line)</th><th>Real-world analogy</th></tr>
+    <tr><td><span class="svc">Pipeline</span></td><td>A logical container that groups and orders activities — defines the workflow.</td><td>The recipe / assembly line</td></tr>
+    <tr><td><span class="svc">Activity</span></td><td>A single step that performs work (copy, transform, run a notebook).</td><td>One station on the line</td></tr>
+    <tr><td><span class="svc">Dataset</span></td><td>Metadata that describes the <b>shape/location</b> of data (e.g., a table or a CSV file).</td><td>A labeled box describing what's inside</td></tr>
+    <tr><td><span class="svc">Linked Service</span></td><td>The <b>connection information</b> to a data store or compute (like a connection string).</td><td>The address + key to a building</td></tr>
+    <tr><td><span class="svc">Trigger</span></td><td>The mechanism that <b>starts</b> a pipeline (schedule, tumbling window, or event).</td><td>The alarm clock / doorbell</td></tr>
+    <tr><td><span class="svc">Integration Runtime</span></td><td>The <b>compute infrastructure</b> that runs the activities.</td><td>The engine / workers</td></tr>
+  </table>
+
+  <div class="exam">
+    <b>Interview Tip:</b> The classic follow-up is "<i>how do a Dataset and a Linked Service relate?</i>" Answer: a <b>Linked Service</b> defines <i>where</i> (the connection to the SQL server / storage account), and a <b>Dataset</b> defines <i>what</i> within it (which table or file). A dataset always points to a linked service. (Full comparison in Section 5.)
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What are the key components of Azure Data Factory?"</div>
+    <div class="why">Why they ask: to test architectural understanding — do you see how the pieces connect?</div>
+    List the six (Pipeline, Activity, Dataset, Linked Service, Trigger, Integration Runtime), then tie them together in one sentence as in the diagram caption above. Connecting them is what scores points.
+  </div>
+
+  <!-- ========== 4. PIPELINES & ACTIVITIES ========== -->
+  <h2 class="section" id="pipeline">4. Pipelines &amp; Activities</h2>
+  <p>A <span class="term">pipeline</span> is a <b>workflow definition, not a data container</b>. It defines execution order, controls dependencies, manages retries/failures, and coordinates multiple activities. In production, a pipeline usually represents a <b>business process</b> — like "daily sales ingestion" or "end-of-day reporting prep."</p>
+
+  <h4>The three families of activities</h4>
+  <table>
+    <tr><th>Type</th><th>Purpose</th><th>Examples</th></tr>
+    <tr><td><span class="term">Data Movement</span></td><td>Move data from source to destination</td><td>Copy Activity</td></tr>
+    <tr><td><span class="term">Data Transformation</span></td><td>Reshape / clean / aggregate data</td><td>Mapping Data Flow, Databricks Notebook, Stored Procedure, HDInsight, Azure Function</td></tr>
+    <tr><td><span class="term">Control Flow</span></td><td>Direct the logic and flow of the pipeline</td><td>ForEach, If Condition, Switch, Until, Wait, Lookup, Get Metadata, Execute Pipeline, Set Variable</td></tr>
+  </table>
+
+  <h4>Three ways to run a pipeline</h4>
+  <ul>
+    <li><span class="term">Debug:</span> test/troubleshoot while developing, before publishing.</li>
+    <li><span class="term">Trigger Now:</span> manual one-off run on demand.</li>
+    <li><span class="term">Trigger (scheduled/event):</span> automated runs on a schedule or when an event happens.</li>
+  </ul>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What is a pipeline? Is it where the data is stored?"</div>
+    <div class="why">Why they ask: a subtle trap — to see if you think a pipeline holds data.</div>
+    Clarify firmly: "No — a pipeline does <b>not</b> store data. It's a workflow definition that orchestrates activities in order, handles dependencies and retries. The data lives in the source/sink stores, not in the pipeline."
+  </div>
+
+  <!-- ========== 5. LINKED SERVICE vs DATASET ========== -->
+  <h2 class="section" id="linked-dataset">5. Linked Services vs Datasets</h2>
+  <p>This pair gets confused constantly, so interviewers test it. Keep it crisp:</p>
+  <div class="twocol">
+    <div class="card blue">
+      <b>🔌 Linked Service = "WHERE"</b>
+      <p>The <b>connection information</b> to an external resource — server name, authentication, credentials. Like a connection string.</p>
+      <p>Two uses: connect to a <b>data store</b> (SQL, Blob), or connect to a <b>compute</b> (Databricks, HDInsight).</p>
+    </div>
+    <div class="card green">
+      <b>📦 Dataset = "WHAT"</b>
+      <p>A <b>named view of the data</b> you want to use — which table, which folder, which file format. It always <b>points to a Linked Service</b>.</p>
+      <p>Example: a Dataset "Customers" = the <i>dbo.Customers</i> table, using the SQL Linked Service.</p>
+    </div>
+  </div>
+  <div class="analogy">
+    Linked Service = your friend's <b>home address + house key</b>. Dataset = the specific <b>room and cupboard</b> inside that house you want to open. You need the address first (Linked Service), then you point to the cupboard (Dataset).
+  </div>
+
+  <!-- ========== 6. INTEGRATION RUNTIME ========== -->
+  <h2 class="section" id="ir">6. Integration Runtime (IR) — Very Important</h2>
+  <p>The <span class="svc">Integration Runtime (IR)</span> is the <b>compute infrastructure</b> ADF uses to actually perform data movement, dispatch activities, and run transformations. It's the bridge between ADF's instructions and the real work. There are <b>three types</b> — knowing <i>when</i> to use each is a guaranteed question.</p>
+
+  <table>
+    <tr><th>IR Type</th><th>Use it for</th><th>Key point</th></tr>
+    <tr><td><span class="svc">Azure IR</span> (default)</td><td>Cloud-to-cloud data movement &amp; transformation</td><td>Fully managed &amp; serverless by Microsoft; auto-scales</td></tr>
+    <tr><td><span class="svc">Self-Hosted IR (SHIR)</span></td><td>On-premises or private-network (VNet) sources</td><td>You install it on a local machine/VM; bridges on-prem ↔ cloud through firewalls</td></tr>
+    <tr><td><span class="svc">Azure-SSIS IR</span></td><td>Running existing SQL Server Integration Services (SSIS) packages in the cloud</td><td>Lets you lift-and-shift legacy SSIS workloads to Azure</td></tr>
+  </table>
+
+  <div class="exam">
+    <b>Interview Tip — the classic scenario:</b> "You need to copy data from an <b>on-premises</b> SQL Server to Azure Blob Storage. Which IR?" → <b>Self-Hosted IR</b>, because the on-prem server sits behind a firewall and Azure IR can't reach it directly. Explain the <i>why</i> (security/connectivity), not just the name.
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"When do you use a Self-Hosted Integration Runtime?"</div>
+    <div class="why">Why they ask: to test hybrid architecture understanding.</div>
+    "When accessing on-prem systems, connecting to private/VNet networks, or when firewall/security rules block direct cloud access. The SHIR runs inside the private network and securely pushes data to the cloud."
+  </div>
+
+  <!-- ========== 7. COPY ACTIVITY ========== -->
+  <h2 class="section" id="copy">7. Copy Activity (Data Movement)</h2>
+  <p>The <span class="svc">Copy Activity</span> is the <b>most used activity in ADF</b>. It moves data from a <span class="term">source</span> to a <span class="term">sink</span> (destination). Used for ETL and "lift-and-shift" data movement.</p>
+  <h4>What it handles in real projects</h4>
+  <ul>
+    <li>Bulk ingestion &amp; incremental loads</li>
+    <li>Schema mapping (mapping source columns to sink columns)</li>
+    <li>Data type conversions</li>
+    <li>Format conversions (e.g., CSV → Parquet)</li>
+  </ul>
+  <p>Every Copy Activity has a <b>Source</b> (where data comes from) and a <b>Sink</b> (where it goes). For performance you tune <b>parallelism</b>, <b>batch size</b>, and <b>Data Integration Units (DIUs)</b> — more on this in Section 18.</p>
+
+  <div class="tip">
+    <b>Staging tip:</b> For large loads into Synapse, enable <b>staged copy</b> (data lands in Blob/ADLS first, then PolyBase/COPY loads it into the warehouse). This is much faster than a direct row-by-row insert.
+  </div>
+
+  <!-- ========== 8. DATA FLOWS ========== -->
+  <h2 class="section" id="dataflow">8. Mapping Data Flows &amp; Wrangling Data Flows</h2>
+  <p><span class="svc">Mapping Data Flows</span> let you build <b>visual, code-free data transformations</b>. You design the logic (joins, filters, aggregations) on a canvas, and ADF runs it on <b>scaled-out Apache Spark clusters</b> that it fully manages — you don't write or manage any Spark code.</p>
+  <h4>Common transformations</h4>
+  <p>Join, Lookup, Conditional Split, Aggregate, Derived Column, Filter, Sort, Union, Pivot/Unpivot, Surrogate Key, Alter Row (for upserts/deletes).</p>
+  <h4>Join types supported</h4>
+  <p>Inner, Left Outer, Right Outer, Full Outer, Cross, plus Semi (rows in left that match right) and Anti (rows in left with no match).</p>
+
+  <h4>Mapping vs Wrangling Data Flow</h4>
+  <table>
+    <tr><th></th><th>Mapping Data Flow</th><th>Wrangling Data Flow</th></tr>
+    <tr><td>Purpose</td><td>Complex, large-scale ETL transformations</td><td>Light, interactive data prep / exploration</td></tr>
+    <tr><td>Engine / language</td><td>Visual designer on managed Spark</td><td>Power Query (M language)</td></tr>
+    <tr><td>Best for</td><td>Joins, aggregations, cleansing at scale</td><td>Quick filtering, reshaping, ad-hoc wrangling</td></tr>
+  </table>
+
+  <div class="exam">
+    <b>Interview Tip:</b> Data Flows run on Spark clusters that take a few minutes to "warm up" (cluster startup time). Mention this — it's why Data Flows aren't ideal for tiny, frequent jobs; for simple moves, a Copy Activity is cheaper and faster.
+  </div>
+
+  <!-- ========== 9. COPY vs DATA FLOW ========== -->
+  <h2 class="section" id="copy-vs-flow">9. Copy Activity vs Data Flow (Know the Difference!)</h2>
+  <table>
+    <tr><th>Aspect</th><th>Copy Activity</th><th>Mapping Data Flow</th></tr>
+    <tr><td>Main job</td><td>Move data A → B</td><td>Transform data (joins, aggregations, cleansing)</td></tr>
+    <tr><td>Transformations</td><td>Very limited (column mapping, type conversion)</td><td>Rich, visual, many transformations</td></tr>
+    <tr><td>Compute</td><td>Runs on Integration Runtime</td><td>Runs on managed Spark cluster</td></tr>
+    <tr><td>Cost &amp; speed</td><td>Cheaper, faster to start</td><td>Costlier, has cluster startup time</td></tr>
+    <tr><td>Use when</td><td>You just need to move/ingest data</td><td>You need complex transformations without code</td></tr>
+  </table>
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"When would you use a Data Flow instead of a Copy Activity?"</div>
+    <div class="why">Why they ask: to see if you know transformation vs movement.</div>
+    "Copy Activity is for moving data with minimal change. I use a Mapping Data Flow when I need real transformations — joins across sources, aggregations, conditional splits, cleansing — without writing Spark code. For heavy custom logic I'd instead call Databricks."
+  </div>
+
+  <!-- ========== 10. TRIGGERS ========== -->
+  <h2 class="section" id="triggers">10. Triggers &amp; Scheduling</h2>
+  <p>A <span class="term">trigger</span> decides <b>when</b> a pipeline runs. There are <b>three types</b> — and the differences are a favorite question.</p>
+  <table>
+    <tr><th>Trigger</th><th>How it fires</th><th>Best use case</th></tr>
+    <tr><td><span class="svc">Schedule Trigger</span></td><td>At fixed clock times (e.g., daily 2 AM, every hour)</td><td>Regular batch jobs on a calendar</td></tr>
+    <tr><td><span class="svc">Tumbling Window Trigger</span></td><td>Fixed-size, <b>non-overlapping</b> time windows, with state</td><td>Time-series / incremental batches needing retry &amp; backfill</td></tr>
+    <tr><td><span class="svc">Event-Based Trigger</span></td><td>When an event happens (e.g., a file lands in Blob via Event Grid)</td><td>Near real-time, file-arrival ingestion</td></tr>
+  </table>
+
+  <h4>Schedule vs Tumbling Window (common follow-up)</h4>
+  <ul>
+    <li><b>Schedule</b> is "fire and forget" at clock times; it doesn't track windows or dependencies.</li>
+    <li><b>Tumbling Window</b> processes discrete, non-overlapping time slices, <b>remembers state</b>, supports <b>retry</b> and <b>backfill</b> (re-running old windows), and supports <b>dependencies</b> between windows. Great for SLA-driven, time-series pipelines.</li>
+  </ul>
+  <div class="exam">
+    <b>Key facts interviewers test:</b> A pipeline can have <b>multiple triggers</b>, and one trigger can fire <b>multiple pipelines</b> (many-to-many). Triggers can pass <b>parameters</b>, and can be <b>paused/resumed</b>. Event triggers work with <b>Blob + Event Grid</b> events (file created/deleted).
+  </div>
+
+  <!-- ========== 11. PARAMETERS vs VARIABLES ========== -->
+  <h2 class="section" id="params">11. Parameters vs Variables</h2>
+  <table>
+    <tr><th></th><th>Parameters</th><th>Variables</th></tr>
+    <tr><td>Set when?</td><td><b>Before</b> the run starts (passed in)</td><td><b>During</b> the run</td></tr>
+    <tr><td>Changeable at runtime?</td><td>No — read-only during the run</td><td>Yes — via Set Variable / Append Variable activities</td></tr>
+    <tr><td>Main purpose</td><td><b>Reusability</b> (e.g., environment name, file path)</td><td><b>Dynamic logic</b> within a run (counters, flags, building values)</td></tr>
+  </table>
+  <p>Quick memory hook: <b>Parameters make a pipeline reusable; Variables make it dynamic.</b> You consume a parameter with <code>@pipeline().parameters.X</code> and a variable with <code>@variables('X')</code>.</p>
+  <div class="note">
+    <b>System variables</b> are built-in read-only values ADF provides automatically, like <code>@pipeline().RunId</code>, trigger time, pipeline name — useful for logging and audit columns.
+  </div>
+
+  <!-- ========== 12. DYNAMIC PIPELINES ========== -->
+  <h2 class="section" id="dynamic">12. Dynamic / Metadata-Driven Pipelines</h2>
+  <p>This is a <b>maturity question</b> — it shows you can design for scale instead of hardcoding. A <span class="term">metadata-driven pipeline</span> reads its configuration from a control table or file, then loops over it, instead of building one pipeline per table.</p>
+  <h4>How it works (say this)</h4>
+  <ol>
+    <li>A <b>Lookup</b> activity reads a <b>control/metadata table</b> (a list of source tables, paths, settings).</li>
+    <li>A <b>ForEach</b> activity loops over that list.</li>
+    <li>Inside the loop, a <b>parameterized</b> Copy/Data Flow uses dynamic content (<code>@item().tableName</code>) to process each item.</li>
+  </ol>
+  <p>Result: <b>one pipeline handles 100 tables</b> instead of 100 separate pipelines. Less duplication, easy maintenance.</p>
+  <div class="tip">
+    <b>Star line in interviews:</b> "Instead of hardcoding, I build <b>metadata-driven pipelines</b> — a control table lists all sources, a Lookup reads it, a ForEach loops, and parameterized datasets/linked services process each entry dynamically. To onboard a new table, I just add a row to the control table — no new pipeline needed."
+  </div>
+
+  <!-- ========== 13. CONTROL FLOW ========== -->
+  <h2 class="section" id="control">13. Control Flow Activities</h2>
+  <p>Control flow activities direct the <b>logic</b> of a pipeline (not data movement). Know what each does:</p>
+  <table>
+    <tr><th>Activity</th><th>What it does</th></tr>
+    <tr><td><span class="svc">ForEach</span></td><td>Loops over a collection (array/list) — sequentially or in parallel</td></tr>
+    <tr><td><span class="svc">If Condition</span></td><td>Branches based on a true/false expression</td></tr>
+    <tr><td><span class="svc">Switch</span></td><td>Branches into multiple paths based on a value (like a switch-case)</td></tr>
+    <tr><td><span class="svc">Until</span></td><td>Loops until a condition becomes true</td></tr>
+    <tr><td><span class="svc">Wait</span></td><td>Pauses the pipeline for a set time</td></tr>
+    <tr><td><span class="svc">Lookup</span></td><td>Reads a single value or a row set (e.g., from a config table)</td></tr>
+    <tr><td><span class="svc">Get Metadata</span></td><td>Returns properties of a file/folder (name, size, exists, child items)</td></tr>
+    <tr><td><span class="svc">Execute Pipeline</span></td><td>Calls another pipeline (modular, reusable design)</td></tr>
+    <tr><td><span class="svc">Set / Append Variable</span></td><td>Assigns or builds variable values during the run</td></tr>
+  </table>
+
+  <h4>Lookup vs Get Metadata (frequently confused)</h4>
+  <table>
+    <tr><th></th><th>Lookup</th><th>Get Metadata</th></tr>
+    <tr><td>Returns</td><td><b>Data rows / values</b> from a dataset</td><td><b>Properties</b> about a file/folder (name, size, exists)</td></tr>
+    <tr><td>Typical use</td><td>Read a watermark value or config rows</td><td>Check if a file exists / list files before looping</td></tr>
+    <tr><td><b>⚠️ Limit</b></td><td>Max <b>5,000 rows</b> / <b>2 MB</b> JSON output</td><td>Max <b>8,000 child items</b></td></tr>
+  </table>
+  <div class="warn">
+    <b>Interviewers love the Lookup limit:</b> if you Lookup a huge table you'll hit the <b>5,000 row / 2 MB</b> cap. For large config, filter at source or read it differently. Knowing this caveat instantly marks you as someone with real experience.
+  </div>
+
+  <!-- ========== 14. INCREMENTAL LOAD ========== -->
+  <h2 class="section" id="incremental">14. Incremental Load (Watermark) ⭐ Must-Know</h2>
+  <p>This is <b>THE</b> most-asked scenario for 1–2 year roles. <span class="term">Incremental loading</span> means loading only <b>new or changed</b> records since the last run — instead of reloading the entire table every time. It saves time, compute, and money.</p>
+
+  <div class="incdiagram">
+    <div class="inc-step"><span class="inc-n">1</span> Lookup reads <b>last watermark</b><br><span>(e.g., last LoadDate from a control table)</span></div>
+    <div class="inc-arrow">↓</div>
+    <div class="inc-step"><span class="inc-n">2</span> Lookup gets <b>current max</b> value from source<br><span>(e.g., MAX(LastModifiedDate) in source table)</span></div>
+    <div class="inc-arrow">↓</div>
+    <div class="inc-step"><span class="inc-n">3</span> Copy Activity pulls <b>only rows between</b><br><span>old watermark &lt; rows ≤ new watermark</span></div>
+    <div class="inc-arrow">↓</div>
+    <div class="inc-step"><span class="inc-n">4</span> On success, <b>update the watermark</b><br><span>(store the new max in the control table via Stored Procedure)</span></div>
+  </div>
+
+  <h4>How to explain it (step by step)</h4>
+  <ol>
+    <li>Keep a <span class="term">watermark column</span> in the source — usually a <b>LastModifiedDate</b> timestamp or an ever-increasing <b>ID</b>.</li>
+    <li>Store the <b>last processed watermark value</b> in a small <b>control table</b> (or pipeline variable).</li>
+    <li>Each run: a <b>Lookup</b> reads the old watermark; another reads the current max from source.</li>
+    <li>The <b>Copy Activity</b> uses a query like <code>WHERE LastModifiedDate &gt; @oldWatermark</code> to fetch only new/changed rows.</li>
+    <li>After a successful load, <b>update the watermark</b> (via a Stored Procedure activity) so the next run starts from there.</li>
+  </ol>
+
+  <h4>Other ways to do incremental load</h4>
+  <ul>
+    <li><span class="term">Change Data Capture (CDC) / Change Tracking:</span> if the source database supports it, it tells you exactly which rows changed.</li>
+    <li><span class="term">Delta Lake (in Databricks):</span> use <code>MERGE</code> (upsert) and built-in versioning for CDC-like behavior.</li>
+  </ul>
+
+  <div class="exam">
+    <b>Interview gold:</b> Interviewers want <i>efficiency thinking</i>. Always contrast it with full load: "A full load reprocesses everything every night — slow and expensive. Incremental load uses a watermark to fetch only changed rows, so a 10-million-row table might only move a few thousand new rows per run."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"How do you implement incremental loading in ADF?"</div>
+    <div class="why">Why they ask: the single most important real-world pipeline design question.</div>
+    Walk through the watermark approach (the 5 steps above), mention the control table to persist state, and name CDC/Delta as alternatives. Bonus: mention handling <b>late-arriving data</b> with a staging area or tumbling-window reprocessing.
+  </div>
+
+  <!-- ========== 15. SCD ========== -->
+  <h2 class="section" id="scd">15. Slowly Changing Dimensions (SCD)</h2>
+  <p><span class="term">SCD</span> is about <b>how you handle changes to dimension data over time</b> (like a customer changing their address). Two types come up most:</p>
+  <table>
+    <tr><th>Type</th><th>What happens on change</th><th>History?</th></tr>
+    <tr><td><span class="term">SCD Type 1</span></td><td><b>Overwrite</b> the old value with the new one</td><td>No history kept</td></tr>
+    <tr><td><span class="term">SCD Type 2</span></td><td><b>Add a new row</b> for the changed record; mark the old row inactive (with start/end dates or an "is current" flag)</td><td>Full history kept</td></tr>
+  </table>
+  <p>In ADF, you implement SCD using a <b>Mapping Data Flow</b> with the <b>Alter Row</b> transformation (to tag rows as insert/update/upsert) and a sink configured for <b>upsert</b>. Type 2 also uses a surrogate key and date columns.</p>
+  <div class="note">
+    <b>One-line answer:</b> "Type 1 overwrites and keeps no history; Type 2 inserts a new versioned row and preserves history with start/end dates. I implement them in Mapping Data Flows using Alter Row + upsert."
+  </div>
+
+  <!-- ========== 16. ERROR HANDLING ========== -->
+  <h2 class="section" id="error">16. Error Handling &amp; Debugging</h2>
+  <p>Production pipelines are <b>designed expecting failure</b>, not hoping to avoid it. This shows production maturity.</p>
+  <h4>Handling failures</h4>
+  <ul>
+    <li><span class="term">Retry policies:</span> set retry count + interval on activities for transient failures (use exponential backoff thinking).</li>
+    <li><span class="term">Conditional paths:</span> every activity has 4 output paths — <b>Success, Failure, Completion, Skipped</b>. Wire a Failure path to a logging/notification activity.</li>
+    <li><span class="term">If Condition / Switch:</span> branch logic based on results.</li>
+    <li><span class="term">Alerts:</span> integrate with <b>Azure Monitor</b> and <b>Logic Apps</b> to send email/Teams alerts on failure.</li>
+    <li><span class="term">Logging &amp; auditing:</span> log every run and error to a table for audit trails.</li>
+  </ul>
+  <h4>Debugging</h4>
+  <ul>
+    <li>Use <b>Debug runs</b> to test before publishing.</li>
+    <li>Review each activity's <b>output JSON</b> for error details and metrics.</li>
+    <li>Check <b>Self-Hosted IR logs</b> for connectivity issues.</li>
+    <li>Use the <b>Monitor hub</b> to find the failed activity and map the error message to it.</li>
+  </ul>
+  <div class="exam">
+    <b>Interview Tip:</b> Mention the <b>Failure vs Completion</b> path difference — "Completion" runs whether the previous activity succeeded or failed (good for cleanup/logging), while "Failure" runs only on failure. Knowing this detail signals hands-on experience.
+  </div>
+
+  <!-- ========== 17. MONITORING ========== -->
+  <h2 class="section" id="monitor">17. Monitoring</h2>
+  <p>You monitor pipelines in the ADF <span class="term">Monitor hub</span>, which shows pipeline runs, activity runs, trigger runs, statuses, durations, and error messages.</p>
+  <ul>
+    <li><b>Pipeline/Activity runs:</b> see what ran, when, how long, and pass/fail.</li>
+    <li><b>Alerts &amp; metrics:</b> set up alerts on failures or long runs via <b>Azure Monitor</b>.</li>
+    <li><b>Diagnostic logs:</b> send logs to <b>Log Analytics</b> for KQL querying and dashboards.</li>
+    <li><b>Reruns:</b> you can rerun a failed pipeline from the point of failure.</li>
+  </ul>
+
+  <!-- ========== 18. PERFORMANCE ========== -->
+  <h2 class="section" id="perf">18. Performance Optimization</h2>
+  <p>Interviewers test <b>efficiency thinking</b> — know <i>why</i> each tactic helps.</p>
+  <ul>
+    <li><span class="term">Incremental loads:</span> move only changed data (biggest win).</li>
+    <li><span class="term">Parallelism:</span> tune <b>Data Integration Units (DIUs)</b> and <b>degree of copy parallelism</b> in Copy Activity to move data faster.</li>
+    <li><span class="term">Partitioning:</span> partition source/sink (e.g., by date) so reads aren't full-table scans, and ForEach can process partitions concurrently.</li>
+    <li><span class="term">Right file formats:</span> use columnar <b>Parquet/ORC</b> over CSV/JSON — smaller, faster, compressed.</li>
+    <li><span class="term">Staging:</span> use a Blob/ADLS staging area for big warehouse loads (PolyBase/COPY).</li>
+    <li><span class="term">Break up big workflows:</span> modular pipelines (Execute Pipeline) for reusability and parallelism.</li>
+  </ul>
+  <div class="note"><b>DIU = Data Integration Unit</b> — a measure of power (CPU/memory/network) ADF assigns to a Copy Activity. More DIUs = faster copy, but more cost. It's the main performance dial for Copy.</div>
+
+  <!-- ========== 19. COST ========== -->
+  <h2 class="section" id="cost">19. Cost Optimization</h2>
+  <ul>
+    <li><b>Avoid unnecessary runs:</b> review trigger schedules; don't run hourly if daily is enough.</li>
+    <li><b>Right-size data movement:</b> pick the right IR, region (keep compute near data), and DIU setting.</li>
+    <li><b>Shut down idle compute:</b> especially a Self-Hosted IR running on a VM, and Data Flow clusters (set a short TTL).</li>
+    <li><b>Prefer Copy over Data Flow</b> for simple moves (Data Flow spins up a Spark cluster = more cost).</li>
+    <li><b>Monitor with Azure Cost Management</b> and set budgets/alerts.</li>
+  </ul>
+  <div class="note"><b>How ADF billing works (good to mention):</b> you're billed mainly by <b>pipeline activity runs</b>, <b>data movement (DIU-hours)</b>, and <b>Data Flow cluster time (vCore-hours)</b>. So fewer runs + less cluster time = lower bill.</div>
+
+  <!-- ========== 20. SECURITY ========== -->
+  <h2 class="section" id="security">20. Security &amp; Key Vault</h2>
+  <ul>
+    <li><span class="term">Managed Identity:</span> let ADF authenticate to Azure services <b>without passwords</b> — the most secure option.</li>
+    <li><span class="term">Azure Key Vault:</span> store secrets, connection strings, and keys in Key Vault; ADF references them instead of hardcoding credentials.</li>
+    <li><span class="term">RBAC:</span> control who can view/edit/run ADF using role-based access (e.g., Data Factory Contributor).</li>
+    <li><span class="term">Private Endpoints / Managed VNet:</span> keep data traffic off the public internet; Managed VNet protects against data exfiltration.</li>
+    <li><span class="term">Encryption:</span> data is encrypted in transit (TLS) and at rest (AES).</li>
+  </ul>
+  <div class="exam"><b>Interview Tip:</b> The phrase interviewers want to hear is <b>"I store all secrets in Azure Key Vault and use Managed Identity for authentication"</b> — it signals you never hardcode credentials.</div>
+
+  <!-- ========== 21. CICD ========== -->
+  <h2 class="section" id="cicd">21. CI/CD &amp; Git Integration</h2>
+  <p>ADF supports full <span class="term">CI/CD</span> using <b>Azure DevOps</b> or <b>GitHub</b>.</p>
+  <ul>
+    <li><b>Git integration:</b> link ADF to a repo so all pipelines, datasets, and linked services are version-controlled. You work in <b>feature branches</b>.</li>
+    <li><b>Collaboration branch + publish:</b> when you "Publish," ADF generates <b>ARM templates</b> into an <code>adf_publish</code> branch.</li>
+    <li><b>Deployment:</b> a release pipeline in Azure DevOps deploys those ARM templates across environments (<b>Dev → Test → Prod</b>), overriding parameters per environment.</li>
+    <li><b>Why it matters:</b> safe, repeatable, auditable deployments — no manual clicking in production.</li>
+  </ul>
+  <div class="note"><b>Mode difference:</b> In <b>Git mode</b> you "Save" to a branch (work-in-progress). "Publish" pushes the validated version live. Without Git, ADF is in "Live mode" and every change is immediately live — risky for teams.</div>
+
+  <!-- ========== 22. ECOSYSTEM ========== -->
+  <h2 class="section" id="ecosystem">22. ADF vs Synapse Pipelines / Databricks / SSIS</h2>
+  <table>
+    <tr><th>Tool</th><th>What it's for</th><th>vs ADF</th></tr>
+    <tr><td><span class="svc">ADF</span></td><td>Cloud data integration &amp; orchestration (ETL/ELT)</td><td>The orchestrator; 90+ connectors; light transformations</td></tr>
+    <tr><td><span class="svc">Synapse Pipelines</span></td><td>Same engine as ADF, but inside Azure Synapse Analytics</td><td>Best when your analytics already live in Synapse; fewer connectors than standalone ADF</td></tr>
+    <tr><td><span class="svc">Azure Databricks</span></td><td>Heavy data processing &amp; ML on Apache Spark (code: Python/Scala/SQL)</td><td>ADF <b>orchestrates</b>; Databricks does the <b>heavy custom transformation</b>. They're partners, not rivals.</td></tr>
+    <tr><td><span class="svc">SSIS</span></td><td>Legacy on-prem ETL tool (SQL Server Integration Services)</td><td>ADF is the cloud-native successor; you can lift-and-shift SSIS into <b>Azure-SSIS IR</b></td></tr>
+  </table>
+  <div class="exam"><b>Interview Tip:</b> A very common question is "ADF vs Databricks." Best answer: <b>"They complement each other — ADF orchestrates and moves data; Databricks does the heavy, code-based transformations. In real projects, ADF triggers a Databricks notebook for complex logic."</b></div>
+
+  <div class="note"><b>Bonus (2024+ awareness):</b> Microsoft is pushing <b>Microsoft Fabric</b>, where "Data Factory" exists as a SaaS offering. Difference: standalone <b>ADF is PaaS</b> (you manage Integration Runtimes), while <b>Fabric's Data Factory is SaaS</b> (serverless managed compute, simplified "Connections," and Dataflow Gen2 with Power Query). Mentioning this shows you're current.</div>
+
+  <!-- ========== 23. LIMITS ========== -->
+  <h2 class="section" id="limits">23. Important Limits (Interviewers Love These) ⭐</h2>
+  <p>Knowing these real-world caveats instantly separates you from someone who only read theory:</p>
+  <table>
+    <tr><th>Thing</th><th>Limit / Rule</th></tr>
+    <tr><td><span class="svc">Lookup</span> activity output</td><td>Max <b>5,000 rows</b> or <b>2 MB</b></td></tr>
+    <tr><td><span class="svc">Get Metadata</span> child items</td><td>Max <b>8,000 items</b></td></tr>
+    <tr><td><span class="svc">ForEach</span> items</td><td>Up to <b>100,000</b> items; max <b>50</b> concurrent (parallel) iterations</td></tr>
+    <tr><td>Pipeline nesting (Execute Pipeline)</td><td>Up to <b>20</b> levels deep</td></tr>
+    <tr><td>Pipeline timeout</td><td>Default <b>7 days</b> max</td></tr>
+    <tr><td>Tumbling Window concurrency</td><td><b>1 per window</b> (non-overlapping by design)</td></tr>
+    <tr><td>Real-time streaming</td><td>ADF is <b>not</b> true streaming — use Event triggers for near-real-time, or Event Hubs + Stream Analytics for true streaming</td></tr>
+    <tr><td>Where ADF metadata is stored</td><td>Internally in Azure-managed storage (not user-visible)</td></tr>
+  </table>
+  <div class="warn"><b>The trap question:</b> "Can ADF do real-time streaming?" — Say <b>"No, not true streaming. ADF is batch/micro-batch. For near-real-time I use event-based triggers on file arrival; for true streaming I'd use Event Hubs + Azure Stream Analytics."</b> Many candidates get this wrong.</div>
+
+  <!-- ========== 24. SCENARIOS ========== -->
+  <h2 class="section" id="scenarios">24. Real Scenario-Based Questions</h2>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Copy all files from a Blob folder and load each filename + row count into a SQL table."</div>
+    <b>Approach:</b> Use <b>Get Metadata</b> to list the folder's child items → <b>ForEach</b> to loop each file → inside, <b>Get Metadata</b> (or a Lookup) to get the row count → <b>Copy/Stored Procedure</b> to insert filename + count into SQL.
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Your pipeline is slow during heavy loads. How do you optimize it?"</div>
+    <b>Approach:</b> "Enable parallelism by partitioning data and raising DIUs/copy parallelism; switch to Parquet; use a Blob staging area to buffer; cache lookups in Data Flows; and move only incremental data instead of full reloads."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Migrate data from multiple cloud sources into an on-premises system."</div>
+    <b>Approach:</b> "Use a <b>Self-Hosted IR</b> for the secure on-prem connection, define a Linked Service per source, and use Copy Activities (or a metadata-driven ForEach) to move each source into the on-prem target."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"How would you design an end-to-end ADF pipeline?"</div>
+    <b>Approach (structured answer scores highest):</b> Source identification → ingestion strategy (full vs incremental, batch vs event) → transformation approach (Data Flow vs Databricks) → error handling &amp; retries → monitoring &amp; alerting. Mention Key Vault for secrets and Git for CI/CD.
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"How do you handle late-arriving data?"</div>
+    <b>Approach:</b> "Use time-window watermarking, land late data in a staging area, and reprocess specific partitions using <b>tumbling window</b> backfill or pipeline parameters with conditional branching."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Explain ADF to a non-technical stakeholder."</div>
+    <b>Approach:</b> Use an analogy: "ADF is like a <b>factory assembly line for data</b> — it picks up raw data from many places, cleans and reshapes it on the line, and delivers finished, report-ready data to the business." Tests communication &amp; simplification skill.
+  </div>
+
+  <!-- ========== 25. RAPID FIRE ========== -->
+  <h2 class="section" id="rapidfire">25. Rapid-Fire Revision Q&amp;A</h2>
+  <p>Quick one-liners to review the night before:</p>
+  <table>
+    <tr><th>Question</th><th>Crisp Answer</th></tr>
+    <tr><td>Is ADF PaaS or SaaS?</td><td>PaaS (you manage Integration Runtimes). Fabric's Data Factory is SaaS.</td></tr>
+    <tr><td>How many connectors does ADF have?</td><td>90+ built-in connectors.</td></tr>
+    <tr><td>3 Integration Runtime types?</td><td>Azure IR, Self-Hosted IR, Azure-SSIS IR.</td></tr>
+    <tr><td>3 trigger types?</td><td>Schedule, Tumbling Window, Event-based.</td></tr>
+    <tr><td>Linked Service vs Dataset?</td><td>Linked Service = connection (where); Dataset = data shape (what).</td></tr>
+    <tr><td>Parameter vs Variable?</td><td>Parameter = set before run, read-only (reusability); Variable = changes during run (dynamic logic).</td></tr>
+    <tr><td>Copy vs Data Flow?</td><td>Copy = move data; Data Flow = transform data on Spark.</td></tr>
+    <tr><td>How to do incremental load?</td><td>Watermark column + Lookup last value + filtered Copy + update watermark.</td></tr>
+    <tr><td>Where are secrets stored?</td><td>Azure Key Vault, with Managed Identity for auth.</td></tr>
+    <tr><td>Lookup row limit?</td><td>5,000 rows / 2 MB.</td></tr>
+    <tr><td>ForEach concurrency?</td><td>Max 50 parallel; up to 100,000 items.</td></tr>
+    <tr><td>Can ADF stream in real time?</td><td>No — near-real-time via event triggers; true streaming = Event Hubs + Stream Analytics.</td></tr>
+    <tr><td>How is CI/CD done?</td><td>Git integration + ARM templates deployed via Azure DevOps across Dev/Test/Prod.</td></tr>
+    <tr><td>ADF vs Databricks?</td><td>ADF orchestrates &amp; moves; Databricks does heavy code-based transformation. They work together.</td></tr>
+    <tr><td>SCD Type 1 vs Type 2?</td><td>Type 1 overwrites (no history); Type 2 adds versioned rows (keeps history).</td></tr>
+    <tr><td>What is a DIU?</td><td>Data Integration Unit — the compute power dial for Copy Activity.</td></tr>
+  </table>
+
+  <div class="tip">
+    <b>Final advice for your interview:</b> For every answer, add <b>(1) what it is, (2) why/when you'd use it, and (3) a quick real example.</b> That structure makes you sound like a real data engineer, not someone who memorized definitions. Good luck! 🚀
+  </div>
+
+  <div class="footer">
+    <b>Azure Data Factory — Interview Notes</b><br>
+    Made by Ruchika Yadav
+  </div>
+
+</div>
+</body>
+</html>

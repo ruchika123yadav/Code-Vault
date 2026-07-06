@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Databricks — Interview Notes</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#1a2230;
+    --muted:#5a6678;
+    --brand:#d6402a;        /* Databricks red */
+    --brand2:#ef6c3f;
+    --accent:#0b6bcb;
+    --line:#e7e9ee;
+    --soft:#fdf4f2;
+    --svc-bg:#fff3cd;
+    --svc-border:#f0c94b;
+    --good:#1f9d57;
+    --bad:#d3422e;
+    --purple:#7a4fd0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#eef2f7;line-height:1.62;font-size:16px;}
+  .page{max-width:880px;margin:28px auto;background:var(--bg);padding:54px 60px;box-shadow:0 6px 28px rgba(20,40,80,.10);border-radius:10px;}
+
+  /* Cover */
+  .cover{background:linear-gradient(135deg,#7a1d10 0%,#d6402a 50%,#ef6c3f 100%);color:#fff;border-radius:14px;padding:58px 52px;margin-bottom:30px;box-shadow:0 10px 30px rgba(214,64,42,.35);}
+  .cover .kicker{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.9;margin:0 0 10px;}
+  .cover h1{font-size:44px;margin:0 0 8px;line-height:1.1;font-weight:800;}
+  .cover h2{font-size:19px;font-weight:500;margin:0 0 22px;opacity:.95;}
+  .cover .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+  .cover .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:30px;font-size:13px;font-weight:600;}
+
+  h2.section{font-size:26px;color:var(--brand);border-bottom:3px solid var(--brand2);padding-bottom:8px;margin:46px 0 18px;font-weight:800;}
+  h3{font-size:20px;color:#9c2a18;margin:30px 0 8px;font-weight:700;}
+  h4{font-size:16.5px;color:var(--accent);margin:20px 0 6px;font-weight:700;}
+  p{margin:10px 0;}
+  ul,ol{margin:8px 0 14px;padding-left:24px;}
+  li{margin:6px 0;}
+
+  .svc{background:var(--svc-bg);border:1px solid var(--svc-border);border-radius:5px;padding:1px 7px;font-weight:700;color:#7a5a00;white-space:nowrap;}
+  .term{color:var(--brand);font-weight:700;}
+  code{background:#f4f0ee;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-family:"Consolas","Monaco",monospace;font-size:13px;color:#0b6bcb;}
+  pre{background:#0e1726;color:#e6edf3;border-radius:9px;padding:14px 16px;overflow-x:auto;font-family:"Consolas","Monaco",monospace;font-size:13px;line-height:1.5;margin:14px 0;}
+  pre .cm{color:#7e8aa0;}
+  pre .kw{color:#ff8866;}
+  pre .st{color:#7ed957;}
+
+  .note,.tip,.warn,.exam,.q{border-radius:9px;padding:14px 18px;margin:18px 0;font-size:15px;}
+  .note{background:var(--soft);border-left:5px solid var(--brand2);}
+  .tip{background:#eafaf1;border-left:5px solid var(--good);}
+  .warn{background:#fdecea;border-left:5px solid var(--bad);}
+  .exam{background:#fff8e6;border-left:5px solid var(--svc-border);}
+  .q{background:#fdf2ef;border:1px solid #f3d2c8;border-left:5px solid var(--brand);}
+  .q .qlabel{display:inline-block;background:var(--brand);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:2px 9px;border-radius:20px;margin-bottom:6px;text-transform:uppercase;}
+  .q .qtext{font-weight:700;color:#9c2a18;font-size:15.5px;margin-bottom:4px;}
+  .q .why{font-size:13.5px;color:var(--purple);font-style:italic;margin:4px 0 8px;}
+
+  .analogy{background:#fff6f0;border:1px dashed #f0b89b;border-radius:10px;padding:14px 18px;margin:16px 0;font-style:italic;color:#6b3a24;}
+  .analogy::before{content:"🧠 Analogy";display:block;font-style:normal;font-weight:700;color:var(--brand);margin-bottom:4px;font-size:13px;letter-spacing:.5px;}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14.5px;overflow:hidden;border-radius:8px;box-shadow:0 1px 0 var(--line);}
+  th,td{border:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top;}
+  th{background:var(--brand);color:#fff;font-weight:700;}
+  tr:nth-child(even) td{background:var(--soft);}
+
+  .twocol{display:flex;gap:18px;flex-wrap:wrap;}
+  .twocol > div{flex:1;min-width:240px;}
+  .card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:#fff;}
+  .card.green{border-top:4px solid var(--good);}
+  .card.blue{border-top:4px solid var(--accent);}
+  .card.red{border-top:4px solid var(--bad);}
+  .pro{color:var(--good);font-weight:700;}
+  .con{color:var(--bad);font-weight:700;}
+
+  .legend{font-size:13px;color:var(--muted);margin:6px 0 0;}
+
+  .toc{background:var(--soft);border-radius:10px;padding:18px 26px;margin:24px 0;}
+  .toc h3{margin-top:0;color:var(--brand);}
+  .toc ol{columns:2;column-gap:40px;}
+  .toc a{color:var(--ink);text-decoration:none;}
+  .toc a:hover{color:var(--brand);text-decoration:underline;}
+
+  .footer{margin-top:50px;border-top:2px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;text-align:center;}
+
+  /* medallion diagram */
+  .medallion{background:#0e1726;border-radius:12px;padding:22px 18px;margin:18px 0;display:flex;gap:12px;justify-content:center;align-items:stretch;flex-wrap:wrap;}
+  .med-box{flex:1;min-width:160px;border-radius:9px;padding:14px;text-align:center;border:2px solid;}
+  .med-box .mt{font-weight:800;font-size:14px;margin-bottom:6px;}
+  .med-box .md{font-size:12px;color:#cfd8e6;line-height:1.45;}
+  .med-bronze{border-color:#cd7f32;background:rgba(205,127,50,.08);}
+  .med-bronze .mt{color:#e09a4f;}
+  .med-silver{border-color:#aab4c0;background:rgba(170,180,192,.08);}
+  .med-silver .mt{color:#cdd6e0;}
+  .med-gold{border-color:#f0c94b;background:rgba(240,201,75,.08);}
+  .med-gold .mt{color:#f0c94b;}
+  .med-arrow{display:flex;align-items:center;color:#fff;font-size:20px;font-weight:700;}
+
+  /* lakehouse diagram */
+  .lakediagram{background:#0e1726;border-radius:12px;padding:22px 18px;margin:18px 0;}
+  .lake-layer{border-radius:8px;padding:11px;margin:7px 0;text-align:center;font-weight:700;font-size:13px;border:2px solid;color:#fff;}
+  .lake-layer span{display:block;font-weight:400;font-size:11.5px;color:#aebed3;margin-top:3px;}
+  .ll-top{border-color:#ef6c3f;background:rgba(239,108,63,.08);}
+  .ll-mid{border-color:#f0c94b;background:rgba(240,201,75,.07);}
+  .ll-low{border-color:#3db0d6;background:rgba(61,176,214,.07);}
+
+  @media print{
+    body{background:#fff;}
+    .page{box-shadow:none;margin:0;border-radius:0;max-width:100%;padding:24px 30px;}
+    .cover{box-shadow:none;}
+    h2.section{page-break-after:avoid;}
+    table,.analogy,.card,.q,.note,.exam,.medallion,.lakediagram,pre{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <p class="kicker">Azure Data Engineering · Interview Prep</p>
+    <h1>Azure Databricks</h1>
+    <h2>Complete Interview Notes for 1–2 Years Experience</h2>
+    <div class="badge-row">
+      <span class="badge">🧱 Lakehouse</span>
+      <span class="badge">⚡ Apache Spark</span>
+      <span class="badge">🔺 Delta Lake</span>
+      <span class="badge">🐍 PySpark</span>
+      <span class="badge">🥉🥈🥇 Medallion</span>
+      <span class="badge">💬 Real Q&amp;A</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>How to use this doc:</b> <span class="svc">Yellow boxes</span> are <b>Databricks/Spark terms &amp; features</b> — know these cold. Blue words are <span class="term">key concepts</span>. The red <b>"Interview Q"</b> boxes are <b>questions interviewers actually ask</b> with what they're testing and how to answer strongly. <b>Tip</b> boxes hold what separates a learner from a real engineer.
+  </div>
+
+  <div class="tip">
+    <b>What Databricks interviews really test (for 1–2 yrs):</b> the <b>Lakehouse + Delta Lake</b> story, <b>Spark fundamentals</b> (transformations/actions, shuffles, partitioning), <b>PySpark</b> hands-on, the <b>Medallion architecture</b>, and <b>performance optimization</b>. Always answer with <i>why</i> and a small real example.
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#what">What is Azure Databricks</a></li>
+      <li><a href="#spark">Apache Spark &amp; Databricks vs Spark</a></li>
+      <li><a href="#arch">Architecture (Control vs Data Plane)</a></li>
+      <li><a href="#lakehouse">Lakehouse Architecture</a></li>
+      <li><a href="#clusters">Clusters (All-Purpose vs Job)</a></li>
+      <li><a href="#workspace">Workspace, Notebooks &amp; Jobs</a></li>
+      <li><a href="#dbr">Databricks Runtime &amp; Photon</a></li>
+      <li><a href="#rdd-df">RDD vs DataFrame vs Dataset</a></li>
+      <li><a href="#trans-act">Transformations vs Actions ⭐</a></li>
+      <li><a href="#narrow-wide">Narrow vs Wide &amp; Shuffle ⭐</a></li>
+      <li><a href="#lazy">Lazy Evaluation, DAG, Stages</a></li>
+      <li><a href="#partition">Partitioning: repartition vs coalesce</a></li>
+      <li><a href="#cache">Cache vs Persist</a></li>
+      <li><a href="#broadcast">Broadcast Join &amp; Data Skew ⭐</a></li>
+      <li><a href="#optimize">Performance Optimization</a></li>
+      <li><a href="#delta">Delta Lake (ACID) ⭐</a></li>
+      <li><a href="#delta-ops">OPTIMIZE, ZORDER, VACUUM, Time Travel</a></li>
+      <li><a href="#merge">MERGE / Upsert &amp; Incremental</a></li>
+      <li><a href="#medallion">Medallion Architecture ⭐</a></li>
+      <li><a href="#autoloader">Auto Loader &amp; Streaming</a></li>
+      <li><a href="#dlt">Delta Live Tables (DLT)</a></li>
+      <li><a href="#unity">Unity Catalog &amp; Governance</a></li>
+      <li><a href="#security">Security &amp; Secrets</a></li>
+      <li><a href="#cicd">CI/CD &amp; Orchestration</a></li>
+      <li><a href="#scenarios">Real Scenario Questions</a></li>
+      <li><a href="#rapidfire">Rapid-Fire Revision Q&amp;A</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. WHAT -->
+  <h2 class="section" id="what">1. What is Azure Databricks</h2>
+  <p><span class="svc">Azure Databricks</span> is a <span class="term">cloud-based, unified data analytics platform built on Apache Spark</span>, offered as a first-party Azure service. In one line: it's where data engineers, data scientists, and analysts <b>process huge amounts of data, build ETL pipelines, and train ML models</b> — all on managed Spark clusters, collaboratively, in notebooks.</p>
+
+  <div class="analogy">
+    If raw data is a mountain of ore, <b>Spark</b> is the giant processing machine that crushes it in parallel. <b>Databricks</b> is the fully-staffed, managed factory built around that machine — it spins up the machine on demand (clusters), gives everyone shared workbenches (notebooks), keeps the products reliable (Delta Lake), and handles security and the electricity bill for you.
+  </div>
+
+  <h4>Why companies use it (say this)</h4>
+  <ul>
+    <li><b>Managed Spark</b> — spin up auto-scaling clusters in minutes; no infrastructure headache.</li>
+    <li><b>Unified platform</b> — data engineering, analytics, and ML in one place (one team, one tool).</li>
+    <li><b>Collaborative notebooks</b> — Python, SQL, Scala, R in the same workspace.</li>
+    <li><b>Deep Azure integration</b> — ADLS, Azure Data Factory, Synapse, Azure AD, Key Vault.</li>
+    <li><b>Delta Lake + Lakehouse</b> — reliability (ACID) of a warehouse on cheap lake storage.</li>
+  </ul>
+  <div class="note"><b>PaaS, and a key fact:</b> Azure Databricks is a <b>PaaS</b> offering. It's not "just Spark hosted on Azure" — Microsoft + Databricks added Azure AD authentication, optimized runtime, and tight Azure integration. ADF usually <b>orchestrates</b>, and Databricks does the <b>heavy transformation</b>.</div>
+
+  <!-- 2. SPARK -->
+  <h2 class="section" id="spark">2. Apache Spark &amp; Databricks vs Spark</h2>
+  <p><span class="term">Apache Spark</span> is the open-source, in-memory, distributed processing engine at the core. It splits big jobs into small tasks and runs them in <b>parallel across many machines (a cluster)</b>, keeping data in memory for speed.</p>
+  <h4>Databricks vs open-source Spark (common question)</h4>
+  <table>
+    <tr><th>Open-source Spark</th><th>Databricks</th></tr>
+    <tr><td>You install &amp; manage it yourself</td><td>Fully managed clusters, spin up in minutes</td></tr>
+    <tr><td>Just the engine</td><td>Engine + collaborative notebooks, jobs, governance, security</td></tr>
+    <tr><td>Standard performance</td><td><b>Databricks Runtime</b> with optimizations + <b>Photon</b> (C++ vectorized engine)</td></tr>
+    <tr><td>No built-in reliability layer</td><td><b>Delta Lake</b> for ACID transactions</td></tr>
+  </table>
+  <p>Spark's languages: <b>Python (PySpark), Scala, SQL, R, Java</b>. For data engineering, PySpark and SQL dominate.</p>
+
+  <!-- 3. ARCHITECTURE -->
+  <h2 class="section" id="arch">3. Architecture (Control Plane vs Data Plane)</h2>
+  <p>Databricks splits into two planes — a favourite question because it shows you understand <b>where your data actually lives</b> (important for security).</p>
+  <table>
+    <tr><th>Plane</th><th>What's in it</th><th>Who owns it</th></tr>
+    <tr><td><span class="term">Control Plane</span></td><td>The management layer — web UI, notebooks, job scheduler, cluster manager, Spark UI</td><td>Managed in Databricks' Azure subscription</td></tr>
+    <tr><td><span class="term">Data Plane (Compute)</span></td><td>Where the clusters run and your <b>data is processed</b>; data sits in <b>your</b> ADLS/Blob storage</td><td>Runs in <b>your</b> Azure subscription / VNet</td></tr>
+  </table>
+  <div class="exam"><b>Interview Tip:</b> The point to land: "<b>My data never leaves my own Azure storage / subscription</b> — the control plane only orchestrates. That's why Databricks is enterprise-secure." This reassures interviewers about data governance.</div>
+
+  <!-- 4. LAKEHOUSE -->
+  <h2 class="section" id="lakehouse">4. Lakehouse Architecture ⭐</h2>
+  <p>The <span class="term">Lakehouse</span> is the central concept. It combines the <b>cheap, flexible storage of a Data Lake</b> with the <b>reliability, ACID transactions, and performance of a Data Warehouse</b> — one platform instead of two.</p>
+
+  <div class="lakediagram">
+    <div class="lake-layer ll-top">DATA WAREHOUSE strengths<span>ACID transactions · schema · fast BI queries · governance</span></div>
+    <div style="text-align:center;color:#7ed957;font-size:18px;font-weight:700;">+ combined into one =</div>
+    <div class="lake-layer ll-low">DATA LAKE strengths<span>cheap object storage (ADLS) · any data type · huge scale · flexible</span></div>
+    <div style="text-align:center;color:#f0c94b;font-size:15px;font-weight:700;margin-top:8px;">⬇ powered by</div>
+    <div class="lake-layer ll-mid">DELTA LAKE<span>the open storage layer that adds warehouse reliability on top of lake files</span></div>
+  </div>
+  <p class="legend">A Lakehouse = Data Lake (cheap storage, any data) + Data Warehouse (reliability, performance) unified. <b>Delta Lake</b> is the layer that makes it possible.</p>
+
+  <table>
+    <tr><th></th><th>Data Warehouse</th><th>Data Lake</th><th>Lakehouse</th></tr>
+    <tr><td>Data types</td><td>Structured only</td><td>All (raw, unstructured)</td><td>All</td></tr>
+    <tr><td>Cost</td><td>Expensive</td><td>Cheap</td><td>Cheap (lake storage)</td></tr>
+    <tr><td>ACID / reliability</td><td>Yes</td><td>No</td><td>Yes (via Delta)</td></tr>
+    <tr><td>BI &amp; ML</td><td>BI strong, ML weak</td><td>ML ok, BI weak</td><td>Both</td></tr>
+  </table>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What is the Lakehouse architecture?"</div>
+    <div class="why">Why they ask: it's Databricks' core selling point — they want to know you get the big picture.</div>
+    "It's a hybrid that brings warehouse-grade reliability (ACID, schema, performance) directly onto cheap data-lake storage, using Delta Lake as the open storage format. One platform serves both BI and ML, so we don't maintain a separate lake and warehouse."
+  </div>
+
+  <!-- 5. CLUSTERS -->
+  <h2 class="section" id="clusters">5. Clusters (All-Purpose vs Job)</h2>
+  <p>A <span class="term">cluster</span> is a set of compute machines (a driver + workers) that run your Spark code. Knowing the two types and when to use each is a guaranteed question.</p>
+  <table>
+    <tr><th></th><th>All-Purpose Cluster</th><th>Job Cluster</th></tr>
+    <tr><td>Purpose</td><td>Interactive development, exploring, collaborative notebooks</td><td>Running a scheduled/automated job</td></tr>
+    <tr><td>Lifecycle</td><td>Stays on; multiple users share it</td><td>Created when the job starts, <b>terminated when it ends</b></td></tr>
+    <tr><td>Cost</td><td>Costlier (idle time burns money)</td><td>Cheaper for production (no idle cost)</td></tr>
+    <tr><td>Use for</td><td>Dev &amp; testing</td><td>Production pipelines</td></tr>
+  </table>
+  <div class="exam"><b>Interview Tip — cost answer:</b> "For production I use <b>Job Clusters</b> — they spin up for the run and shut down after, so we don't pay for idle compute. All-Purpose clusters are for interactive dev only." This signals cost awareness.</div>
+  <p>Key cluster pieces: a <b>driver node</b> (coordinates, runs the main program, builds the DAG) and <b>worker/executor nodes</b> (do the actual parallel work). <b>Autoscaling</b> adds/removes workers based on load; <b>auto-termination</b> shuts an idle cluster down to save cost.</p>
+
+  <!-- 6. WORKSPACE -->
+  <h2 class="section" id="workspace">6. Workspace, Notebooks &amp; Jobs</h2>
+  <ul>
+    <li><span class="term">Workspace:</span> the environment where you organize notebooks, libraries, dashboards, and folders.</li>
+    <li><span class="term">Notebooks:</span> interactive documents with code cells. You can mix languages with magic commands (<code>%python</code>, <code>%sql</code>, <code>%scala</code>, <code>%md</code>). Great for collaboration.</li>
+    <li><span class="term">Jobs:</span> a way to <b>schedule and automate</b> notebooks or scripts to run on a cluster (the production way to run pipelines). Supports retries, alerts, and dependencies (Databricks Workflows).</li>
+    <li><span class="term">DBFS (Databricks File System):</span> an abstraction layer over cloud storage for storing/managing files.</li>
+    <li><span class="term">Secrets &amp; Scopes:</span> store sensitive values (keys, tokens) securely. Limit: 1000 secrets per scope, 128 KB max each.</li>
+  </ul>
+
+  <!-- 7. DBR -->
+  <h2 class="section" id="dbr">7. Databricks Runtime (DBR) &amp; Photon</h2>
+  <p>The <span class="term">Databricks Runtime (DBR)</span> is the set of core software that runs on clusters. It includes Apache Spark <b>plus</b> Databricks' optimizations: Delta Lake, optimized connectors, and performance features. You pick a DBR version when creating a cluster.</p>
+  <p><span class="term">Photon</span> is Databricks' next-gen <b>vectorized query engine written in C++</b>. It dramatically speeds up SQL and DataFrame workloads by using modern CPU efficiency, without changing your code. Mentioning Photon shows you're current.</p>
+
+  <!-- 8. RDD vs DF -->
+  <h2 class="section" id="rdd-df">8. RDD vs DataFrame vs Dataset</h2>
+  <table>
+    <tr><th>Type</th><th>What it is</th><th>Use it when</th></tr>
+    <tr><td><span class="term">RDD</span></td><td>Resilient Distributed Dataset — the low-level, immutable, fault-tolerant collection. No schema.</td><td>Rarely now — only for very low-level control</td></tr>
+    <tr><td><span class="term">DataFrame</span></td><td>Distributed data organized into <b>named columns</b> (like a table). Optimized by Catalyst.</td><td><b>Default choice</b> for data engineering (PySpark)</td></tr>
+    <tr><td><span class="term">Dataset</span></td><td>Type-safe DataFrame (compile-time checks). Scala/Java only.</td><td>Scala projects needing type safety</td></tr>
+  </table>
+  <p><b>Key line:</b> "Always prefer <b>DataFrames</b> over RDDs — they get Catalyst optimizer + Tungsten engine optimizations automatically, so they're faster and easier." (Resilient = if a partition is lost, Spark rebuilds it from lineage.)</p>
+
+  <!-- 9. TRANSFORMATIONS vs ACTIONS -->
+  <h2 class="section" id="trans-act">9. Transformations vs Actions ⭐</h2>
+  <p>This is a <b>fundamental, near-guaranteed</b> Spark question.</p>
+  <div class="twocol">
+    <div class="card blue">
+      <b>🔧 Transformations (lazy)</b>
+      <p>Define a new DataFrame from an existing one, but <b>don't run immediately</b> — Spark just builds a plan.</p>
+      <p>Examples: <code>select()</code>, <code>filter()</code>, <code>withColumn()</code>, <code>groupBy()</code>, <code>join()</code>, <code>map()</code>.</p>
+    </div>
+    <div class="card green">
+      <b>⚡ Actions (trigger execution)</b>
+      <p>Actually <b>run</b> the whole built-up plan and return a result or write output.</p>
+      <p>Examples: <code>show()</code>, <code>count()</code>, <code>collect()</code>, <code>write()</code>, <code>take()</code>.</p>
+    </div>
+  </div>
+  <div class="exam"><b>Interview Tip:</b> "Transformations are <b>lazy</b> — Spark records them as a plan (DAG) but waits. Nothing executes until an <b>action</b> is called. This laziness lets Spark optimize the whole chain together (e.g., push filters earlier)." Always mention laziness — it's the point of the question.</div>
+  <div class="warn"><b>Watch out:</b> <code>collect()</code> pulls <b>all data to the driver</b> — on a big dataset it causes Out-Of-Memory. Use <code>show()</code> or <code>take(n)</code> to peek instead.</div>
+
+  <!-- 10. NARROW vs WIDE -->
+  <h2 class="section" id="narrow-wide">10. Narrow vs Wide Transformations &amp; Shuffle ⭐</h2>
+  <table>
+    <tr><th></th><th>Narrow Transformation</th><th>Wide Transformation</th></tr>
+    <tr><td>Data movement</td><td>Each output partition needs data from <b>one</b> input partition — <b>no shuffle</b></td><td>Output partition needs data from <b>many</b> partitions — <b>shuffle</b> across the network</td></tr>
+    <tr><td>Speed</td><td>Fast &amp; cheap</td><td>Slow &amp; expensive (network + disk I/O)</td></tr>
+    <tr><td>Examples</td><td><code>map()</code>, <code>filter()</code>, <code>select()</code></td><td><code>groupBy()</code>, <code>join()</code>, <code>distinct()</code>, <code>reduceByKey()</code></td></tr>
+  </table>
+  <p>A <span class="term">shuffle</span> is when Spark redistributes data across partitions/nodes — it's the <b>biggest performance killer</b>. Wide transformations cause shuffles. The whole game of optimization is <b>minimizing shuffles</b>.</p>
+  <div class="exam"><b>Interview gold:</b> "I minimize wide transformations — for example, <b>filter before join</b> so less data shuffles, and use <b>broadcast joins</b> when one table is small. <code>reduceByKey</code> is better than <code>groupByKey</code> because it pre-aggregates locally before the shuffle, sending far less data."</div>
+
+  <!-- 11. LAZY / DAG -->
+  <h2 class="section" id="lazy">11. Lazy Evaluation, DAG &amp; Stages</h2>
+  <ul>
+    <li><span class="term">Lazy Evaluation:</span> transformations aren't run until an action is called; Spark builds a logical plan first, then optimizes the whole thing.</li>
+    <li><span class="term">DAG (Directed Acyclic Graph):</span> the plan of all transformations. "Directed" (ordered steps), "Acyclic" (no loops). Spark uses it to plan execution and to recompute lost data (lineage).</li>
+    <li><span class="term">Stages &amp; Tasks:</span> the DAG is split into <b>stages</b> at every shuffle (wide transformation) boundary. Each stage = a set of <b>tasks</b>, one task per partition, running in parallel.</li>
+    <li><span class="term">Catalyst Optimizer:</span> Spark SQL's engine that rewrites your query for speed (predicate pushdown, column pruning, etc.) automatically.</li>
+  </ul>
+  <div class="tip"><b>Pro debugging tip to mention:</b> "When a job is slow, I read the <b>Spark UI → Stages tab</b> to find the slow stage and see how many shuffles/tasks it created — that tells me exactly what to tune." Interviewers love hearing you use the Spark UI.</div>
+
+  <!-- 12. PARTITIONING -->
+  <h2 class="section" id="partition">12. Partitioning: repartition vs coalesce</h2>
+  <p><span class="term">Partitioning</span> splits data into chunks processed in parallel across the cluster. Good partitioning = good parallelism. Two methods to change partition count:</p>
+  <table>
+    <tr><th></th><th>repartition(n)</th><th>coalesce(n)</th></tr>
+    <tr><td>Does</td><td>Increase OR decrease partitions</td><td>Only <b>decrease</b> partitions</td></tr>
+    <tr><td>Shuffle?</td><td><b>Full shuffle</b> (expensive)</td><td>Avoids full shuffle (merges existing partitions) — cheaper</td></tr>
+    <tr><td>Use when</td><td>Increasing parallelism or evenly redistributing before a wide op</td><td>Reducing partitions, e.g. before writing output</td></tr>
+  </table>
+  <div class="exam"><b>Interview Tip:</b> "To reduce partitions I prefer <b>coalesce</b> (no full shuffle). I use <b>repartition</b> when I need to increase parallelism or evenly spread skewed data. Rule of thumb: 2–4 partitions per CPU core, each ~100s of MB." This rule-of-thumb impresses interviewers.</div>
+  <div class="note"><b>Small File Problem:</b> writing thousands of tiny files makes future reads slow. Fix: <code>coalesce(n)</code> or <code>repartition(n)</code> before writing to produce fewer, bigger files.</div>
+
+  <!-- 13. CACHE vs PERSIST -->
+  <h2 class="section" id="cache">13. Cache vs Persist</h2>
+  <p>Both store a DataFrame in memory so it isn't <b>recomputed</b> every time it's reused (Spark recomputes from scratch by default due to laziness).</p>
+  <ul>
+    <li><code>cache()</code> = shorthand for <code>persist(MEMORY_AND_DISK)</code> — one default storage level.</li>
+    <li><code>persist(level)</code> = lets you <b>choose the storage level</b> (MEMORY_ONLY, MEMORY_AND_DISK, DISK_ONLY, etc.).</li>
+  </ul>
+  <p><b>When to use:</b> when the same DataFrame is used multiple times (e.g., joined twice, or used in a loop). Caching it once avoids re-reading/recomputing. Remember to <code>unpersist()</code> when done to free memory.</p>
+
+  <!-- 14. BROADCAST & SKEW -->
+  <h2 class="section" id="broadcast">14. Broadcast Join &amp; Data Skew ⭐</h2>
+  <h4>Broadcast Join</h4>
+  <p>A <span class="term">broadcast join</span> sends a <b>small table to every worker node's memory</b>, so a big table can be joined <b>without shuffling</b> it across the network. Huge speedup when one side is small.</p>
+  <pre><span class="cm"># force a broadcast join (small_df under ~100 MB)</span>
+<span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> broadcast
+result = big_df.join(broadcast(small_df), <span class="st">"id"</span>)</pre>
+  <p>Spark auto-broadcasts tables under <code>spark.sql.autoBroadcastJoinThreshold</code> (default 10 MB). For bigger-but-still-small tables, hint it explicitly with <code>broadcast()</code>.</p>
+
+  <h4>Data Skew (advanced but valued)</h4>
+  <p><span class="term">Data skew</span> = a few partitions hold way more data than others, so most tasks finish fast but one or two "straggler" tasks take forever. Signs: in the Spark UI one task runs much longer than the rest.</p>
+  <p><b>Fixes:</b> <span class="term">salting</span> (add a random prefix to the join key to spread hot keys across partitions), use a <b>broadcast join</b> if one side is small, increase parallelism, or enable <b>Adaptive Query Execution (AQE)</b> which auto-handles skew.</p>
+
+  <!-- 15. OPTIMIZATION -->
+  <h2 class="section" id="optimize">15. Performance Optimization (Top Levers)</h2>
+  <p>When asked "your Spark job is slow, how do you optimize?", give a structured list:</p>
+  <ol>
+    <li><b>Enable AQE</b> (Adaptive Query Execution) — auto-coalesces small partitions &amp; fixes skew at runtime.</li>
+    <li><b>Broadcast small tables</b> in joins to avoid shuffle.</li>
+    <li><b>Cache</b> reused DataFrames.</li>
+    <li><b>Partition</b> large datasets by the most-filtered column; right-size partitions.</li>
+    <li><b>Filter early</b> (predicate pushdown) — reduce data before joins/aggregations (prefer narrow over wide).</li>
+    <li><b>Use DataFrames, not RDDs</b> (Catalyst + Tungsten optimizations).</li>
+    <li><b>Use built-in functions, not Python UDFs</b> — UDFs are slower (no Catalyst optimization).</li>
+    <li><b>Use Parquet/Delta</b> (columnar, compressed) over CSV/JSON.</li>
+    <li><b>Right-size the cluster</b> — often more memory per worker beats more workers.</li>
+  </ol>
+  <div class="exam"><b>Interview Tip:</b> Start the answer with "First I'd open the <b>Spark UI Stages tab</b> to find the slow stage — then tune." Diagnosing before tuning shows real experience. Also: <b>"avoid <code>groupByKey</code>, prefer <code>reduceByKey</code>"</b> and <b>"avoid UDFs when a built-in exists"</b> are classic winning points.</div>
+
+  <!-- 16. DELTA LAKE -->
+  <h2 class="section" id="delta">16. Delta Lake (ACID) ⭐ Must-Know</h2>
+  <p><span class="svc">Delta Lake</span> is an <b>open-source storage layer</b> that brings <b>reliability to data lakes</b>. It sits on top of Parquet files in your storage (ADLS) and adds the warehouse-grade features a plain data lake lacks. This is the heart of every Databricks data engineering interview.</p>
+
+  <h4>What Delta Lake gives you</h4>
+  <ul>
+    <li><span class="term">ACID transactions:</span> reads/writes are reliable and consistent even with concurrent users — no half-written, corrupt data.</li>
+    <li><span class="term">Schema enforcement:</span> rejects writes with the wrong schema (no garbage data sneaking in).</li>
+    <li><span class="term">Schema evolution:</span> intentionally allow new columns with the <code>mergeSchema</code> option.</li>
+    <li><span class="term">Time Travel:</span> query older versions of the table (audit, rollback, reproduce).</li>
+    <li><span class="term">Upserts &amp; deletes:</span> via <code>MERGE</code> — impossible in plain Parquet.</li>
+    <li><span class="term">Unified batch + streaming:</span> the same Delta table can be a streaming source and sink.</li>
+  </ul>
+  <p><b>How it works under the hood (good to mention):</b> a Delta table = Parquet data files + a <span class="term">transaction log</span> (the <code>_delta_log</code> folder, JSON). The log records every change in order — that's what enables ACID, time travel, and concurrency.</p>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"What is Delta Lake and why use it over plain Parquet?"</div>
+    <div class="why">Why they ask: the single most important Databricks data-engineering concept.</div>
+    "Plain Parquet on a lake has no transactions, no updates/deletes, and no schema guarantees. Delta Lake adds a transaction log on top of Parquet to give ACID transactions, schema enforcement/evolution, time travel, and MERGE-based upserts — turning a data lake into a reliable Lakehouse."
+  </div>
+
+  <!-- 17. DELTA OPS -->
+  <h2 class="section" id="delta-ops">17. OPTIMIZE, Z-ORDER, VACUUM &amp; Time Travel</h2>
+  <p>These Delta maintenance commands come up constantly — know what each does and the gotchas.</p>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>OPTIMIZE</code></td><td><b>Compacts</b> many small files into fewer large ones (fixes the small-file problem, speeds reads).</td></tr>
+    <tr><td><code>ZORDER BY (col)</code></td><td>Used with OPTIMIZE — <b>co-locates related data</b> in the same files so Spark can <b>skip files</b> (data skipping). Use on high-cardinality columns you filter on often (e.g., customer_id).</td></tr>
+    <tr><td><code>VACUUM</code></td><td><b>Permanently deletes</b> old data files no longer referenced, older than a retention threshold (default <b>7 days</b>) to save storage cost.</td></tr>
+    <tr><td>Time Travel</td><td>Query a past version: <code>SELECT * FROM t VERSION AS OF 5</code> or <code>TIMESTAMP AS OF '2026-01-01'</code>.</td></tr>
+  </table>
+  <div class="warn"><b>The classic VACUUM trap:</b> once you <code>VACUUM</code> away old files, you <b>can no longer Time Travel</b> back to versions that depended on them. So VACUUM saves cost but destroys old history — interviewers love this gotcha.</div>
+
+  <!-- 18. MERGE -->
+  <h2 class="section" id="merge">18. MERGE / Upsert &amp; Incremental Processing</h2>
+  <p><span class="term">MERGE</span> (upsert) is how you apply changes — insert new rows, update changed ones, optionally delete — in a single atomic operation. It's the backbone of incremental loads and SCD/CDC in Databricks.</p>
+  <pre><span class="kw">MERGE INTO</span> target t
+<span class="kw">USING</span> updates u <span class="kw">ON</span> t.id = u.id
+<span class="kw">WHEN MATCHED THEN UPDATE SET</span> *
+<span class="kw">WHEN NOT MATCHED THEN INSERT</span> *</pre>
+  <h4>Incremental processing</h4>
+  <p>Instead of reprocessing all data nightly, process only <b>new/changed</b> data:</p>
+  <ul>
+    <li>Use a <span class="term">watermark</span> column (e.g., <code>last_modified</code>) to read only newer rows.</li>
+    <li>Apply changes with <code>MERGE</code> (Delta's CDC pattern) — handles inserts + updates in one go.</li>
+    <li>For streaming ingestion, use <b>Auto Loader</b> (next section) which tracks what's already processed.</li>
+  </ul>
+  <div class="exam"><b>Interview Tip:</b> "I implement incremental loads with a watermark to pull only changed records, then a Delta <b>MERGE</b> to upsert them into the target — far cheaper than full reloads, and MERGE keeps it atomic." This is a gold-standard answer.</div>
+
+  <!-- 19. MEDALLION -->
+  <h2 class="section" id="medallion">19. Medallion Architecture ⭐ Must-Know</h2>
+  <p>The <span class="term">Medallion architecture</span> (Bronze → Silver → Gold) is the <b>standard way to organize a Lakehouse pipeline</b> into quality layers. Expect to draw or explain this in almost every interview.</p>
+
+  <div class="medallion">
+    <div class="med-box med-bronze">
+      <div class="mt">🥉 BRONZE</div>
+      <div class="md"><b>Raw</b> ingested data, stored as-is with minimal change. Add metadata like <code>_ingest_time</code>, <code>_source_file</code>. Streamed in via Auto Loader / Kafka.</div>
+    </div>
+    <div class="med-arrow">→</div>
+    <div class="med-box med-silver">
+      <div class="mt">🥈 SILVER</div>
+      <div class="md"><b>Cleaned &amp; conformed</b>: handle nulls, deduplicate, join, standardize, apply CDC with MERGE. Partition by business date. "Single source of truth."</div>
+    </div>
+    <div class="med-arrow">→</div>
+    <div class="med-box med-gold">
+      <div class="mt">🥇 GOLD</div>
+      <div class="md"><b>Business-ready aggregates</b>: KPIs, summary tables for BI/dashboards/ML. Optimized with OPTIMIZE + ZORDER. Consumed by analysts.</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Layer</th><th>Data quality</th><th>Typical work</th><th>Who consumes</th></tr>
+    <tr><td>🥉 Bronze</td><td>Raw, untouched</td><td>Ingest as-is, add audit columns</td><td>Data engineers</td></tr>
+    <tr><td>🥈 Silver</td><td>Cleaned, validated</td><td>Dedup, null handling, joins, CDC merge</td><td>Engineers / analysts</td></tr>
+    <tr><td>🥇 Gold</td><td>Aggregated, curated</td><td>Business aggregates, KPIs, star schema</td><td>BI tools / ML / business</td></tr>
+  </table>
+
+  <div class="q">
+    <span class="qlabel">Interview Q</span>
+    <div class="qtext">"How would you structure Bronze, Silver, and Gold layers for an enterprise platform?"</div>
+    <div class="why">Why they ask: tests whether you can design a real, layered Lakehouse pipeline.</div>
+    "Bronze stores raw data as-is with ingestion metadata (via Auto Loader). Silver cleans, deduplicates, and conforms it — applying CDC with Delta MERGE and partitioning by business date. Gold holds aggregated, business-ready tables optimized with OPTIMIZE + ZORDER for BI. I orchestrate the three stages with Databricks Workflows and add alerts."
+  </div>
+
+  <!-- 20. AUTO LOADER -->
+  <h2 class="section" id="autoloader">20. Auto Loader &amp; Structured Streaming</h2>
+  <p><span class="svc">Auto Loader</span> is Databricks' efficient way to <b>incrementally ingest new files</b> as they land in cloud storage (ADLS/S3) — without reprocessing old files. It tracks which files it has already seen, so each run picks up only new data.</p>
+  <pre><span class="cm"># Auto Loader reads only new files as they arrive</span>
+df = (spark.readStream
+        .format(<span class="st">"cloudFiles"</span>)
+        .option(<span class="st">"cloudFiles.format"</span>, <span class="st">"json"</span>)
+        .option(<span class="st">"cloudFiles.schemaLocation"</span>, <span class="st">"/mnt/schema"</span>)
+        .load(<span class="st">"/mnt/raw/"</span>))</pre>
+  <p><span class="term">Structured Streaming</span> is Spark's engine for processing live/continuous data as a stream (micro-batches). The same Delta table works as both a streaming source and sink. Use <b>checkpointing</b> for fault tolerance (it remembers progress) and aim for <b>idempotent writes</b> so reruns don't duplicate data.</p>
+  <div class="tip"><b>Scenario answer:</b> "5 GB of JSON daily, slow to process?" → "Ingest with <b>Auto Loader</b> (only new files), store as <b>Delta/Parquet</b> (not raw JSON), avoid wide schemas at ingestion, and partition sensibly. Then transform downstream." This is a very common scenario question.</div>
+
+  <!-- 21. DLT -->
+  <h2 class="section" id="dlt">21. Delta Live Tables (DLT)</h2>
+  <p><span class="svc">Delta Live Tables (DLT)</span> is a framework for building <b>reliable, declarative data pipelines</b>. Instead of writing all the orchestration code, you <b>declare</b> the transformations and DLT manages dependencies, error handling, retries, and data-quality checks.</p>
+  <ul>
+    <li><span class="term">Declarative:</span> you define the "what" (tables + transformations); DLT handles the "how" (execution order, infra).</li>
+    <li><span class="term">Expectations:</span> built-in data-quality rules (e.g., drop or fail rows that don't meet a condition).</li>
+    <li>Great fit for building the Bronze→Silver→Gold flow with less boilerplate.</li>
+  </ul>
+
+  <!-- 22. UNITY CATALOG -->
+  <h2 class="section" id="unity">22. Unity Catalog &amp; Governance</h2>
+  <p><span class="svc">Unity Catalog</span> is Databricks' <b>unified governance layer</b> for data and AI — increasingly asked in 2025/26 interviews. It centralizes access control, auditing, and discovery across all workspaces.</p>
+  <ul>
+    <li><span class="term">Centralized access control:</span> manage permissions on tables/views/files in one place with a standard SQL grant model.</li>
+    <li><span class="term">Three-level namespace:</span> <code>catalog.schema.table</code> — organizes data cleanly.</li>
+    <li><span class="term">Data lineage:</span> automatically tracks how data flows table-to-table (great for audits).</li>
+    <li><span class="term">Auditing &amp; discovery:</span> see who accessed what; search data assets.</li>
+  </ul>
+  <div class="note"><b>One-liner:</b> "Unity Catalog gives one consistent governance and permission model across all Databricks workspaces, with a three-level namespace, built-in lineage, and auditing."</div>
+
+  <!-- 23. SECURITY -->
+  <h2 class="section" id="security">23. Security &amp; Secrets</h2>
+  <ul>
+    <li><span class="term">Azure AD (Entra ID):</span> identity &amp; authentication; integrates with Databricks for SSO and access.</li>
+    <li><span class="term">Secret Scopes:</span> store credentials/keys securely; reference them in code instead of hardcoding. Can be backed by <b>Azure Key Vault</b>.</li>
+    <li><span class="term">Managed Identity / Service Principal:</span> password-less, secure access to ADLS and Azure services.</li>
+    <li><span class="term">RBAC + Unity Catalog:</span> control who can read/write which data.</li>
+    <li><span class="term">Encryption:</span> data encrypted in transit and at rest; data stays in your own storage (data plane).</li>
+  </ul>
+  <div class="exam"><b>Interview Tip:</b> Say "I never hardcode credentials — I use <b>secret scopes backed by Azure Key Vault</b> and authenticate with a <b>Managed Identity / Service Principal</b>." That's the secure-design phrasing they want.</div>
+
+  <!-- 24. CICD -->
+  <h2 class="section" id="cicd">24. CI/CD &amp; Orchestration</h2>
+  <ul>
+    <li><span class="term">Git integration (Repos):</span> connect notebooks to Azure DevOps / GitHub for version control and feature branches.</li>
+    <li><span class="term">CI/CD:</span> automate tests and deploy with Azure DevOps / GitHub Actions; deploy jobs &amp; clusters via the <b>Databricks CLI / REST API</b> or <b>Databricks Asset Bundles</b>.</li>
+    <li><span class="term">Orchestration:</span> use <b>Databricks Workflows/Jobs</b> to schedule multi-task pipelines, or trigger Databricks notebooks from <b>Azure Data Factory</b> (ADF orchestrates, Databricks transforms).</li>
+  </ul>
+  <div class="note"><b>Common real-world flow:</b> ADF (or Workflows) triggers a Databricks notebook → notebook reads from ADLS Bronze → transforms through Silver → writes Gold Delta tables → Power BI / Synapse reads Gold for reporting.</div>
+
+  <!-- 25. SCENARIOS -->
+  <h2 class="section" id="scenarios">25. Real Scenario-Based Questions</h2>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"A pipeline failed overnight while writing to a Delta table. How do you debug &amp; recover?"</div>
+    <b>Approach:</b> "Check the job run + Spark UI for the failed stage and error. Because Delta is ACID, a failed write won't half-commit — the table stays consistent. I can <b>Time Travel</b> to the last good version to verify, rerun the job (idempotent writes + checkpointing prevent duplicates), and add retries/alerts so it self-heals next time."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"You receive raw 5 GB JSON files daily; Databricks processing is painfully slow. What do you do?"</div>
+    <b>Approach:</b> "Ingest with <b>Auto Loader</b> (only new files, not full reload), convert/store as <b>Delta/Parquet</b> (columnar, compressed) instead of JSON, avoid wide schemas at ingest, partition by date, and run <b>OPTIMIZE</b> to fix small files. Push filters early to cut data before joins."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Business wants hourly aggregated KPIs without reprocessing all data each time."</div>
+    <b>Approach:</b> "Use <b>incremental processing</b> — Structured Streaming or scheduled incremental batches reading only new Silver data via watermark, then <b>MERGE</b>/aggregate into Gold hourly. Materialize KPIs in a Gold Delta table optimized with ZORDER."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"Your join is extremely slow on a huge table. How do you fix it?"</div>
+    <b>Approach:</b> "Check if one side is small → use a <b>broadcast join</b> to skip the shuffle. If both are big, ensure they're partitioned on the join key, filter before joining, and check for <b>data skew</b> (one giant key) — fix with salting or AQE. Read the Spark UI to confirm where the shuffle is."
+  </div>
+
+  <div class="q">
+    <span class="qlabel">Scenario</span>
+    <div class="qtext">"How do you integrate Databricks with other Azure services in a project?"</div>
+    <b>Approach:</b> "Storage in <b>ADLS Gen2</b>, orchestration via <b>Azure Data Factory</b> (triggers Databricks notebooks), secrets in <b>Key Vault</b>, identity via <b>Azure AD</b>, and serve curated Gold tables to <b>Synapse / Power BI</b>. Databricks does the heavy Spark transformation in the middle."
+  </div>
+
+  <!-- 26. RAPID FIRE -->
+  <h2 class="section" id="rapidfire">26. Rapid-Fire Revision Q&amp;A</h2>
+  <table>
+    <tr><th>Question</th><th>Crisp Answer</th></tr>
+    <tr><td>What is Databricks?</td><td>Managed, unified analytics platform built on Apache Spark (PaaS on Azure).</td></tr>
+    <tr><td>Databricks vs Spark?</td><td>Spark = engine; Databricks = managed Spark + notebooks + Delta + Photon + governance.</td></tr>
+    <tr><td>Control vs Data Plane?</td><td>Control = management UI (Databricks side); Data = compute + your data (your subscription).</td></tr>
+    <tr><td>What is a Lakehouse?</td><td>Data lake's cheap storage + warehouse's reliability, unified via Delta Lake.</td></tr>
+    <tr><td>All-Purpose vs Job cluster?</td><td>All-Purpose = interactive dev; Job = production, auto-terminates (cheaper).</td></tr>
+    <tr><td>Transformation vs Action?</td><td>Transformations are lazy (build a plan); Actions trigger execution.</td></tr>
+    <tr><td>Narrow vs Wide?</td><td>Narrow = no shuffle (map/filter); Wide = shuffle (groupBy/join).</td></tr>
+    <tr><td>What is a shuffle?</td><td>Redistributing data across partitions/nodes — slow; minimize it.</td></tr>
+    <tr><td>repartition vs coalesce?</td><td>repartition = full shuffle (up/down); coalesce = reduce only, no full shuffle.</td></tr>
+    <tr><td>cache vs persist?</td><td>cache = persist(MEMORY_AND_DISK); persist lets you choose the storage level.</td></tr>
+    <tr><td>Broadcast join?</td><td>Send small table to all nodes to avoid shuffling the big table.</td></tr>
+    <tr><td>Data skew fix?</td><td>Salting, broadcast join, AQE, more parallelism.</td></tr>
+    <tr><td>What is Delta Lake?</td><td>Storage layer adding ACID, schema enforcement, time travel, MERGE on Parquet.</td></tr>
+    <tr><td>OPTIMIZE / ZORDER / VACUUM?</td><td>Compact small files / co-locate data for skipping / delete old files (kills time travel).</td></tr>
+    <tr><td>Time Travel?</td><td>Query old table versions via VERSION/TIMESTAMP AS OF.</td></tr>
+    <tr><td>MERGE?</td><td>Atomic upsert (insert + update + delete) — backbone of incremental/CDC.</td></tr>
+    <tr><td>Medallion layers?</td><td>Bronze (raw) → Silver (clean) → Gold (aggregated/business-ready).</td></tr>
+    <tr><td>Auto Loader?</td><td>Incrementally ingests only new files from cloud storage.</td></tr>
+    <tr><td>RDD vs DataFrame?</td><td>Prefer DataFrames — Catalyst + Tungsten optimizations, schema, faster.</td></tr>
+    <tr><td>groupByKey vs reduceByKey?</td><td>reduceByKey pre-aggregates locally before shuffle — less data, faster.</td></tr>
+    <tr><td>Unity Catalog?</td><td>Unified governance: central access control, lineage, 3-level namespace.</td></tr>
+    <tr><td>Photon?</td><td>C++ vectorized query engine that speeds up SQL/DataFrame workloads.</td></tr>
+  </table>
+
+  <div class="tip">
+    <b>Final advice for your interview:</b> for every answer give <b>(1) what it is, (2) why/when to use it, (3) a quick real example</b>. For Databricks especially, weave in <b>Delta Lake, the Medallion architecture, and "minimize shuffles"</b> wherever they fit — those three themes signal a real data engineer. Good luck! 🚀
+  </div>
+
+  <div class="footer">
+    <b>Azure Databricks — Interview Notes</b><br>
+    Made by Ruchika Yadav
+  </div>
+
+</div>
+</body>
+</html>
