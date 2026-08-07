@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Python + PySpark Master - Data Engineering Interview Guide</title><style>
+  :root{--ink:#172133;--muted:#5b6678;--line:#dce3ea;--paper:#fff;--canvas:#eef2f5;--nav:#101b2a;--nav2:#17263a;--cyan:#007f8b;--cyan2:#0aa6a6;--amber:#d97706;--green:#16794b;--red:#b9362b;--violet:#6d54b5;--code:#101827;--soft:#eef8f8;--radius:8px}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.65 "Segoe UI",Arial,sans-serif;letter-spacing:0}a{color:var(--cyan);text-underline-offset:3px}code,pre{font-family:Consolas,"Courier New",monospace}
+  .layout{display:grid;grid-template-columns:286px minmax(0,1fr);max-width:1440px;margin:auto;min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);color:#dbe8f3;padding:24px 18px;border-right:1px solid #26384d}.brand{padding:4px 8px 20px;border-bottom:1px solid #2a3b50}.brand b{display:block;font-size:20px;line-height:1.25}.brand span{display:block;color:#91a6ba;font-size:12px;margin-top:6px}.progress-row{display:flex;justify-content:space-between;font-size:12px;color:#9bb0c3;margin:18px 4px 7px}.progress-track{height:7px;background:#26384d;border-radius:4px;overflow:hidden}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#1bc0b7,#f0ad4e);transition:width .2s}.search{width:100%;margin:18px 0 12px;padding:10px 11px;border:1px solid #34485f;border-radius:6px;background:#0c1623;color:white;font:inherit}.search::placeholder{color:#7690a8}.nav-group{margin-top:17px}.nav-label{padding:0 9px 5px;color:#7690a8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em}.nav-link{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;border-radius:5px;color:#bdccda;text-decoration:none;font-size:12.5px;line-height:1.35}.nav-link:hover,.nav-link.active{background:var(--nav2);color:white}.nav-link .n{color:#62d2cc;font-family:Consolas,monospace;min-width:20px}.side-note{font-size:11px;color:#7590a9;margin:20px 7px}
+  main{min-width:0;background:var(--paper);padding:0 64px 100px}.hero{max-width:980px;margin:0 auto;padding:64px 0 42px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.hero h1{font-size:48px;line-height:1.08;margin:10px 0 12px;letter-spacing:0}.hero .subtitle{font-size:19px;color:var(--muted);max-width:760px}.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid #b9dadd;background:#effafa;color:#075f66;padding:5px 10px;border-radius:5px;font-size:12px;font-weight:700}.toolbar{display:flex;gap:8px;margin-top:22px}.tool-btn{border:1px solid #cbd5df;background:#fff;color:var(--ink);border-radius:5px;padding:8px 11px;font-weight:700;cursor:pointer}.tool-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .chapter{max-width:980px;margin:0 auto;padding:56px 0 8px;scroll-margin-top:20px}.chapter.hidden{display:none}.chapter-head{display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:start;padding-bottom:16px;border-bottom:3px solid var(--cyan)}.chapter-num{font:700 13px Consolas,monospace;color:var(--cyan);padding-top:8px}.chapter h2{font-size:29px;line-height:1.2;margin:0;letter-spacing:0}.mastery{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);padding-top:7px;white-space:nowrap}.mastery input{width:17px;height:17px;accent-color:var(--green)}.priority{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:800}.priority.p0{background:#fee8e5;color:#982b22}.priority.p1{background:#fff0d5;color:#8b5207}.priority.p2{background:#e9e5f7;color:#5c4599}.chapter-lead{font-size:17px;color:var(--muted);margin:18px 0 26px;max-width:850px}.chapter h3{font-size:20px;color:#103f4d;margin:30px 0 10px}.chapter h4{font-size:16px;color:var(--amber);margin:22px 0 8px}.chapter p{margin:10px 0}.chapter ul,.chapter ol{padding-left:24px}.chapter li{margin:6px 0}
+  table{width:100%;border-collapse:collapse;margin:17px 0 23px;font-size:14px}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#143c4a;color:white}tbody tr:nth-child(even){background:#f6f9fa}td:first-child{font-weight:600}.say,.callout,.practice{border-radius:var(--radius);padding:15px 18px;margin:19px 0}.say{background:#fff7e7;border:1px solid #f0cd8d;border-left:5px solid var(--amber)}.say .label,.callout .label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.say .label{color:#8a5207}.callout.tip{background:#ebf8f2;border-left:5px solid var(--green)}.callout.tip .label{color:var(--green)}.callout.warn{background:#fff0ee;border-left:5px solid var(--red)}.callout.warn .label{color:var(--red)}.practice{background:#f1effb;border:1px solid #d4cdef;border-left:5px solid var(--violet)}.practice b{display:block;color:var(--violet);font-size:12px;text-transform:uppercase;letter-spacing:.07em}.topic-links{border:1px solid #b8d9dc;border-left:5px solid var(--cyan);border-radius:var(--radius);padding:14px 16px;margin:10px 0 24px;background:#f2fbfb;display:grid;gap:8px}.topic-links-title{color:#075f66;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.topic-links a{display:grid;grid-template-columns:minmax(160px,220px) 1fr;gap:12px;align-items:start;padding:9px 10px;border:1px solid #cfe5e6;border-radius:5px;background:#fff;text-decoration:none}.topic-links a:hover{border-color:var(--cyan);background:#f8ffff}.topic-links a b{color:#075f66;font-size:13px}.topic-links a span{color:var(--muted);font-size:12px}
+  .code-wrap{margin:18px 0;border-radius:var(--radius);overflow:hidden;background:var(--code);border:1px solid #26364c}.code-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#18243a;color:#8ea6bc;font:12px Consolas,monospace}.copy-btn{border:1px solid #3b5069;background:#111c2b;color:#d7e3ed;border-radius:4px;padding:4px 8px;cursor:pointer}.copy-btn:hover{border-color:#6ad5cf;color:white}pre{margin:0;padding:17px 18px;overflow:auto;color:#e5edf5;font-size:13px;line-height:1.58;tab-size:4}.qa{border:1px solid var(--line);border-radius:6px;margin:9px 0;background:#fff}.qa summary{cursor:pointer;padding:12px 15px;font-weight:700;color:#123c49}.qa summary:hover{background:#f0f8f8}.qa>div{padding:0 15px 14px;color:var(--muted)}.qa[open]{border-color:#9ccfd0}.learning-loop,.coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.learning-loop div,.coverage-grid div{border:1px solid var(--line);border-top:4px solid var(--cyan2);padding:14px;border-radius:6px;background:#fff}.learning-loop b,.coverage-grid b{display:block;margin-bottom:5px}.learning-loop span,.coverage-grid span{display:block;color:var(--muted);font-size:13px}.flow{display:flex;align-items:stretch;gap:8px;margin:18px 0}.flow div{flex:1;border:1px solid var(--line);border-radius:6px;padding:12px;background:#f7fafb}.flow b,.flow span{display:block}.flow span{font-size:12px;color:var(--muted)}.flow i{align-self:center;color:var(--cyan);font-style:normal;font-weight:800}.checklist{list-style:none;padding:0!important}.checklist li{position:relative;padding-left:27px}.checklist li:before{content:"[ ]";position:absolute;left:0;color:var(--cyan);font-family:Consolas,monospace}.source-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}.source-link{border:1px solid var(--line);padding:13px 14px;border-radius:6px;text-decoration:none;background:#fff}.source-link:hover{border-color:var(--cyan);background:#f4fbfb}.source-link b,.source-link span{display:block}.source-link span{font-size:12px;color:var(--muted);margin-top:4px}.footer{max-width:980px;margin:55px auto 0;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);font-size:13px;text-align:center}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:17px}.sidebar nav,.side-note{display:none}.brand{border:0;padding-bottom:4px}.search{margin:12px 0 6px}main{padding:0 24px 70px}.hero{padding-top:38px}.hero h1{font-size:38px}.learning-loop,.coverage-grid{grid-template-columns:repeat(2,1fr)}.chapter-head{grid-template-columns:auto 1fr}.mastery{grid-column:2}.source-list{grid-template-columns:1fr}}
+  @media(max-width:600px){main{padding:0 16px 60px}.hero h1{font-size:33px}.hero .subtitle{font-size:16px}.learning-loop,.coverage-grid{grid-template-columns:1fr}.chapter{padding-top:42px}.chapter h2{font-size:24px}.flow{flex-direction:column}.flow i{transform:rotate(90deg)}table{display:block;overflow-x:auto}.toolbar{flex-wrap:wrap}.topic-links a{grid-template-columns:1fr;gap:3px}}
+  @media print{body{background:#fff;font-size:11pt}.layout{display:block}.sidebar,.toolbar,.copy-btn,.mastery{display:none!important}main{padding:0 18mm 20mm}.hero{padding:12mm 0 8mm}.hero h1{font-size:30pt}.chapter{max-width:none;padding-top:10mm;page-break-before:auto}.chapter-head{page-break-after:avoid}.say,.callout,.practice,.code-wrap,table,.qa{break-inside:avoid}.qa>div{display:block!important}.qa summary{list-style:none}.footer{max-width:none}}
+</style></head>
+<body><div class="layout"><aside class="sidebar"><div class="brand"><b>Python + PySpark Master</b><span>Data Engineering Interview Resource</span></div><div class="progress-row"><span>Mastery progress</span><strong id="progressText">0%</strong></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><input class="search" id="topicSearch" type="search" placeholder="Find a topic..." aria-label="Find a topic"><nav><div class="nav-group"><div class="nav-label">Orientation</div><a class="nav-link" href="#how-to-use"><span class="n">00</span><span>How to use this resource</span></a></div><div class="nav-group"><div class="nav-label">Python foundations</div><a class="nav-link" href="#collections"><span class="n">01</span><span>Python collections and complexity</span></a><a class="nav-link" href="#strings-frequency"><span class="n">02</span><span>Strings, slicing, and frequency maps</span></a><a class="nav-link" href="#functions"><span class="n">03</span><span>Functions, scope, comprehensions, and sorting</span></a><a class="nav-link" href="#iterators-generators"><span class="n">04</span><span>Iterators, generators, and memory</span></a><a class="nav-link" href="#files-formats"><span class="n">05</span><span>Files, CSV, JSON, pathlib, and context managers</span></a><a class="nav-link" href="#errors-logging"><span class="n">06</span><span>Exceptions, custom errors, and logging</span></a><a class="nav-link" href="#api-ingestion"><span class="n">07</span><span>REST API ingestion, pagination, and retries</span></a><a class="nav-link" href="#datetime"><span class="n">08</span><span>Datetime and time zones</span></a><a class="nav-link" href="#oop"><span class="n">09</span><span>OOP for data engineering</span></a><a class="nav-link" href="#testing"><span class="n">10</span><span>Unit testing and mocking</span></a><a class="nav-link" href="#configuration"><span class="n">11</span><span>Configuration, environment variables, CLI, and reusable jobs</span></a><a class="nav-link" href="#pandas"><span class="n">12</span><span>Pandas for data scripting and reconciliation</span></a></div><div class="nav-group"><div class="nav-label">PySpark foundations</div><a class="nav-link" href="#spark-model"><span class="n">13</span><span>Spark execution model: driver to task</span></a><a class="nav-link" href="#spark-execution"><span class="n">14</span><span>Lazy evaluation, transformations, actions, and shuffle</span></a><a class="nav-link" href="#dataframes"><span class="n">15</span><span>DataFrames, schemas, and core operations</span></a><a class="nav-link" href="#nested-json"><span class="n">16</span><span>Nested JSON and schema enforcement</span></a><a class="nav-link" href="#joins"><span class="n">17</span><span>PySpark joins and cardinality</span></a><a class="nav-link" href="#windows-dedup"><span class="n">18</span><span>Window functions and latest-record deduplication</span></a><a class="nav-link" href="#functions-udf"><span class="n">19</span><span>Built-in functions vs Python UDFs</span></a><a class="nav-link" href="#partitions"><span class="n">20</span><span>Partitions, repartition, coalesce, and output sizing</span></a><a class="nav-link" href="#performance"><span class="n">21</span><span>Spark performance: broadcast, skew, cache, and checkpoint</span></a><a class="nav-link" href="#streaming"><span class="n">22</span><span>Structured Streaming, checkpoints, watermarks, and state</span></a><a class="nav-link" href="#stream-validation"><span class="n">23</span><span>Streaming schema enforcement and error records</span></a><a class="nav-link" href="#delta"><span class="n">24</span><span>Delta output and idempotent writes</span></a></div><div class="nav-group"><div class="nav-label">Interview finish</div><a class="nav-link" href="#coding-gate"><span class="n">25</span><span>Final coding gate: Bronze JSON to Silver Delta</span></a><a class="nav-link" href="#rapid-qa"><span class="n">26</span><span>Rapid interview Q&A</span></a><a class="nav-link" href="#practice-plan"><span class="n">27</span><span>Practice path and revision plan</span></a></div></nav><p class="side-note">Your progress is stored only in this browser.</p></aside>
+<main><header class="hero"><div class="eyebrow">30-day DE preparation - Resource 1 of 3</div><h1>Python + PySpark Master</h1><p class="subtitle">Easy explanations, interview-ready definitions, practical patterns, production thinking, and a complete coding gate for Data Engineering interviews.</p><div class="hero-meta"><span class="pill">Core Python</span><span class="pill">Pandas</span><span class="pill">Spark SQL</span><span class="pill">Structured Streaming</span><span class="pill">Interview Q&A</span></div><div class="toolbar"><button class="tool-btn" id="printButton" type="button">Print / Save PDF</button><button class="tool-btn" id="expandButton" type="button">Expand all Q&A</button><button class="tool-btn" id="resetButton" type="button">Reset progress</button></div></header>
+<section class="chapter" id="how-to-use" data-search="how to use this resource this is a learn, code, explain, and revise guide. it is designed around the exact python and pyspark coverage in your 30-day tracker.">
+    <div class="chapter-head"><div class="chapter-num">00</div><div><h2>How to use this resource</h2></div><label class="mastery"><input type="checkbox" data-done="how-to-use"> Mastered <span class="pill">Start here</span></label></div>
+    <p class="chapter-lead">This is a learn, code, explain, and revise guide. It is designed around the exact Python and PySpark coverage in your 30-day tracker.</p>
+  <div class="learning-loop">
+    <div><b>1. Understand</b><span>Read the simple explanation and mental model.</span></div>
+    <div><b>2. Implement</b><span>Type the code without copying it line by line.</span></div>
+    <div><b>3. Explain</b><span>Speak the interview-ready answer aloud.</span></div>
+    <div><b>4. Repair</b><span>Record mistakes and retry after 24 hours.</span></div>
+  </div>
+  <div class="callout tip"><div class="label">Mastery rule</div><p>A topic is complete only when you can define it, write a small example, explain one trade-off, and answer one follow-up without looking at notes.</p></div>
+  <h3>What this document covers</h3>
+  <div class="coverage-grid">
+    <div><b>Core Python</b><span>Collections, strings, functions, generators, OOP, files, APIs, errors, logging, time zones, testing, configuration.</span></div>
+    <div><b>Pandas</b><span>Cleaning, joins, validation, aggregation, datetime, nulls, duplicates, chunked processing.</span></div>
+    <div><b>PySpark</b><span>Execution model, DataFrames, joins, windows, deduplication, shuffle, partitions, tuning, streaming.</span></div>
+    <div><b>Interview output</b><span>Reusable definitions, common questions, traps, coding patterns, and a final implementation gate.</span></div>
+  </div>
+  <h3>Priority system</h3>
+  <table><thead><tr><th>Priority</th><th>Meaning</th><th>Expected depth</th></tr></thead><tbody>
+    <tr><td><span class="priority p0">P0</span></td><td>Frequently asked or required for your coding gate</td><td>Define, code, compare, troubleshoot</td></tr>
+    <tr><td><span class="priority p1">P1</span></td><td>Important supporting skill</td><td>Define, show a useful example, know the main trade-off</td></tr>
+    <tr><td><span class="priority p2">P2</span></td><td>Awareness topic</td><td>Know why it exists and where it fits</td></tr>
+  </tbody></table>
+  <h3>Your final coding gate</h3>
+  <p>Without copying a solution, you should be able to transform nested JSON, enforce a schema, separate invalid records, deduplicate by the latest timestamp, join two DataFrames, calculate a window metric, and write partitioned Delta output.</p>
+  
+  </section>
+<section class="chapter" id="collections" data-search="python collections and complexity choose a collection from the operations you need, not from habit. interviewers often test whether you understand membership, ordering, mutability, and duplicate behavior.">
+    <div class="chapter-head"><div class="chapter-num">01</div><div><h2>Python collections and complexity</h2></div><label class="mastery"><input type="checkbox" data-done="collections"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Choose a collection from the operations you need, not from habit. Interviewers often test whether you understand membership, ordering, mutability, and duplicate behavior.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Python provides four common built-in collections.</strong> A list is ordered and mutable, a tuple is ordered and immutable, a set stores unique hashable values and gives fast membership checks, and a dictionary stores key-value pairs with fast average lookup by key.</p></div>
+  <table><thead><tr><th>Type</th><th>Ordered</th><th>Mutable</th><th>Duplicates</th><th>Best use</th></tr></thead><tbody>
+    <tr><td><code>list</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Sequence that changes</td></tr>
+    <tr><td><code>tuple</code></td><td>Yes</td><td>No</td><td>Yes</td><td>Fixed record or safe return value</td></tr>
+    <tr><td><code>set</code></td><td>No positional access</td><td>Yes</td><td>No</td><td>Membership and deduplication</td></tr>
+    <tr><td><code>dict</code></td><td>Insertion order is preserved</td><td>Yes</td><td>Keys are unique</td><td>Lookup, grouping, counting</td></tr>
+  </tbody></table>
+  <h3>Complexity you should remember</h3>
+  <table><thead><tr><th>Operation</th><th>List</th><th>Set / Dict average</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>Membership</td><td>O(n)</td><td>O(1)</td><td>List scans; hash table jumps to a bucket</td></tr>
+    <tr><td>Append / insert key</td><td>O(1) amortized append</td><td>O(1)</td><td>Occasional resize makes list append amortized</td></tr>
+    <tr><td>Insert at front</td><td>O(n)</td><td>Not applicable</td><td>Existing list elements must shift</td></tr>
+    <tr><td>Sort</td><td>O(n log n)</td><td>Convert or sort items</td><td>Comparison sorting cost</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>records = [
+    {"id": 101, "status": "ok"},
+    {"id": 102, "status": "failed"},
+    {"id": 101, "status": "ok"},
+]
+
+# Set: fast uniqueness and membership
+unique_ids = {row["id"] for row in records}
+if 102 in unique_ids:
+    print("Record 102 exists")
+
+# Dict: group or count by key
+status_count = {}
+for row in records:
+    status = row["status"]
+    status_count[status] = status_count.get(status, 0) + 1
+
+print(unique_ids)       # {101, 102}
+print(status_count)     # {'ok': 2, 'failed': 1}</code></pre></div>
+  <div class="callout warn"><div class="label">Common mistakes</div><ul><li>Using a list for repeated membership checks creates unnecessary O(n) scans.</li><li>Using a mutable object such as a list as a dictionary key fails because dictionary keys must be hashable.</li><li>Assuming a set has stable positional order. Use sorting when deterministic output matters.</li><li>Removing duplicates with <code>set</code> loses the original order unless you use an order-preserving pattern.</li></ul></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - ordered deduplication</span><button class="copy-btn" type="button">Copy</button></div><pre><code>values = [3, 1, 3, 2, 1]
+deduplicated = list(dict.fromkeys(values))
+print(deduplicated)  # [3, 1, 2]</code></pre></div>
+  <details class="qa"><summary>Why is dictionary lookup usually O(1), and can it become O(n)?</summary><div><p>A dictionary uses the key's hash to locate a bucket, so average lookup is O(1). In the theoretical worst case, many collisions can force more work and approach O(n). Resizing also has a cost, but it is spread across insertions.</p></div></details>
+  <details class="qa"><summary>When would you use a tuple instead of a list in a data pipeline?</summary><div><p>Use a tuple for a small record whose shape should not change, such as <code>(source_name, row_count)</code>, or for a hashable composite key. Use a list when elements must be added, removed, or replaced.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Given a list of event dictionaries, return duplicate event IDs, count events per type, and preserve the first-seen order of unique IDs. State the complexity of each step.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a><a target="_blank" rel="noopener" href="https://www.hackerrank.com/domains/python"><b>HackerRank Python Practice</b><span>Solve only the matching subdomain questions after completing the chapter drill.</span></a></div>
+  
+  </section>
+<section class="chapter" id="strings-frequency" data-search="strings, slicing, and frequency maps strings appear in file parsing, log processing, data cleaning, and coding rounds. the high-value patterns are normalization, splitting, joining, slicing, and counting.">
+    <div class="chapter-head"><div class="chapter-num">02</div><div><h2>Strings, slicing, and frequency maps</h2></div><label class="mastery"><input type="checkbox" data-done="strings-frequency"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Strings appear in file parsing, log processing, data cleaning, and coding rounds. The high-value patterns are normalization, splitting, joining, slicing, and counting.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Python string is an immutable sequence of Unicode characters.</strong> Immutable means an operation such as <code>lower()</code> or <code>replace()</code> returns a new string; it does not change the original object.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>raw = "  Order-101,PAID  "
+clean = raw.strip().lower()
+order_id, status = clean.split(",")
+prefix, number = order_id.split("-", maxsplit=1)
+
+print(prefix)           # order
+print(number)           # 101
+print(status)           # paid
+print(clean[:5])        # order
+print(clean[::-1])      # reverse</code></pre></div>
+  <h3>Patterns worth memorizing</h3>
+  <table><thead><tr><th>Need</th><th>Pattern</th><th>Note</th></tr></thead><tbody>
+    <tr><td>Remove outer whitespace</td><td><code>s.strip()</code></td><td>Does not remove spaces inside the text</td></tr>
+    <tr><td>Split a line</td><td><code>s.split(delimiter, maxsplit)</code></td><td>Use the CSV module for real CSV quoting rules</td></tr>
+    <tr><td>Combine values</td><td><code>delimiter.join(parts)</code></td><td>More efficient than repeated concatenation</td></tr>
+    <tr><td>Prefix or suffix check</td><td><code>startswith</code>, <code>endswith</code></td><td>Clearer than manual slicing</td></tr>
+    <tr><td>Safe formatting</td><td><code>f"{name}:{count}"</code></td><td>Readable and interview-friendly</td></tr>
+  </tbody></table>
+  <h3>Frequency-map pattern</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from collections import Counter
+
+events = ["click", "view", "click", "purchase", "view", "click"]
+counts = Counter(events)
+
+most_common_event, frequency = counts.most_common(1)[0]
+print(most_common_event, frequency)  # click 3
+
+# Manual form shows the underlying interview pattern
+manual = {}
+for event in events:
+    manual[event] = manual.get(event, 0) + 1</code></pre></div>
+  <div class="callout tip"><div class="label">Pattern recognition</div><p>Words such as <em>frequency</em>, <em>count each</em>, <em>first non-repeating</em>, <em>anagram</em>, or <em>duplicate</em> usually point to a dictionary or <code>Counter</code>.</p></div>
+  <div class="callout warn"><div class="label">CSV trap</div><p><code>line.split(',')</code> is not a real CSV parser. A field may contain a comma inside quotes. Use Python's <code>csv</code> module or Pandas/Spark for production files.</p></div>
+  <details class="qa"><summary>Why are strings immutable, and why does it matter?</summary><div><p>Immutability makes strings safe to share and hash, so they can be dictionary keys. It also means repeated concatenation in a loop can create many temporary objects; collect pieces and use <code>join</code> for larger workloads.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Normalize customer email addresses, count domains, return the most common domain, and reject values without exactly one <code>@</code>.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a><a target="_blank" rel="noopener" href="https://www.hackerrank.com/domains/python"><b>HackerRank Python Practice</b><span>Solve only the matching subdomain questions after completing the chapter drill.</span></a></div>
+  
+  </section>
+<section class="chapter" id="functions" data-search="functions, scope, comprehensions, and sorting good data code is built from small, testable functions. interviews often combine function design with transformations, filtering, and custom sorting.">
+    <div class="chapter-head"><div class="chapter-num">03</div><div><h2>Functions, scope, comprehensions, and sorting</h2></div><label class="mastery"><input type="checkbox" data-done="functions"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Good data code is built from small, testable functions. Interviews often combine function design with transformations, filtering, and custom sorting.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A function packages reusable behavior behind a clear input-output contract.</strong> Positional parameters map by position, keyword parameters map by name, <code>*args</code> collects extra positional arguments, and <code>**kwargs</code> collects extra keyword arguments.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>def normalize_record(record, required_fields=("id",), **defaults):
+    """Return a cleaned copy without mutating the input."""
+    cleaned = {key: value for key, value in record.items() if value is not None}
+
+    for key, value in defaults.items():
+        cleaned.setdefault(key, value)
+
+    missing = [field for field in required_fields if field not in cleaned]
+    if missing:
+        raise ValueError(f"Missing required fields: {missing}")
+
+    return cleaned
+
+row = normalize_record({"id": 10, "country": None}, source="api")</code></pre></div>
+  <h3>Scope: LEGB</h3>
+  <p>Python resolves a name in this order: <strong>Local</strong>, <strong>Enclosing</strong>, <strong>Global</strong>, then <strong>Built-in</strong>. Prefer passing values into functions instead of reading or changing global state.</p>
+  <div class="callout warn"><div class="label">Mutable default argument</div><p>Do not write <code>def add(item, bucket=[])</code>. That list is created once and reused across calls. Use <code>None</code>, then create a new list inside the function.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>def add_item(item, bucket=None):
+    if bucket is None:
+        bucket = []
+    bucket.append(item)
+    return bucket</code></pre></div>
+  <h3>Comprehension vs map/filter</h3>
+  <p>Both are valid, but a comprehension is often easier to read when the transformation is short. Use a normal loop when validation, logging, exception handling, or multiple steps are required.</p>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>rows = [
+    {"id": 1, "amount": "10.50", "active": True},
+    {"id": 2, "amount": "4.00", "active": False},
+]
+
+active_amounts = [float(r["amount"]) for r in rows if r["active"]]
+
+# Sort by amount descending, then id ascending
+ordered = sorted(
+    rows,
+    key=lambda r: (-float(r["amount"]), r["id"]),
+)</code></pre></div>
+  <table><thead><tr><th>Tool</th><th>Returns</th><th>Use when</th></tr></thead><tbody>
+    <tr><td><code>sorted(data)</code></td><td>New list</td><td>You must keep the original unchanged</td></tr>
+    <tr><td><code>list.sort()</code></td><td><code>None</code></td><td>In-place mutation is acceptable</td></tr>
+    <tr><td><code>lambda x: ...</code></td><td>Small anonymous function</td><td>A one-expression key or callback is clearer inline</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>What is the difference between *args and **kwargs?</summary><div><p><code>*args</code> is a tuple of extra positional arguments. <code>**kwargs</code> is a dictionary of extra named arguments. They add flexibility, but explicit parameters are better when the contract is known.</p></div></details>
+  <details class="qa"><summary>When should you avoid a list comprehension?</summary><div><p>Avoid it when the logic has multiple branches, side effects, complex error handling, or becomes difficult to scan. Readability matters more than reducing line count.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Write a pure function that cleans a record, applies configurable defaults, validates required fields, and returns a new dictionary. Add custom sorting for a list of the cleaned records.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a><a target="_blank" rel="noopener" href="https://www.hackerrank.com/domains/python"><b>HackerRank Python Practice</b><span>Solve only the matching subdomain questions after completing the chapter drill.</span></a></div>
+  
+  </section>
+<section class="chapter" id="iterators-generators" data-search="iterators, generators, and memory a generator lets a pipeline process one item at a time. this matters when a file or api result is too large to load into memory at once.">
+    <div class="chapter-head"><div class="chapter-num">04</div><div><h2>Iterators, generators, and memory</h2></div><label class="mastery"><input type="checkbox" data-done="iterators-generators"> Mastered <span class="priority p1">P1</span></label></div>
+    <p class="chapter-lead">A generator lets a pipeline process one item at a time. This matters when a file or API result is too large to load into memory at once.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An iterable can produce an iterator, and an iterator returns one item at a time through <code>next()</code>.</strong> A generator is a convenient iterator created by a function that uses <code>yield</code>. It is lazy, so values are produced only when requested.</p></div>
+  <div class="flow"><div><b>Iterable</b><span><code>iter(source)</code></span></div><i>-></i><div><b>Iterator</b><span><code>next(iterator)</code></span></div><i>-></i><div><b>One value</b><span>State is paused</span></div><i>-></i><div><b>Next value</b><span>State resumes</span></div></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import json
+from pathlib import Path
+
+def read_json_lines(path):
+    with Path(path).open("r", encoding="utf-8") as file:
+        for line_number, line in enumerate(file, start=1):
+            if not line.strip():
+                continue
+            try:
+                yield json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"Invalid JSON on line {line_number}") from exc
+
+for record in read_json_lines("events.jsonl"):
+    process(record)  # only one record must be active here</code></pre></div>
+  <table><thead><tr><th>List</th><th>Generator</th></tr></thead><tbody>
+    <tr><td>Computes and stores all values</td><td>Computes values on demand</td></tr>
+    <tr><td>Can be indexed and reused</td><td>Normally consumed once; no indexing</td></tr>
+    <tr><td>Good for small reusable results</td><td>Good for large streams and pipelines</td></tr>
+    <tr><td>Memory grows with result size</td><td>Memory stays closer to one item or batch</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Generator traps</div><ul><li>A generator body does not run when the generator object is created; it runs during iteration.</li><li>After it is exhausted, iterate again only by creating a new generator.</li><li>A generator does not automatically make the entire pipeline memory efficient if a later step calls <code>list()</code> or sorts all rows.</li></ul></div>
+  <details class="qa"><summary>Generator vs iterator: are they the same?</summary><div><p>Every generator is an iterator, but not every iterator is a generator. You can create an iterator with a class implementing <code>__iter__</code> and <code>__next__</code>; a generator gives the same protocol through simpler <code>yield</code> syntax.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a generator that reads a large JSON Lines file, skips blank lines, validates required keys, and yields batches of 1,000 valid rows.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a></div>
+  
+  </section>
+<section class="chapter" id="files-formats" data-search="files, csv, json, pathlib, and context managers reliable ingestion starts with correct resource handling, explicit encoding, schema awareness, and validation instead of optimistic parsing.">
+    <div class="chapter-head"><div class="chapter-num">05</div><div><h2>Files, CSV, JSON, pathlib, and context managers</h2></div><label class="mastery"><input type="checkbox" data-done="files-formats"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Reliable ingestion starts with correct resource handling, explicit encoding, schema awareness, and validation instead of optimistic parsing.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A context manager controls setup and cleanup around a block.</strong> For files, <code>with</code> guarantees that the file is closed even when parsing raises an exception. <code>pathlib.Path</code> gives an object-oriented and operating-system-safe way to work with paths.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - CSV</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import csv
+from pathlib import Path
+
+def read_orders(path):
+    with Path(path).open("r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        required = {"order_id", "amount", "event_time"}
+
+        if not required.issubset(reader.fieldnames or []):
+            raise ValueError(f"Missing columns: {required - set(reader.fieldnames or [])}")
+
+        for row in reader:
+            yield {
+                "order_id": int(row["order_id"]),
+                "amount": float(row["amount"]),
+                "event_time": row["event_time"],
+            }</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - JSON</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import json
+from pathlib import Path
+
+source = Path("input/orders.json")
+target = Path("output/orders_clean.json")
+target.parent.mkdir(parents=True, exist_ok=True)
+
+with source.open("r", encoding="utf-8") as file:
+    records = json.load(file)
+
+cleaned = [row for row in records if row.get("order_id") is not None]
+
+with target.open("w", encoding="utf-8") as file:
+    json.dump(cleaned, file, indent=2, ensure_ascii=False)</code></pre></div>
+  <h3>JSON vs JSON Lines</h3>
+  <table><thead><tr><th>Format</th><th>Shape</th><th>Pipeline behavior</th></tr></thead><tbody>
+    <tr><td>JSON array</td><td><code>[{...}, {...}]</code></td><td>Often parsed as one full document</td></tr>
+    <tr><td>JSON Lines / NDJSON</td><td>One JSON object per line</td><td>Easy to stream, append, and isolate bad records</td></tr>
+  </tbody></table>
+  <h3>Validation checklist</h3>
+  <ul class="checklist"><li>Check file existence and expected extension.</li><li>Use explicit text encoding.</li><li>Validate header or required keys before processing.</li><li>Convert data types with clear error handling.</li><li>Track input, valid, invalid, and output row counts.</li><li>Write to a temporary/staging target before publishing when partial output is unsafe.</li></ul>
+  <div class="callout warn"><div class="label">Common mistakes</div><ul><li>Using <code>json.load</code> for a JSON Lines file.</li><li>Reading a huge file with <code>read()</code> when line or batch processing is possible.</li><li>Using string concatenation for paths instead of <code>Path</code>.</li><li>Silently skipping malformed rows without a reject record and count.</li></ul></div>
+  <details class="qa"><summary>Why pass newline='' when opening CSV files?</summary><div><p>The <code>csv</code> module expects to manage newline handling itself. Using <code>newline=""</code> avoids unwanted blank rows and preserves CSV rules consistently across operating systems.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a source-to-target validator that reads CSV, validates schema and types, writes valid JSON Lines records, writes rejected rows with reasons, and prints reconciliation counts.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a></div>
+  
+  </section>
+<section class="chapter" id="errors-logging" data-search="exceptions, custom errors, and logging a production data job must fail clearly, preserve the root cause, record useful context, and distinguish retryable failures from bad data.">
+    <div class="chapter-head"><div class="chapter-num">06</div><div><h2>Exceptions, custom errors, and logging</h2></div><label class="mastery"><input type="checkbox" data-done="errors-logging"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">A production data job must fail clearly, preserve the root cause, record useful context, and distinguish retryable failures from bad data.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An exception represents an abnormal condition that interrupts normal control flow.</strong> Catch only exceptions you can handle meaningfully, add context, and either recover or raise again. Logging creates timestamped, leveled records that operations teams can search and alert on.</p></div>
+  <h3>The reliable handling pattern</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import logging
+
+logger = logging.getLogger(__name__)
+
+class DataValidationError(ValueError):
+    """Raised when a record violates the expected data contract."""
+
+def parse_amount(record):
+    try:
+        amount = float(record["amount"])
+    except KeyError as exc:
+        raise DataValidationError("amount is required") from exc
+    except (TypeError, ValueError) as exc:
+        raise DataValidationError(f"invalid amount: {record.get('amount')!r}") from exc
+
+    if amount &lt; 0:
+        raise DataValidationError("amount cannot be negative")
+    return amount
+
+try:
+    amount = parse_amount({"id": 10, "amount": "bad"})
+except DataValidationError:
+    logger.exception("Record validation failed", extra={"record_id": 10})
+    raise</code></pre></div>
+  <table><thead><tr><th>Construct</th><th>Purpose</th><th>Important detail</th></tr></thead><tbody>
+    <tr><td><code>try</code></td><td>Code that may fail</td><td>Keep the block as small as practical</td></tr>
+    <tr><td><code>except</code></td><td>Handle a known failure</td><td>Catch specific exception types</td></tr>
+    <tr><td><code>else</code></td><td>Runs only when no exception occurred</td><td>Separates success logic from risky logic</td></tr>
+    <tr><td><code>finally</code></td><td>Always runs</td><td>Useful for cleanup not already handled by a context manager</td></tr>
+    <tr><td><code>raise ... from exc</code></td><td>Add domain meaning</td><td>Preserves the original cause chain</td></tr>
+  </tbody></table>
+  <h3>Logging levels</h3>
+  <table><thead><tr><th>Level</th><th>Use</th><th>Example</th></tr></thead><tbody>
+    <tr><td>DEBUG</td><td>Detailed diagnostic context</td><td>Parsed checkpoint value</td></tr>
+    <tr><td>INFO</td><td>Expected lifecycle event</td><td>Batch started; 15,000 rows written</td></tr>
+    <tr><td>WARNING</td><td>Unexpected but recoverable</td><td>Retrying API after rate limit</td></tr>
+    <tr><td>ERROR</td><td>Operation failed</td><td>Target write failed</td></tr>
+    <tr><td>CRITICAL</td><td>System cannot continue safely</td><td>Core dependency unavailable</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Python - configuration at the application entry point</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+)
+
+logger = logging.getLogger("orders_pipeline")
+logger.info("Pipeline started", extra={"run_id": "2026-07-22-01"})</code></pre></div>
+  <div class="callout warn"><div class="label">Never do this</div><ul><li><code>except Exception: pass</code> hides corruption and makes failures impossible to diagnose.</li><li>Logging passwords, tokens, full connection strings, or raw PII is a security incident.</li><li>Using <code>print</code> as production logging loses levels, timestamps, structure, and routing.</li><li>Retrying validation errors wastes time; only transient failures should normally be retried.</li></ul></div>
+  <details class="qa"><summary>Why create a custom exception?</summary><div><p>A custom exception gives a business or pipeline meaning to a failure. Callers can handle <code>DataValidationError</code> differently from a network or system error, while exception chaining keeps the original technical cause.</p></div></details>
+  <details class="qa"><summary>When should a bad record fail the whole batch?</summary><div><p>It depends on the contract and risk. A required-schema failure or unexpectedly high reject rate may fail the batch. A small number of known malformed records may go to a quarantine table with reason codes, metrics, and an alert.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Add structured counts and exception handling to the CSV validator: total, valid, rejected, duplicates, output, duration, and run ID. Make the job fail when the reject rate exceeds a configured threshold.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a></div>
+  
+  </section>
+<section class="chapter" id="api-ingestion" data-search="rest api ingestion, pagination, and retries api ingestion is not just an http request. a reliable design handles authentication, pagination, timeouts, rate limits, retries, checkpoints, schema validation, and idempotent writes.">
+    <div class="chapter-head"><div class="chapter-num">07</div><div><h2>REST API ingestion, pagination, and retries</h2></div><label class="mastery"><input type="checkbox" data-done="api-ingestion"> Mastered <span class="priority p1">P1</span></label></div>
+    <p class="chapter-lead">API ingestion is not just an HTTP request. A reliable design handles authentication, pagination, timeouts, rate limits, retries, checkpoints, schema validation, and idempotent writes.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A REST API exposes resources through HTTP methods and status codes.</strong> A data ingestion client repeatedly requests pages, validates each response, persists data safely, and advances its checkpoint only after the page is committed.</p></div>
+  <table><thead><tr><th>Method</th><th>Typical meaning</th><th>Idempotent?</th></tr></thead><tbody>
+    <tr><td>GET</td><td>Read a resource</td><td>Yes</td></tr>
+    <tr><td>POST</td><td>Create or execute</td><td>Usually no</td></tr>
+    <tr><td>PUT</td><td>Replace at a known URI</td><td>Normally yes</td></tr>
+    <tr><td>PATCH</td><td>Partial update</td><td>Depends on operation</td></tr>
+    <tr><td>DELETE</td><td>Delete a resource</td><td>Intended to be idempotent</td></tr>
+  </tbody></table>
+  <h3>Status-code decisions</h3>
+  <table><thead><tr><th>Class</th><th>Meaning</th><th>Typical pipeline decision</th></tr></thead><tbody>
+    <tr><td>2xx</td><td>Success</td><td>Validate body and process</td></tr>
+    <tr><td>400 / 401 / 403</td><td>Bad request or auth problem</td><td>Do not blindly retry; fix request or credentials</td></tr>
+    <tr><td>404</td><td>Not found</td><td>Depends on whether absence is expected</td></tr>
+    <tr><td>429</td><td>Rate limited</td><td>Respect Retry-After and use backoff</td></tr>
+    <tr><td>5xx</td><td>Server-side failure</td><td>Retry a bounded number of times with backoff and jitter</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Python - page iterator with bounded retry</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import random
+import time
+import requests
+
+RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+
+def get_json(session, url, params, max_attempts=4):
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = session.get(url, params=params, timeout=(5, 30))
+            if response.status_code not in RETRYABLE_STATUS:
+                response.raise_for_status()
+                return response.json()
+        except (requests.Timeout, requests.ConnectionError):
+            if attempt == max_attempts:
+                raise
+        else:
+            if attempt == max_attempts:
+                response.raise_for_status()
+
+        delay = min(2 ** (attempt - 1), 30) + random.random()
+        time.sleep(delay)
+
+def iter_orders(base_url, token, updated_after=None):
+    with requests.Session() as session:
+        session.headers.update({"Authorization": f"Bearer {token}"})
+        cursor = None
+
+        while True:
+            payload = get_json(
+                session,
+                f"{base_url}/orders",
+                {"cursor": cursor, "updated_after": updated_after, "limit": 500},
+            )
+            yield from payload.get("items", [])
+            cursor = payload.get("next_cursor")
+            if not cursor:
+                break</code></pre></div>
+  <h3>Pagination styles</h3>
+  <table><thead><tr><th>Style</th><th>Example</th><th>Risk</th></tr></thead><tbody>
+    <tr><td>Page number</td><td><code>?page=3</code></td><td>Concurrent inserts may shift pages</td></tr>
+    <tr><td>Offset/limit</td><td><code>?offset=1000&amp;limit=500</code></td><td>Large offsets may be slow; shifting data can duplicate or skip</td></tr>
+    <tr><td>Cursor/token</td><td><code>?cursor=abc</code></td><td>Token must be checkpointed correctly</td></tr>
+    <tr><td>Time watermark</td><td><code>?updated_after=...</code></td><td>Ties and late updates require overlap plus deduplication</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Safe checkpoint rule</div><p>Do not advance a cursor or watermark merely because the API request succeeded. Advance it after the corresponding records are validated and committed to durable storage. This prevents silent data loss after a downstream failure.</p></div>
+  <div class="callout warn"><div class="label">Retry rules</div><ul><li>Always use a timeout. A request without one may hang indefinitely.</li><li>Use exponential backoff plus jitter so many clients do not retry together.</li><li>Set a maximum attempt count and emit a final failure metric.</li><li>Do not retry a non-idempotent write unless the API supports an idempotency key.</li></ul></div>
+  <details class="qa"><summary>How would you make API ingestion idempotent?</summary><div><p>Persist raw records with a stable business/event key, use upsert or deduplication at the target, checkpoint only committed pages, and make reruns read the same interval safely. For timestamp watermarks, include a small overlap and deduplicate by key plus latest update time.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Mock three pages: one succeeds, one returns 429 then succeeds, and one contains an invalid record. Verify retry count, page order, reject handling, and final checkpoint.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://requests.readthedocs.io/en/latest/user/quickstart/"><b>Requests Quickstart</b><span>Use for HTTP syntax while implementing pagination, timeouts, and response handling.</span></a></div>
+  
+  </section>
+<section class="chapter" id="datetime" data-search="datetime and time zones time bugs cause missed increments, duplicate records, and wrong daily totals. the safest default is timezone-aware utc internally, with conversion only at system boundaries.">
+    <div class="chapter-head"><div class="chapter-num">08</div><div><h2>Datetime and time zones</h2></div><label class="mastery"><input type="checkbox" data-done="datetime"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Time bugs cause missed increments, duplicate records, and wrong daily totals. The safest default is timezone-aware UTC internally, with conversion only at system boundaries.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A naive datetime has no time-zone information; an aware datetime has a <code>tzinfo</code> and represents an unambiguous instant.</strong> Store and compare aware UTC timestamps, keep the source zone when it has business meaning, and format timestamps in an ISO 8601 form.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+# Parse an ISO timestamp with an offset
+source_time = datetime.fromisoformat("2026-07-22T09:30:00+05:30")
+utc_time = source_time.astimezone(timezone.utc)
+
+# Convert only for display or local business rules
+india_time = utc_time.astimezone(ZoneInfo("Asia/Kolkata"))
+
+print(utc_time.isoformat())    # 2026-07-22T04:00:00+00:00
+print(india_time.isoformat())  # 2026-07-22T09:30:00+05:30</code></pre></div>
+  <h3>Event time vs processing time</h3>
+  <table><thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Event time</td><td>When the business event actually happened</td><td>Customer clicked at 09:30</td></tr>
+    <tr><td>Ingestion time</td><td>When the platform received it</td><td>Event Hub received at 09:31</td></tr>
+    <tr><td>Processing time</td><td>When a job processed it</td><td>Spark processed at 09:35</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Common mistakes</div><ul><li>Comparing an aware datetime with a naive datetime raises an error or encourages unsafe zone removal.</li><li>Attaching a zone with <code>replace(tzinfo=...)</code> does not convert clock time; it only labels it. Use <code>astimezone</code> for conversion.</li><li>Using only a timestamp watermark can miss multiple records with the same timestamp. Use a tie-breaker such as <code>(updated_at, id)</code>.</li><li>Local midnight and daylight-saving changes can make a day shorter or longer than 24 hours in some zones.</li></ul></div>
+  <details class="qa"><summary>Why store UTC if the business operates in one country?</summary><div><p>UTC gives a stable comparison and ordering base, prevents ambiguity when systems or regions change, and simplifies cross-system integration. Keep the original offset or business zone when local-day reporting rules require it.</p></div></details>
+  <details class="qa"><summary>How do you handle a watermark when several rows share the same timestamp?</summary><div><p>Use a composite checkpoint such as timestamp plus monotonically ordered ID, query with a deterministic condition, or re-read a small overlap and deduplicate. A plain greater-than timestamp filter can miss tied rows.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Parse timestamps with different offsets, normalize to UTC, reject naive values, select the latest record per ID, and prove that the result is deterministic when timestamps tie.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a></div>
+  
+  </section>
+<section class="chapter" id="oop" data-search="oop for data engineering you do not need a class for every pipeline step. oop is useful when data and behavior belong together, multiple implementations share a contract, or dependencies must be replaced in tests.">
+    <div class="chapter-head"><div class="chapter-num">09</div><div><h2>OOP for data engineering</h2></div><label class="mastery"><input type="checkbox" data-done="oop"> Mastered <span class="priority p1">P1</span></label></div>
+    <p class="chapter-lead">You do not need a class for every pipeline step. OOP is useful when data and behavior belong together, multiple implementations share a contract, or dependencies must be replaced in tests.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Object-oriented programming organizes state and behavior into objects.</strong> Encapsulation keeps an object's rules together, inheritance reuses or specializes behavior, and polymorphism lets different implementations satisfy the same interface.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from abc import ABC, abstractmethod
+
+class SourceReader(ABC):
+    @abstractmethod
+    def read(self):
+        """Yield source records."""
+
+class FileSourceReader(SourceReader):
+    def __init__(self, path):
+        self._path = path  # protected by convention
+
+    def read(self):
+        yield from read_json_lines(self._path)
+
+class ApiSourceReader(SourceReader):
+    def __init__(self, base_url, token):
+        self._base_url = base_url
+        self._token = token
+
+    def read(self):
+        yield from iter_orders(self._base_url, self._token)
+
+def ingest(reader: SourceReader):
+    for record in reader.read():  # polymorphism
+        process(record)</code></pre></div>
+  <table><thead><tr><th>Principle</th><th>Simple meaning</th><th>Pipeline example</th></tr></thead><tbody>
+    <tr><td>Encapsulation</td><td>Keep state and its rules together</td><td>API client owns session, auth, and retry policy</td></tr>
+    <tr><td>Abstraction</td><td>Expose what callers need, hide details</td><td><code>reader.read()</code> hides file/API mechanics</td></tr>
+    <tr><td>Inheritance</td><td>Specialize a base contract</td><td>File and API readers implement a source interface</td></tr>
+    <tr><td>Polymorphism</td><td>Use different implementations through one contract</td><td>Ingestion accepts any <code>SourceReader</code></td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Prefer composition</div><p>A pipeline object should usually receive a reader, validator, and writer rather than inherit from all of them. Composition keeps responsibilities separate and makes unit testing easier.</p></div>
+  <div class="callout warn"><div class="label">Interview trap</div><p>Encapsulation in Python is mostly convention. A single leading underscore says an attribute is internal; double underscores trigger name mangling, not strict private access control.</p></div>
+  <details class="qa"><summary>Class vs function: how do you choose?</summary><div><p>Use a function for a stateless transformation with clear inputs and outputs. Use a class when you need controlled state, resource lifecycle, multiple related operations, dependency injection, or interchangeable implementations.</p></div></details>
+  <details class="qa"><summary>What is method overriding?</summary><div><p>A child class defines a method with the same name as the parent contract to provide specialized behavior. In the example, both readers override <code>read</code>, so callers can use either one polymorphically.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Define a <code>SourceReader</code> and <code>TargetWriter</code> abstraction, then implement in-memory versions for tests and file versions for a real run.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a></div>
+  
+  </section>
+<section class="chapter" id="testing" data-search="unit testing and mocking test transformation logic directly, replace external boundaries with mocks or fakes, and keep integration tests for the real contracts between components.">
+    <div class="chapter-head"><div class="chapter-num">10</div><div><h2>Unit testing and mocking</h2></div><label class="mastery"><input type="checkbox" data-done="testing"> Mastered <span class="priority p1">P1</span></label></div>
+    <p class="chapter-lead">Test transformation logic directly, replace external boundaries with mocks or fakes, and keep integration tests for the real contracts between components.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A unit test verifies one small unit of behavior in isolation.</strong> A mock replaces a dependency and records how it was used. An integration test verifies that multiple real components work together, such as parsing a sample file or writing to a test table.</p></div>
+  <h3>Arrange, Act, Assert</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python - unittest</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import unittest
+from unittest.mock import Mock
+
+def valid_orders(records, logger):
+    result = []
+    for row in records:
+        if row.get("order_id") is None or row.get("amount", 0) &lt; 0:
+            logger.warning("Rejected order", extra={"order": row})
+            continue
+        result.append(row)
+    return result
+
+class TestValidOrders(unittest.TestCase):
+    def test_rejects_negative_amount(self):
+        # Arrange
+        logger = Mock()
+        rows = [{"order_id": 1, "amount": -5}]
+
+        # Act
+        result = valid_orders(rows, logger)
+
+        # Assert
+        self.assertEqual(result, [])
+        logger.warning.assert_called_once()
+
+    def test_keeps_valid_order(self):
+        logger = Mock()
+        row = {"order_id": 1, "amount": 5}
+        self.assertEqual(valid_orders([row], logger), [row])
+        logger.warning.assert_not_called()
+
+if __name__ == "__main__":
+    unittest.main()</code></pre></div>
+  <h3>What to test in a data job</h3>
+  <table><thead><tr><th>Layer</th><th>Useful tests</th><th>Avoid</th></tr></thead><tbody>
+    <tr><td>Pure transform</td><td>Valid, null, boundary, duplicate, invalid-type cases</td><td>Mocking a simple calculation</td></tr>
+    <tr><td>API client</td><td>Pagination, timeout, 429 retry, malformed JSON</td><td>Calling the live production API in unit tests</td></tr>
+    <tr><td>File reader</td><td>Small temporary file with real parser</td><td>Only testing that a mock was called</td></tr>
+    <tr><td>PySpark transform</td><td>Small local DataFrame and exact rows/schema</td><td>Checking only row count when values matter</td></tr>
+    <tr><td>Pipeline integration</td><td>Sample input to sample output with temporary target</td><td>Huge data and slow full-scale execution on every commit</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Design for testability</div><p>Separate I/O from transformation. A function that accepts records and returns cleaned records is easier to test than one that reads a file, transforms rows, writes output, sends alerts, and changes a checkpoint in the same block.</p></div>
+  <div class="callout warn"><div class="label">Mocking trap</div><p>Patch the name where the code under test looks it up, not necessarily where the function was originally defined. Also avoid over-mocking: a test that only confirms your mock setup may prove nothing about real behavior.</p></div>
+  <details class="qa"><summary>Mock vs fake vs stub?</summary><div><p>A stub returns predetermined data, a mock also verifies interactions, and a fake is a lightweight working implementation such as an in-memory repository. Terminology varies, so explain the behavior you need instead of relying only on the label.</p></div></details>
+  <details class="qa"><summary>What makes a good unit test?</summary><div><p>It is deterministic, fast, isolated, readable, and focused on one behavior. Its failure message should make the broken rule clear, and it should cover boundary and failure cases as well as the happy path.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Test the paginated API iterator for two pages, a rate-limit retry, exhausted retries, and an empty final page. Verify that tokens are never logged.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/unittest.html"><b>Python unittest</b><span>Run the official examples, then write tests for this chapter's data task.</span></a><a target="_blank" rel="noopener" href="https://requests.readthedocs.io/en/latest/user/quickstart/"><b>Requests Quickstart</b><span>Use for HTTP syntax while implementing pagination, timeouts, and response handling.</span></a></div>
+  
+  </section>
+<section class="chapter" id="configuration" data-search="configuration, environment variables, cli, and reusable jobs a reusable data job keeps code constant while environment-specific values, secrets, dates, and table names come from validated configuration.">
+    <div class="chapter-head"><div class="chapter-num">11</div><div><h2>Configuration, environment variables, CLI, and reusable jobs</h2></div><label class="mastery"><input type="checkbox" data-done="configuration"> Mastered <span class="priority p1">P1</span></label></div>
+    <p class="chapter-lead">A reusable data job keeps code constant while environment-specific values, secrets, dates, and table names come from validated configuration.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Configuration separates values that change by environment or run from the program's business logic.</strong> Non-secret settings can come from files or command-line arguments; secrets should come from a secret manager or protected environment injection, not source control.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - argparse and environment</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import argparse
+import os
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class JobConfig:
+    source_url: str
+    output_path: str
+    batch_size: int
+    api_token: str
+
+def parse_config():
+    parser = argparse.ArgumentParser(description="Ingest orders")
+    parser.add_argument("--source-url", required=True)
+    parser.add_argument("--output-path", required=True)
+    parser.add_argument("--batch-size", type=int, default=1000)
+    args = parser.parse_args()
+
+    token = os.environ.get("ORDERS_API_TOKEN")
+    if not token:
+        raise RuntimeError("ORDERS_API_TOKEN is required")
+    if args.batch_size &lt;= 0:
+        parser.error("--batch-size must be positive")
+
+    return JobConfig(
+        source_url=args.source_url,
+        output_path=args.output_path,
+        batch_size=args.batch_size,
+        api_token=token,
+    )</code></pre></div>
+  <h3>A simple precedence rule</h3>
+  <div class="flow"><div><b>Safe defaults</b><span>Code/package</span></div><i>-></i><div><b>Config file</b><span>Environment defaults</span></div><i>-></i><div><b>Environment</b><span>Secrets and deployment values</span></div><i>-></i><div><b>CLI</b><span>Run-specific override</span></div></div>
+  <p>Document and validate the precedence. Surprising overrides are operational bugs.</p>
+  <h3>YAML example</h3>
+  <div class="code-wrap"><div class="code-head"><span>YAML</span><button class="copy-btn" type="button">Copy</button></div><pre><code>source:
+  url: "https://api.example.com"
+  page_size: 500
+target:
+  path: "/data/orders"
+  partition_columns:
+    - event_date
+quality:
+  max_reject_rate: 0.01</code></pre></div>
+  <div class="callout warn"><div class="label">Secret handling</div><ul><li>Never place tokens, passwords, or production connection strings in YAML committed to Git.</li><li>Do not log the full configuration if it contains secrets.</li><li>Do not silently accept unknown or misspelled config keys; validate the schema.</li><li>Do not make every value configurable. Stable business rules belong in tested code.</li></ul></div>
+  <h3>Packaging awareness</h3>
+  <p>Keep application code in importable modules, keep the command-line entry point thin, pin dependencies, and avoid notebook-only logic for production. A common layout is <code>src/</code> for code, <code>tests/</code> for tests, and a project configuration file for dependencies and tooling.</p>
+  <details class="qa"><summary>Environment variable vs command-line argument?</summary><div><p>Use an environment variable for secrets or deployment-injected values. Use a command-line argument for explicit run parameters such as processing date or input path. In either case, validate type, range, and presence at startup.</p></div></details>
+  <details class="qa"><summary>Why use a frozen dataclass for configuration?</summary><div><p>It documents the expected fields, gives type hints, groups settings into one object, and prevents accidental mutation after validation. It is not secret protection by itself.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Turn your validator into a command-line job with source path, target path, reject threshold, log level, and processing date. Read the token from an environment variable and add tests for invalid configuration.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/"><b>Python Official Tutorial</b><span>Use the matching official chapter, then re-code the drill without notes.</span></a><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/unittest.html"><b>Python unittest</b><span>Run the official examples, then write tests for this chapter's data task.</span></a></div>
+  
+  </section>
+<section class="chapter" id="pandas" data-search="pandas for data scripting and reconciliation pandas is excellent for in-memory tabular processing, validation, and smaller data jobs. know its expressive operations and its memory boundary.">
+    <div class="chapter-head"><div class="chapter-num">12</div><div><h2>Pandas for data scripting and reconciliation</h2></div><label class="mastery"><input type="checkbox" data-done="pandas"> Mastered <span class="priority p0">P0/P1</span></label></div>
+    <p class="chapter-lead">Pandas is excellent for in-memory tabular processing, validation, and smaller data jobs. Know its expressive operations and its memory boundary.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Pandas DataFrame is a two-dimensional, labeled, in-memory table.</strong> It supports vectorized filtering, type conversion, joins, grouping, window-style operations, and rich file I/O. Unlike Spark, one Pandas DataFrame normally lives in the memory of one Python process.</p></div>
+  <h3>Core cleaning flow</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python - Pandas</span><button class="copy-btn" type="button">Copy</button></div><pre><code>import pandas as pd
+
+orders = pd.read_csv(
+    "orders.csv",
+    dtype={"order_id": "string", "customer_id": "string"},
+    parse_dates=["event_time"],
+)
+
+clean = (
+    orders
+    .rename(columns=str.lower)
+    .assign(
+        amount=lambda d: pd.to_numeric(d["amount"], errors="coerce"),
+        status=lambda d: d["status"].str.strip().str.lower(),
+    )
+    .loc[lambda d: d["order_id"].notna() &amp; d["amount"].ge(0)]
+    .drop_duplicates(subset=["order_id"], keep="last")
+)
+
+summary = (
+    clean.groupby("status", dropna=False, as_index=False)
+         .agg(order_count=("order_id", "size"), total_amount=("amount", "sum"))
+)</code></pre></div>
+  <h3><code>loc</code> vs <code>iloc</code></h3>
+  <table><thead><tr><th>Indexer</th><th>Selects by</th><th>Example</th></tr></thead><tbody>
+    <tr><td><code>loc</code></td><td>Labels and boolean conditions</td><td><code>df.loc[df["amount"] &gt; 0, ["id", "amount"]]</code></td></tr>
+    <tr><td><code>iloc</code></td><td>Integer positions</td><td><code>df.iloc[:10, :3]</code></td></tr>
+  </tbody></table>
+  <h3>Merge, join, and validation</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python - Pandas reconciliation</span><button class="copy-btn" type="button">Copy</button></div><pre><code>customers = pd.read_parquet("customers.parquet")
+
+enriched = clean.merge(
+    customers[["customer_id", "segment"]],
+    on="customer_id",
+    how="left",
+    validate="many_to_one",
+    indicator=True,
+)
+
+unmatched = enriched.loc[enriched["_merge"] == "left_only"]
+
+assert len(enriched) == len(clean), "Many-to-one join changed order row count"
+assert clean["order_id"].is_unique, "order_id must be unique"
+assert not clean["order_id"].isna().any(), "order_id cannot be null"</code></pre></div>
+  <div class="callout tip"><div class="label">High-value merge options</div><p><code>validate="many_to_one"</code> catches unexpected duplicate dimension keys. <code>indicator=True</code> creates a merge-status column that makes unmatched-row reconciliation easy.</p></div>
+  <h3>Latest-record deduplication</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python - Pandas</span><button class="copy-btn" type="button">Copy</button></div><pre><code>latest = (
+    orders.sort_values(["order_id", "updated_at", "ingestion_id"])
+          .drop_duplicates(subset=["order_id"], keep="last")
+)
+
+# Window-style metric: customer running total
+orders = orders.sort_values(["customer_id", "event_time"])
+orders["customer_running_amount"] = (
+    orders.groupby("customer_id")["amount"].cumsum()
+)</code></pre></div>
+  <h3>Chunked processing</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python - Pandas</span><button class="copy-btn" type="button">Copy</button></div><pre><code>total_by_status = {}
+
+for chunk in pd.read_csv("large_orders.csv", chunksize=100_000):
+    chunk["amount"] = pd.to_numeric(chunk["amount"], errors="coerce")
+    partial = chunk.groupby("status")["amount"].sum()
+    for status, amount in partial.items():
+        total_by_status[status] = total_by_status.get(status, 0) + amount</code></pre></div>
+  <p>Chunking works well for associative aggregations such as sums and counts. Global sorts, exact deduplication across all chunks, and full-table joins need extra state or a different engine.</p>
+  <div class="callout warn"><div class="label">Common mistakes</div><ul><li>Using <code>apply(axis=1)</code> for logic that can be vectorized.</li><li>Ignoring datatype changes after CSV read or concatenation.</li><li>Assuming a merge is safe without checking key cardinality and output row count.</li><li>Chained assignment that may update a view instead of the intended DataFrame. Prefer explicit <code>loc</code> or method chains.</li><li>Choosing Pandas for data that cannot fit comfortably in one process's memory.</li></ul></div>
+  <details class="qa"><summary>Pandas vs PySpark: how do you choose?</summary><div><p>Use Pandas for data that fits comfortably in one machine's memory and benefits from low setup overhead. Use PySpark when data or computation needs distributed storage and compute, or when the pipeline already runs on Spark. Do not choose Spark merely because it sounds more scalable.</p></div></details>
+  <details class="qa"><summary>What is vectorization?</summary><div><p>Vectorization expresses an operation over a column or array so optimized native code performs the loop. It is usually faster and clearer than a Python loop or row-wise <code>apply</code>, though memory usage still matters.</p></div></details>
+  <details class="qa"><summary>Why can a join unexpectedly increase row count?</summary><div><p>If the join key is duplicated on both sides, a many-to-many join creates combinations. Profile key uniqueness, declare expected cardinality with <code>validate</code>, and reconcile row counts before accepting the result.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Read orders and customers, clean nulls and types, enforce many-to-one cardinality, report unmatched customers, calculate totals by date and status, and compare source and output counts. Then repeat with chunked orders.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/"><b>Pandas Intro Tutorials</b><span>Complete the matching I/O, selection, merge, aggregation, or time-series exercise.</span></a></div>
+  
+  </section>
+<section class="chapter" id="spark-model" data-search="spark execution model: driver to task to troubleshoot spark, follow one action from the driver, through jobs and stages, to parallel tasks running on executor partitions.">
+    <div class="chapter-head"><div class="chapter-num">13</div><div><h2>Spark execution model: driver to task</h2></div><label class="mastery"><input type="checkbox" data-done="spark-model"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">To troubleshoot Spark, follow one action from the driver, through jobs and stages, to parallel tasks running on executor partitions.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>The driver runs the application, builds the logical work plan, and coordinates execution.</strong> A cluster manager allocates resources. Executors are worker processes that run tasks and can cache partitions. A job is created by an action, a stage is a group of tasks that can run without a shuffle boundary, and a task processes one partition for one stage.</p></div>
+  <div class="flow"><div><b>Driver</b><span>Builds plan and schedules</span></div><i>-></i><div><b>Job</b><span>Created by an action</span></div><i>-></i><div><b>Stages</b><span>Split at shuffle boundaries</span></div><i>-></i><div><b>Tasks</b><span>One per partition per stage</span></div></div>
+  <table><thead><tr><th>Term</th><th>Interview definition</th><th>Failure clue</th></tr></thead><tbody>
+    <tr><td>Driver</td><td>Runs user code, creates SparkSession, plans jobs, and coordinates executors</td><td>Large <code>collect()</code> or huge local object can crash driver memory</td></tr>
+    <tr><td>Executor</td><td>Worker process that runs tasks and stores cached/shuffle data</td><td>Executor lost, out-of-memory, or long garbage collection</td></tr>
+    <tr><td>Partition</td><td>A logical chunk of distributed data processed by one task at a time</td><td>Too few means low parallelism; too many tiny ones add overhead</td></tr>
+    <tr><td>Job</td><td>Execution triggered by an action</td><td>Repeated actions may recompute the same lineage</td></tr>
+    <tr><td>Stage</td><td>Tasks that can run together before the next shuffle dependency</td><td>A slow shuffle stage may indicate skew or excessive movement</td></tr>
+    <tr><td>Task</td><td>Smallest scheduled unit; runs a stage's logic for one partition</td><td>One task much slower than peers suggests skew</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import SparkSession
+
+spark = (
+    SparkSession.builder
+    .appName("orders-silver")
+    .getOrCreate()
+)
+
+orders = spark.read.parquet("/bronze/orders")
+
+# This builds a plan; it does not execute the scan yet.
+paid = orders.filter("status = 'paid'").select("order_id", "amount")
+
+# This action creates a job.
+paid_count = paid.count()</code></pre></div>
+  <div class="callout tip"><div class="label">How to explain a Spark job</div><p>Start from the action. Mention the input partitions, the transformations Spark can pipeline, the first shuffle boundary, the stages it creates, and the tasks per partition. Then discuss output and any cache or checkpoint.</p></div>
+  <div class="callout warn"><div class="label">Driver vs executor confusion</div><p>The driver does not normally process every distributed row. Executors process partitions. Operations such as <code>collect</code>, <code>toPandas</code>, and large broadcast creation can move data to the driver, so use them only when the result is safely small.</p></div>
+  <details class="qa"><summary>How many tasks are created in a stage?</summary><div><p>Normally one task per partition consumed by that stage. The exact number can change after shuffle partitioning, adaptive execution, coalescing, or source partition discovery.</p></div></details>
+  <details class="qa"><summary>Does one executor run only one task?</summary><div><p>No. An executor can run several tasks concurrently based on its available cores. Over time it processes many tasks and may keep cached partitions between them.</p></div></details>
+  <div class="practice"><b>Speak-and-draw drill</b><p>Draw driver, cluster manager, two executors, four partitions, one narrow stage, one shuffle, and a second stage. Explain it in under three minutes.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="spark-execution" data-search="lazy evaluation, transformations, actions, and shuffle spark delays execution so it can optimize the complete plan. performance depends heavily on whether transformations preserve partition locality or require a shuffle.">
+    <div class="chapter-head"><div class="chapter-num">14</div><div><h2>Lazy evaluation, transformations, actions, and shuffle</h2></div><label class="mastery"><input type="checkbox" data-done="spark-execution"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Spark delays execution so it can optimize the complete plan. Performance depends heavily on whether transformations preserve partition locality or require a shuffle.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A transformation returns a new DataFrame and adds work to the logical plan; an action asks Spark to produce a result and triggers execution.</strong> Lazy evaluation lets Spark combine and optimize transformations. A narrow transformation can compute each output partition from a small number of input partitions, while a wide transformation redistributes data across partitions and creates a shuffle boundary.</p></div>
+  <table><thead><tr><th>Category</th><th>Examples</th><th>Execution effect</th></tr></thead><tbody>
+    <tr><td>Transformation</td><td><code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>join</code>, <code>groupBy</code></td><td>Builds a new plan; remains lazy</td></tr>
+    <tr><td>Action</td><td><code>count</code>, <code>collect</code>, <code>show</code>, writes</td><td>Triggers a job</td></tr>
+    <tr><td>Narrow</td><td>Filter, map-like projection, union in common cases</td><td>Can pipeline without all-to-all redistribution</td></tr>
+    <tr><td>Wide</td><td>GroupBy, distinct, orderBy, many joins, repartition</td><td>Usually needs a shuffle</td></tr>
+  </tbody></table>
+  <h3>Why shuffle is expensive</h3>
+  <ol><li>Rows are serialized and written/read through shuffle storage.</li><li>Data moves across the network between executors.</li><li>Partitions may need sorting, hashing, and memory buffers.</li><li>Skew can make one reducer task much larger than the rest.</li><li>Spill to disk and garbage collection can increase runtime.</li></ol>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+summary = (
+    orders
+    .filter(F.col("event_date") &gt;= F.lit("2026-07-01"))  # narrow
+    .select("customer_id", "amount")                    # narrow
+    .groupBy("customer_id")                             # wide boundary
+    .agg(F.sum("amount").alias("total_amount"))
+)
+
+summary.explain("formatted")  # inspect plans before the action
+summary.write.mode("overwrite").parquet("/gold/customer_totals")</code></pre></div>
+  <h3>Logical to physical plan</h3>
+  <div class="flow"><div><b>Unresolved logical plan</b><span>Names and operations</span></div><i>-></i><div><b>Analyzed plan</b><span>Columns and types resolved</span></div><i>-></i><div><b>Optimized plan</b><span>Rules simplify work</span></div><i>-></i><div><b>Physical plan</b><span>Concrete operators</span></div></div>
+  <p>With DataFrames and Spark SQL, Spark can apply optimizations such as predicate pushdown, column pruning, join selection, and adaptive query changes. Python code outside known Spark expressions is less visible to the optimizer.</p>
+  <div class="callout warn"><div class="label">Repeated action trap</div><p><code>df.count()</code>, then <code>df.write...</code>, can execute the lineage twice. If the DataFrame is expensive and reused, persist deliberately and unpersist after the final use. Do not cache everything automatically.</p></div>
+  <details class="qa"><summary>Does a transformation always create a new stage?</summary><div><p>No. Several narrow transformations can be pipelined in one stage. A stage boundary normally appears when execution needs a shuffle dependency or another boundary such as certain input/output operations.</p></div></details>
+  <details class="qa"><summary>How does lazy evaluation help performance?</summary><div><p>Spark sees the full expression before running it, so it can prune unused columns, push filters toward the source, combine expressions, choose physical operators, and avoid materializing intermediate results.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Write a filter-select-groupBy pipeline, call <code>explain("formatted")</code>, identify the exchange/shuffle, and predict jobs/stages before running an action.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="dataframes" data-search="dataframes, schemas, and core operations strong pyspark code uses explicit schemas, built-in column expressions, clear null rules, early filtering, and deliberate read/write behavior.">
+    <div class="chapter-head"><div class="chapter-num">15</div><div><h2>DataFrames, schemas, and core operations</h2></div><label class="mastery"><input type="checkbox" data-done="dataframes"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Strong PySpark code uses explicit schemas, built-in column expressions, clear null rules, early filtering, and deliberate read/write behavior.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Spark DataFrame is a distributed collection of rows with named columns and a schema.</strong> The schema gives Spark type information for validation and optimization. DataFrame operations create immutable logical plans; they do not mutate the existing DataFrame.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - explicit schema and read</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+from pyspark.sql.types import (
+    StructType, StructField, StringType, DecimalType, TimestampType
+)
+
+order_schema = StructType([
+    StructField("order_id", StringType(), nullable=False),
+    StructField("customer_id", StringType(), nullable=False),
+    StructField("amount", DecimalType(18, 2), nullable=True),
+    StructField("event_time", TimestampType(), nullable=True),
+    StructField("status", StringType(), nullable=True),
+])
+
+orders = (
+    spark.read
+    .option("header", True)
+    .schema(order_schema)
+    .csv("/landing/orders")
+)</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - clean and aggregate</span><button class="copy-btn" type="button">Copy</button></div><pre><code>clean = (
+    orders
+    .select("order_id", "customer_id", "amount", "event_time", "status")
+    .withColumn("status", F.lower(F.trim(F.col("status"))))
+    .withColumn("event_date", F.to_date("event_time"))
+    .withColumn(
+        "amount_band",
+        F.when(F.col("amount") &gt;= 1000, "high")
+         .when(F.col("amount") &gt;= 100, "medium")
+         .otherwise("low"),
+    )
+    .filter(
+        F.col("order_id").isNotNull()
+        &amp; F.col("event_time").isNotNull()
+        &amp; (F.col("amount") &gt;= 0)
+    )
+)
+
+daily = (
+    clean.groupBy("event_date", "status")
+         .agg(
+             F.countDistinct("order_id").alias("orders"),
+             F.sum("amount").alias("amount"),
+         )
+)</code></pre></div>
+  <h3>Column expression rules</h3>
+  <ul><li>Use <code>F.col("name")</code> for clarity and dynamic column names.</li><li>Use <code>&amp;</code>, <code>|</code>, and <code>~</code> for Column boolean expressions, with parentheses around comparisons.</li><li>Use <code>isNull()</code> and <code>isNotNull()</code>; <code>== None</code> is not the preferred Spark expression.</li><li>Use aliases after aggregation to produce stable output contracts.</li><li>Select only required columns early to reduce I/O and shuffle width.</li></ul>
+  <h3>Read and write modes</h3>
+  <table><thead><tr><th>Mode</th><th>Behavior</th><th>Interview warning</th></tr></thead><tbody>
+    <tr><td><code>error</code> / <code>errorifexists</code></td><td>Fail if target exists</td><td>Default in many writers</td></tr>
+    <tr><td><code>append</code></td><td>Add rows/files</td><td>Can duplicate data on rerun</td></tr>
+    <tr><td><code>overwrite</code></td><td>Replace target or selected partitions</td><td>Scope must be controlled carefully</td></tr>
+    <tr><td><code>ignore</code></td><td>Do nothing if target exists</td><td>Can hide stale output</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Schema inference</div><p>Inference scans data and may choose inconsistent types across files or runs. Use it for exploration; use an explicit schema for stable pipelines, especially streaming. A declared schema is necessary but not sufficient: still validate nullability and business rules.</p></div>
+  <details class="qa"><summary>withColumn: does it mutate the DataFrame?</summary><div><p>No. DataFrames are immutable. <code>withColumn</code> returns a new DataFrame with an updated logical plan. Reassigning the variable only changes which DataFrame object the variable references.</p></div></details>
+  <details class="qa"><summary>Why prefer DataFrames over RDDs for common DE work?</summary><div><p>DataFrames provide schema and relational expressions that Spark can analyze and optimize. RDDs give lower-level control but hide more semantics from the optimizer and are rarely necessary for standard structured ETL.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Read a CSV with an explicit schema, normalize status, create event date and amount band, split valid/invalid rows, aggregate daily totals, and verify the physical plan prunes unused columns.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="nested-json" data-search="nested json and schema enforcement nested data tests whether you understand structs, arrays, explicit schemas, flattening, and the row-count impact of explode operations.">
+    <div class="chapter-head"><div class="chapter-num">16</div><div><h2>Nested JSON and schema enforcement</h2></div><label class="mastery"><input type="checkbox" data-done="nested-json"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Nested data tests whether you understand structs, arrays, explicit schemas, flattening, and the row-count impact of explode operations.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Nested JSON maps naturally to Spark structs, arrays, and maps.</strong> Access struct fields with dot notation, expand structs deliberately, and use <code>explode</code> or <code>explode_outer</code> when one array element should become one output row.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Example input</span><button class="copy-btn" type="button">Copy</button></div><pre><code>{
+  "event_id": "e-101",
+  "event_time": "2026-07-22T04:00:00Z",
+  "customer": {"id": "c-9", "country": "IN"},
+  "items": [
+    {"sku": "A", "quantity": 2, "price": 10.0},
+    {"sku": "B", "quantity": 1, "price": 5.0}
+  ]
+}</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - flatten</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+from pyspark.sql.types import *
+
+item_schema = StructType([
+    StructField("sku", StringType()),
+    StructField("quantity", IntegerType()),
+    StructField("price", DoubleType()),
+])
+
+schema = StructType([
+    StructField("event_id", StringType(), False),
+    StructField("event_time", TimestampType()),
+    StructField("customer", StructType([
+        StructField("id", StringType()),
+        StructField("country", StringType()),
+    ])),
+    StructField("items", ArrayType(item_schema)),
+])
+
+events = spark.read.schema(schema).json("/landing/events")
+
+item_rows = (
+    events
+    .select(
+        "event_id",
+        "event_time",
+        F.col("customer.id").alias("customer_id"),
+        F.col("customer.country").alias("country"),
+        F.explode_outer("items").alias("item"),
+    )
+    .select(
+        "event_id", "event_time", "customer_id", "country",
+        F.col("item.sku").alias("sku"),
+        F.col("item.quantity").alias("quantity"),
+        F.col("item.price").alias("price"),
+    )
+    .withColumn("line_amount", F.col("quantity") * F.col("price"))
+)</code></pre></div>
+  <table><thead><tr><th>Operation</th><th>Empty/null array behavior</th><th>Use</th></tr></thead><tbody>
+    <tr><td><code>explode</code></td><td>No output row</td><td>Keep only events with array elements</td></tr>
+    <tr><td><code>explode_outer</code></td><td>Preserves a row with null element</td><td>Keep parent events for reconciliation</td></tr>
+    <tr><td><code>posexplode</code></td><td>Returns position and value</td><td>Array order matters</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Row-grain decision</div><p>Before exploding, state the target grain. The source above has one row per event; after exploding it has one row per event item. Reconciliation must account for that intentional row multiplication.</p></div>
+  <div class="callout warn"><div class="label">Nested JSON traps</div><ul><li>Inferring schema from a sample can miss fields or choose a type that later changes.</li><li>Expanding <code>struct.*</code> can create ambiguous duplicate column names.</li><li>Exploding two independent arrays creates a Cartesian multiplication unless arrays are aligned intentionally.</li><li>A parsed row can still violate business rules even when its syntax matches the schema.</li></ul></div>
+  <details class="qa"><summary>How would you handle JSON strings inside a column?</summary><div><p>Define the expected schema and use <code>from_json</code> to parse the string into a struct. Route rows where the input is non-null but the parsed struct is null to an error path with the raw payload and reason.</p></div></details>
+  <details class="qa"><summary>What happens to event-level amount after exploding items?</summary><div><p>It repeats on every item row. Summing it after explode overcounts the event amount. Keep metrics at the correct grain, aggregate items back to event grain, or use separate event and item tables.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Flatten the example to one row per item, preserve empty orders, calculate line amount, route missing SKU/negative quantity records to rejects, and reconcile event count plus item count.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="joins" data-search="pyspark joins and cardinality a correct join starts with grain, key uniqueness, null behavior, and expected row count. performance tuning comes after semantic correctness.">
+    <div class="chapter-head"><div class="chapter-num">17</div><div><h2>PySpark joins and cardinality</h2></div><label class="mastery"><input type="checkbox" data-done="joins"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">A correct join starts with grain, key uniqueness, null behavior, and expected row count. Performance tuning comes after semantic correctness.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A join combines rows from two DataFrames using a condition.</strong> The join type decides which unmatched rows survive. Join cardinality describes whether each key maps one-to-one, one-to-many, many-to-one, or many-to-many, and it determines whether row multiplication is expected.</p></div>
+  <table><thead><tr><th>Join</th><th>Rows returned</th><th>Common use</th></tr></thead><tbody>
+    <tr><td>Inner</td><td>Matched rows only</td><td>Keep records with valid dimension match</td></tr>
+    <tr><td>Left</td><td>All left rows plus right matches</td><td>Enrich facts while preserving source rows</td></tr>
+    <tr><td>Right</td><td>All right rows plus left matches</td><td>Less common; can often swap inputs and use left</td></tr>
+    <tr><td>Full</td><td>All rows from both sides</td><td>Source-target reconciliation</td></tr>
+    <tr><td>Left semi</td><td>Left rows that have a match; no right columns</td><td>Existence filter</td></tr>
+    <tr><td>Left anti</td><td>Left rows with no match</td><td>Unmatched or new records</td></tr>
+    <tr><td>Cross</td><td>Every left-right combination</td><td>Intentional Cartesian product only</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+# Select and rename before the join to avoid ambiguous names.
+customer_dim = customers.select(
+    F.col("customer_id"),
+    F.col("segment").alias("customer_segment"),
+)
+
+enriched = orders.join(customer_dim, on="customer_id", how="left")
+
+unmatched = orders.join(customer_dim, on="customer_id", how="left_anti")
+
+matched_only = orders.join(customer_dim, on="customer_id", how="left_semi")</code></pre></div>
+  <h3>Pre-join safety checks</h3>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>duplicate_dimension_keys = (
+    customer_dim.groupBy("customer_id")
+                .count()
+                .filter(F.col("count") &gt; 1)
+)
+
+if duplicate_dimension_keys.limit(1).count() &gt; 0:
+    raise ValueError("customer dimension key is not unique")
+
+before = orders.count()
+after = enriched.count()
+if after != before:
+    raise ValueError(f"Expected many-to-one join: before={before}, after={after}")</code></pre></div>
+  <h3>Null join keys</h3>
+  <p>Normal equality does not treat null as equal to null. Spark supports null-safe equality with <code>eqNullSafe</code> or SQL <code>&lt;=&gt;</code>, but use it only when null matching has valid business meaning.</p>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>joined = left.alias("l").join(
+    right.alias("r"),
+    F.col("l.optional_key").eqNullSafe(F.col("r.optional_key")),
+    "left",
+)</code></pre></div>
+  <div class="callout warn"><div class="label">Join traps</div><ul><li>Duplicate keys on both sides create many-to-many row multiplication.</li><li>Joining on a string column with different whitespace/case creates false unmatched rows.</li><li>Using <code>left</code> when only existence is needed carries unnecessary right columns; use left semi.</li><li>Avoid joining on expressions repeatedly. Normalize and validate keys before the join.</li><li>Do not fix a duplicate-dimension problem with arbitrary <code>dropDuplicates</code>; define which record is correct.</li></ul></div>
+  <details class="qa"><summary>What is the difference between left semi and inner join?</summary><div><p>Both keep left keys that match, but left semi returns only left rows and left columns, with no right-side duplication or columns. It is ideal for an existence test. An inner join returns matching combinations and can multiply rows.</p></div></details>
+  <details class="qa"><summary>How would you debug a join that doubled the row count?</summary><div><p>Confirm the intended grain, count duplicate keys on both sides, inspect null and normalization issues, classify cardinality, and sample keys with the largest match counts. Then correct the source/key rule or select the intended record deterministically before joining.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Join orders to customers, prove the dimension key is unique, preserve every order, report unmatched customer IDs, and fail when the join changes fact row count.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="windows-dedup" data-search="window functions and latest-record deduplication window functions calculate across related rows while retaining row-level detail. the most common interview pattern is deterministic latest-record selection.">
+    <div class="chapter-head"><div class="chapter-num">18</div><div><h2>Window functions and latest-record deduplication</h2></div><label class="mastery"><input type="checkbox" data-done="windows-dedup"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Window functions calculate across related rows while retaining row-level detail. The most common interview pattern is deterministic latest-record selection.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A window function evaluates rows within a logical partition and order without collapsing them into one row per group.</strong> The window specification defines <code>partitionBy</code>, <code>orderBy</code>, and sometimes a row frame. Unlike <code>groupBy</code>, window output is attached to individual rows.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - latest record per key</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+latest_window = (
+    Window
+    .partitionBy("order_id")
+    .orderBy(
+        F.col("updated_at").desc(),
+        F.col("ingestion_id").desc(),  # deterministic tie-breaker
+    )
+)
+
+latest_orders = (
+    orders
+    .withColumn("row_num", F.row_number().over(latest_window))
+    .filter(F.col("row_num") == 1)
+    .drop("row_num")
+)</code></pre></div>
+  <table><thead><tr><th>Function</th><th>Behavior</th><th>Use</th></tr></thead><tbody>
+    <tr><td><code>row_number</code></td><td>Unique sequence even for ties</td><td>Pick exactly one row when ordering is deterministic</td></tr>
+    <tr><td><code>rank</code></td><td>Ties share rank; gaps follow</td><td>Competition ranking</td></tr>
+    <tr><td><code>dense_rank</code></td><td>Ties share rank; no gaps</td><td>Top N distinct values</td></tr>
+    <tr><td><code>lag</code> / <code>lead</code></td><td>Previous or next ordered value</td><td>Change detection and time gaps</td></tr>
+    <tr><td>Running aggregate</td><td>Aggregate over a frame</td><td>Cumulative amount or rolling metric</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - lag and running total</span><button class="copy-btn" type="button">Copy</button></div><pre><code>customer_time = Window.partitionBy("customer_id").orderBy("event_time")
+running = (
+    customer_time
+    .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+)
+
+with_metrics = (
+    orders
+    .withColumn("previous_amount", F.lag("amount").over(customer_time))
+    .withColumn("running_amount", F.sum("amount").over(running))
+)</code></pre></div>
+  <h3><code>dropDuplicates</code> vs window</h3>
+  <p><code>dropDuplicates(["order_id"])</code> guarantees one row per key, but it does not express which duplicate wins. Use it when duplicates are truly equivalent. Use a window when the latest, highest-priority, or otherwise preferred row must survive.</p>
+  <div class="callout warn"><div class="label">Determinism trap</div><p>Ordering only by <code>updated_at</code> is not deterministic when timestamps tie. Add a stable tie-breaker such as ingestion sequence, source version, or event ID. Without one, different runs may retain different records.</p></div>
+  <details class="qa"><summary>Window vs groupBy?</summary><div><p><code>groupBy</code> collapses each group to aggregate rows. A window keeps the original row grain and adds ranking, previous/next, or aggregate values based on related rows.</p></div></details>
+  <details class="qa"><summary>Why can a window be expensive?</summary><div><p>Rows with the same partition key must be brought together and usually sorted by the order columns, which can create shuffle and sort cost. Skewed keys can create very large partitions.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>For each order, retain the latest version using timestamp plus ingestion ID; then calculate each customer's running amount and time since previous order.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="functions-udf" data-search="built-in functions vs python udfs use spark sql built-ins first. they are visible to spark's optimizer, avoid row-by-row python boundary cost, and usually handle nulls and code generation better.">
+    <div class="chapter-head"><div class="chapter-num">19</div><div><h2>Built-in functions vs Python UDFs</h2></div><label class="mastery"><input type="checkbox" data-done="functions-udf"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Use Spark SQL built-ins first. They are visible to Spark's optimizer, avoid row-by-row Python boundary cost, and usually handle nulls and code generation better.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A built-in Spark function creates a Catalyst expression that Spark can analyze and optimize.</strong> A Python UDF sends data between the JVM execution engine and a Python worker for custom row-level logic, adding serialization and reducing optimization opportunities.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - built-ins</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+normalized = (
+    customers
+    .withColumn("email", F.lower(F.trim("email")))
+    .withColumn("email_domain", F.split("email", "@").getItem(1))
+    .withColumn(
+        "quality_status",
+        F.when(F.col("email").rlike(r"^[^@]+@[^@]+$"), "valid")
+         .otherwise("invalid"),
+    )
+)</code></pre></div>
+  <h3>Preference order</h3>
+  <ol><li>Built-in DataFrame/Spark SQL function.</li><li>Combination of built-in expressions.</li><li>SQL expression or higher-order function for arrays/maps.</li><li>Pandas UDF when vectorized custom logic is truly needed and supported.</li><li>Scalar Python UDF only when there is no reasonable built-in expression.</li></ol>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - scalar UDF, last resort</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+from pyspark.sql.types import StringType
+
+@F.udf(returnType=StringType())
+def classify_code(value):
+    if value is None:
+        return None
+    # Imagine a domain library with no Spark equivalent.
+    return external_domain_classifier(value)
+
+classified = df.withColumn("class", classify_code("raw_code"))</code></pre></div>
+  <table><thead><tr><th>Choice</th><th>Optimization visibility</th><th>Typical performance</th></tr></thead><tbody>
+    <tr><td>Built-in expression</td><td>High</td><td>Best default</td></tr>
+    <tr><td>Pandas UDF</td><td>Limited; vectorized exchange</td><td>Can be better than scalar UDF for supported workloads</td></tr>
+    <tr><td>Scalar Python UDF</td><td>Low</td><td>Often slower due to row serialization and Python execution</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">UDF correctness</div><p>Always declare the return type, define null behavior, and test edge cases. A UDF can be called in ways or orders you did not expect; do not rely on side effects, counters, or external mutable state inside it.</p></div>
+  <details class="qa"><summary>Why is a Python UDF often slower?</summary><div><p>Rows cross the JVM-Python boundary, values are serialized and deserialized, custom logic runs outside Spark's normal code generation path, and Spark cannot understand the function deeply enough to optimize it like a built-in expression.</p></div></details>
+  <details class="qa"><summary>Would you always replace a UDF?</summary><div><p>No. Correctness and maintainability matter. If a required domain algorithm has no built-in equivalent, use a tested UDF, measure it, reduce its input columns/rows, and consider a vectorized implementation when appropriate.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Implement email normalization, status mapping, and array filtering with built-ins. Then write one UDF version, compare the physical plans, and explain why the built-in plan is preferable.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="partitions" data-search="partitions, repartition, coalesce, and output sizing a partition is both a unit of parallel work and, for file data, often a unit of output. good sizing balances parallelism against scheduling, shuffle, and small-file overhead.">
+    <div class="chapter-head"><div class="chapter-num">20</div><div><h2>Partitions, repartition, coalesce, and output sizing</h2></div><label class="mastery"><input type="checkbox" data-done="partitions"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">A partition is both a unit of parallel work and, for file data, often a unit of output. Good sizing balances parallelism against scheduling, shuffle, and small-file overhead.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Spark partition is a logical subset of a DataFrame processed by one task at a time.</strong> <code>repartition</code> redistributes data and normally performs a shuffle to create a requested partition count or key distribution. <code>coalesce</code> mainly reduces partitions with less movement and may produce uneven partition sizes.</p></div>
+  <table><thead><tr><th>Operation</th><th>Can increase?</th><th>Shuffle?</th><th>Use</th></tr></thead><tbody>
+    <tr><td><code>repartition(n)</code></td><td>Yes</td><td>Normally yes</td><td>Rebalance before wide work or output</td></tr>
+    <tr><td><code>repartition(n, "key")</code></td><td>Yes</td><td>Yes</td><td>Distribute rows by a key</td></tr>
+    <tr><td><code>coalesce(n)</code></td><td>Normally used to reduce</td><td>Can avoid full shuffle</td><td>Reduce many partitions after filtering</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code># Inspect current parallelism
+print(df.rdd.getNumPartitions())
+
+# Rebalance by date before a partitioned write.
+# The correct count must be measured for the actual volume and cluster.
+prepared = df.repartition(48, "event_date")
+
+(
+    prepared.write
+    .format("delta")
+    .mode("append")
+    .partitionBy("event_date")
+    .save("/silver/orders")
+)
+
+# After a large filter, reduce partitions for a small export.
+small_export = df.filter("event_date = '2026-07-22'").coalesce(4)</code></pre></div>
+  <h3>Runtime partition vs storage partition</h3>
+  <table><thead><tr><th>Concept</th><th>Meaning</th><th>Important distinction</th></tr></thead><tbody>
+    <tr><td>Spark/runtime partition</td><td>Chunk processed by a task</td><td>Controls execution parallelism</td></tr>
+    <tr><td>Table/file partition</td><td>Directory grouping such as <code>event_date=...</code></td><td>Supports pruning and data organization</td></tr>
+  </tbody></table>
+  <p>The concepts influence each other during reads and writes, but they are not the same. A table partition may contain many files, and each file may be split into one or more runtime partitions depending on source and settings.</p>
+  <h3>How to choose a partition column</h3>
+  <ul><li>Frequently used in selective filters.</li><li>Moderate cardinality, not nearly unique per row.</li><li>Reasonably balanced data volume.</li><li>Stable business meaning and retention boundary.</li><li>Avoid columns that create thousands of tiny directories/files.</li></ul>
+  <div class="callout warn"><div class="label">No magic partition count</div><p>There is no universal best number or file size. Start from data volume, available executor cores, operation type, skew, and target system. Measure task duration, input size, spill, scheduler overhead, and output file distribution. A commonly useful file-size range may be hundreds of MB, but the actual target is platform and workload dependent.</p></div>
+  <details class="qa"><summary>Why can coalesce(1) be dangerous?</summary><div><p>It forces output through one partition and usually one task, which removes parallelism and may cause a long task or memory pressure. Use it only for genuinely small exports that require one file, not as a default formatting step.</p></div></details>
+  <details class="qa"><summary>Does repartition by a column guarantee one output file per value?</summary><div><p>No. It controls hash distribution into Spark partitions, while <code>partitionBy</code> controls output directories. Multiple runtime partitions can write files into the same directory, and one task can write to multiple directories depending on data.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create deliberately uneven data, compare partition row counts before and after <code>repartition</code> and <code>coalesce</code>, then write by event date and inspect file counts.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/tuning.html"><b>Spark Tuning Guide</b><span>Use with Spark UI and explain-plan observations during the performance drill.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="performance" data-search="spark performance: broadcast, skew, cache, and checkpoint tune from evidence: identify the slow stage, inspect the plan and task distribution, then address i/o, shuffle, skew, partition count, caching, or code shape.">
+    <div class="chapter-head"><div class="chapter-num">21</div><div><h2>Spark performance: broadcast, skew, cache, and checkpoint</h2></div><label class="mastery"><input type="checkbox" data-done="performance"> Mastered <span class="priority p0">P0/P1</span></label></div>
+    <p class="chapter-lead">Tune from evidence: identify the slow stage, inspect the plan and task distribution, then address I/O, shuffle, skew, partition count, caching, or code shape.</p>
+  <h3>A practical tuning order</h3>
+  <ol><li>Confirm correctness, grain, and row counts.</li><li>Read only needed partitions and columns; push filters early.</li><li>Use efficient formats and built-in expressions.</li><li>Inspect <code>explain</code> and the Spark UI for exchanges, join strategy, skew, spill, and repeated scans.</li><li>Choose join strategy and partition count based on measured sizes.</li><li>Persist only expensive reused results; unpersist after use.</li><li>Address small files and output layout.</li></ol>
+  <h3>Broadcast join</h3>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A broadcast join sends a small relation to executors so each executor can join its large-data partitions locally.</strong> This can avoid shuffling the large side, but the broadcast relation must be small enough for driver collection, network transfer, and executor memory.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+# Use a hint when you know the dimension is safely small and statistics are missing.
+enriched = large_orders.join(
+    F.broadcast(small_customer_dimension),
+    on="customer_id",
+    how="left",
+)
+
+enriched.explain("formatted")  # look for BroadcastHashJoin</code></pre></div>
+  <div class="callout warn"><div class="label">Broadcast risk</div><p>Do not broadcast based only on row count. Estimate serialized byte size and consider concurrent tasks. A relation with few rows but very wide values can still be large. Let Spark choose automatically when statistics are reliable; use a hint when you have evidence.</p></div>
+  <h3>Data skew and salting</h3>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Data skew means some partition keys contain far more data than others, so a few tasks run much longer than their peers.</strong> Salting splits a hot key into several artificial subkeys, performs the heavy operation in parallel, and then removes or recombines the salt.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - targeted salting sketch</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+salt_buckets = 8
+hot_customer = "UNKNOWN"
+
+salted_orders = orders.withColumn(
+    "salt",
+    F.when(
+        F.col("customer_id") == hot_customer,
+        (F.rand(seed=42) * salt_buckets).cast("int"),
+    ).otherwise(F.lit(0)),
+)
+
+# Replicate only the hot dimension key across salts.
+hot_dim = (
+    customers.filter(F.col("customer_id") == hot_customer)
+             .crossJoin(spark.range(salt_buckets).toDF("salt"))
+)
+normal_dim = (
+    customers.filter(F.col("customer_id") != hot_customer)
+             .withColumn("salt", F.lit(0))
+)
+salted_dim = normal_dim.unionByName(hot_dim)
+
+result = salted_orders.join(salted_dim, ["customer_id", "salt"], "left").drop("salt")</code></pre></div>
+  <p>Salting adds complexity and data expansion. First confirm skew in task metrics and consider adaptive skew handling, pre-aggregation, key correction, broadcast, or filtering.</p>
+  <h3>Cache, persist, and checkpoint</h3>
+  <table><thead><tr><th>Tool</th><th>Purpose</th><th>Lineage</th><th>Use</th></tr></thead><tbody>
+    <tr><td><code>cache()</code></td><td>Reuse computed partitions with the default storage level</td><td>Retained</td><td>DataFrame reused across actions</td></tr>
+    <tr><td><code>persist(level)</code></td><td>Choose memory/disk storage behavior</td><td>Retained</td><td>Reuse with deliberate storage trade-off</td></tr>
+    <tr><td><code>checkpoint()</code></td><td>Materialize and truncate lineage reliably</td><td>Cut</td><td>Very long lineage or recovery boundary</td></tr>
+    <tr><td><code>localCheckpoint()</code></td><td>Truncate lineage using executor storage</td><td>Cut, less reliable</td><td>Performance aid where full reliability is unnecessary</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark import StorageLevel
+
+reused = expensive_transform.persist(StorageLevel.MEMORY_AND_DISK)
+reused.count()  # materialize deliberately
+
+write_quality_metrics(reused)
+write_silver_table(reused)
+
+reused.unpersist()</code></pre></div>
+  <div class="callout warn"><div class="label">Caching traps</div><ul><li>Cache is lazy; it fills only when an action runs.</li><li>Caching a one-use DataFrame adds storage and serialization cost without reuse benefit.</li><li>Forgetting <code>unpersist</code> can crowd executor memory.</li><li>Checkpoint requires a reliable checkpoint directory for fault-tolerant use and also triggers materialization work.</li></ul></div>
+  <details class="qa"><summary>How do you detect skew?</summary><div><p>In the Spark UI, compare task input size and duration within the same stage. A small number of tasks that process much more data or run much longer than the median are strong evidence. Also profile key frequencies and inspect the physical plan.</p></div></details>
+  <details class="qa"><summary>cache vs checkpoint?</summary><div><p>Cache is mainly for performance reuse and keeps lineage, so lost partitions can be recomputed. Checkpoint materializes data and truncates lineage, which is useful for very long plans or recovery boundaries but costs an additional write/read.</p></div></details>
+  <details class="qa"><summary>What would you do if a join is slow?</summary><div><p>Validate cardinality; check filters and columns; inspect join strategy and statistics; measure side sizes; look for skew and spill; broadcast a genuinely small side; repartition or pre-aggregate when justified; and retest with stage metrics.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create one hot key, run a join, inspect task duration distribution, try broadcast when appropriate, then implement targeted salting and compare the plan plus stage metrics.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/tuning.html"><b>Spark Tuning Guide</b><span>Use with Spark UI and explain-plan observations during the performance drill.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="streaming" data-search="structured streaming, checkpoints, watermarks, and state structured streaming uses the dataframe api for unbounded data. correct design requires an explicit schema, recovery checkpoint, event-time policy, output mode, and a sink that supports the required guarantees.">
+    <div class="chapter-head"><div class="chapter-num">22</div><div><h2>Structured Streaming, checkpoints, watermarks, and state</h2></div><label class="mastery"><input type="checkbox" data-done="streaming"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Structured Streaming uses the DataFrame API for unbounded data. Correct design requires an explicit schema, recovery checkpoint, event-time policy, output mode, and a sink that supports the required guarantees.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Structured Streaming treats a live stream as an unbounded table and executes the query incrementally, usually as micro-batches.</strong> A checkpoint stores progress and state needed for recovery. A watermark tracks event-time progress and lets Spark limit state for supported operations while defining how late data is handled.</p></div>
+  <div class="flow"><div><b>Source</b><span>Files, Kafka/Event Hubs, Delta</span></div><i>-></i><div><b>Streaming DataFrame</b><span>Schema + transformations</span></div><i>-></i><div><b>State / watermark</b><span>Dedup, windows, joins</span></div><i>-></i><div><b>Sink + checkpoint</b><span>Recovery and output</span></div></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - event-time aggregation</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+events = (
+    spark.readStream
+    .schema(event_schema)
+    .json("/landing/events")
+)
+
+windowed = (
+    events
+    .withWatermark("event_time", "20 minutes")
+    .groupBy(
+        F.window("event_time", "10 minutes"),
+        "customer_id",
+    )
+    .agg(
+        F.countDistinct("event_id").alias("event_count"),
+        F.sum("amount").alias("amount"),
+    )
+)
+
+query = (
+    windowed.writeStream
+    .format("delta")
+    .outputMode("append")
+    .option("checkpointLocation", "/checkpoints/customer_windows")
+    .trigger(processingTime="1 minute")
+    .start("/gold/customer_windows")
+)</code></pre></div>
+  <h3>Checkpoint vs watermark</h3>
+  <table><thead><tr><th>Concept</th><th>Purpose</th><th>Do not confuse with</th></tr></thead><tbody>
+    <tr><td>Checkpoint</td><td>Recover source progress, query metadata, and state after restart</td><td>A data-lateness policy</td></tr>
+    <tr><td>Watermark</td><td>Track event-time progress and bound state/late handling for supported operations</td><td>A recovery directory or source offset</td></tr>
+  </tbody></table>
+  <h3>How the watermark moves</h3>
+  <p>Conceptually, Spark observes the maximum event time seen and subtracts the configured delay. With a 20-minute delay and maximum seen event time of 10:00, the watermark is around 09:40. Data less late than the threshold is guaranteed not to be dropped by the watermark; data older than it may be dropped when the relevant state has been removed.</p>
+  <h3>Output modes</h3>
+  <table><thead><tr><th>Mode</th><th>Emits</th><th>Typical fit</th></tr></thead><tbody>
+    <tr><td>Append</td><td>Only rows considered final for the query</td><td>Immutable events or finalized event-time windows</td></tr>
+    <tr><td>Update</td><td>Rows changed in the current trigger</td><td>Aggregates that evolve over time, with a compatible sink</td></tr>
+    <tr><td>Complete</td><td>Entire result table each trigger</td><td>Small aggregate result, not large detail data</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Exactly-once answer</div><p>Spark can provide exactly-once processing for supported queries when the source is replayable, checkpointing is reliable, the transformation is deterministic, and the sink is idempotent or transactional. End-to-end exactly once is a property of the complete source-processing-sink design, not a phrase guaranteed by calling <code>start()</code>.</p></div>
+  <div class="callout warn"><div class="label">Checkpoint rules</div><ul><li>Every independent query needs its own checkpoint location.</li><li>Store checkpoints on reliable distributed storage, not temporary local disk.</li><li>Deleting a checkpoint usually starts a new query history and can reprocess data.</li><li>Some query changes are not compatible with an existing checkpoint; test deployment changes.</li><li>Keep business output and checkpoint paths separate.</li></ul></div>
+  <details class="qa"><summary>Event time vs processing time window?</summary><div><p>Event-time windows group by when events actually occurred and require a lateness policy. Processing-time windows group by when the engine processed events, so delayed events appear in later processing windows even if they happened earlier.</p></div></details>
+  <details class="qa"><summary>Why does a stateful aggregation need a watermark?</summary><div><p>Without a lateness boundary, the engine may need to retain old group/window state indefinitely because another matching event could always arrive. A watermark allows eligible old state to be removed and controls memory/state growth.</p></div></details>
+  <details class="qa"><summary>Can you reuse one checkpoint for two output paths?</summary><div><p>No. A checkpoint belongs to one logical streaming query and its progress. Sharing it across independent queries corrupts the recovery contract.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create events with on-time, 5-minute-late, and 30-minute-late timestamps. Run a 10-minute window with a 20-minute watermark and explain when each result can become final.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/streaming/index.html"><b>Structured Streaming Guide</b><span>Run the matching streaming example and test checkpoint, state, and lateness behavior.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use this no-cost workspace for the PySpark, Delta, and final coding-gate implementation.</span></a></div>
+  
+  </section>
+<section class="chapter" id="stream-validation" data-search="streaming schema enforcement and error records a production stream should preserve the raw payload, parse into an explicit schema, separate invalid records with reason codes, and monitor invalid rate without stopping for every bad event.">
+    <div class="chapter-head"><div class="chapter-num">23</div><div><h2>Streaming schema enforcement and error records</h2></div><label class="mastery"><input type="checkbox" data-done="stream-validation"> Mastered <span class="priority p0">P0/P1</span></label></div>
+    <p class="chapter-lead">A production stream should preserve the raw payload, parse into an explicit schema, separate invalid records with reason codes, and monitor invalid rate without stopping for every bad event.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Schema enforcement converts an incoming payload into a known typed contract.</strong> Parsing success is only the first layer; business validation then checks required fields, ranges, allowed values, uniqueness, and event-time validity. Invalid events go to a quarantine path with enough context to replay or repair them.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - valid/invalid stream split</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark.sql import functions as F
+
+# raw_events has: value (JSON string), source_partition, source_offset
+parsed = (
+    raw_events
+    .withColumn("payload", F.from_json("value", event_schema))
+    .withColumn(
+        "error_reason",
+        F.when(F.col("payload").isNull(), "invalid_json_or_schema")
+         .when(F.col("payload.event_id").isNull(), "missing_event_id")
+         .when(F.col("payload.event_time").isNull(), "missing_event_time")
+         .when(F.col("payload.amount") &lt; 0, "negative_amount"),
+    )
+)
+
+valid = (
+    parsed.filter(F.col("error_reason").isNull())
+          .select("payload.*", "source_partition", "source_offset")
+)
+
+invalid = (
+    parsed.filter(F.col("error_reason").isNotNull())
+          .select(
+              "value", "error_reason", "source_partition", "source_offset",
+              F.current_timestamp().alias("rejected_at"),
+          )
+)</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - independent sinks</span><button class="copy-btn" type="button">Copy</button></div><pre><code>valid_query = (
+    valid.writeStream
+         .format("delta")
+         .outputMode("append")
+         .option("checkpointLocation", "/checkpoints/events_valid")
+         .start("/bronze/events_valid")
+)
+
+invalid_query = (
+    invalid.writeStream
+           .format("delta")
+           .outputMode("append")
+           .option("checkpointLocation", "/checkpoints/events_invalid")
+           .start("/quarantine/events_invalid")
+)</code></pre></div>
+  <h3>Error record contract</h3>
+  <ul class="checklist"><li>Raw payload or a secure reference to it.</li><li>Machine-readable reason code and useful message.</li><li>Source system, partition/file, and offset/record identifier.</li><li>Ingestion and rejection timestamps.</li><li>Pipeline version and run/query identifier.</li><li>PII-safe logging and access controls.</li></ul>
+  <div class="callout warn"><div class="label">Silent-null trap</div><p><code>from_json</code> can return null when parsing fails. If you immediately select <code>payload.*</code> and filter null business keys, you may lose the raw reason. Create the parse-status/error column while the raw payload is still available.</p></div>
+  <details class="qa"><summary>Should one bad event stop the stream?</summary><div><p>Usually a known record-level validation failure goes to quarantine while the stream continues and raises a quality metric. Fail the query for systemic problems such as incompatible contract changes, unavailable sinks, corrupted state, or an invalid rate above the agreed threshold.</p></div></details>
+  <details class="qa"><summary>How do you replay quarantined records safely?</summary><div><p>Repair or map the records into the current contract, preserve their stable event IDs, write through an idempotent path, and track replay version/status. Do not simply append them if the target cannot deduplicate.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Feed valid JSON, malformed JSON, missing IDs, negative amounts, and an extra optional field. Write valid and invalid streams to separate targets and calculate invalid percentage per micro-batch.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/streaming/index.html"><b>Structured Streaming Guide</b><span>Run the matching streaming example and test checkpoint, state, and lateness behavior.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use this no-cost workspace for the PySpark, Delta, and final coding-gate implementation.</span></a></div>
+  
+  </section>
+<section class="chapter" id="delta" data-search="delta output and idempotent writes your coding gate ends with partitioned delta output. the important interview layer is how schema, partitioning, transactions, and reruns produce a reliable table.">
+    <div class="chapter-head"><div class="chapter-num">24</div><div><h2>Delta output and idempotent writes</h2></div><label class="mastery"><input type="checkbox" data-done="delta"> Mastered <span class="priority p0">P0</span></label></div>
+    <p class="chapter-lead">Your coding gate ends with partitioned Delta output. The important interview layer is how schema, partitioning, transactions, and reruns produce a reliable table.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Delta Lake adds a transaction log and table-management features on top of data files.</strong> Spark readers use the log to identify a consistent table version, while transactional writes support reliable concurrent operations and patterns such as merge, schema enforcement, and time travel.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - partitioned Delta write</span><button class="copy-btn" type="button">Copy</button></div><pre><code>(
+    silver_orders.write
+    .format("delta")
+    .mode("append")
+    .partitionBy("event_date")
+    .save("/silver/orders")
+)</code></pre></div>
+  <p>A plain append is not automatically rerun-safe. If the same input is processed twice, it can create duplicate rows. Choose a write strategy from the data contract.</p>
+  <table><thead><tr><th>Strategy</th><th>Use</th><th>Rerun behavior</th></tr></thead><tbody>
+    <tr><td>Append immutable events</td><td>Stable unique event IDs and downstream dedup</td><td>Needs duplicate protection</td></tr>
+    <tr><td>Overwrite selected partition</td><td>Rebuild a known date partition</td><td>Safe when replacement scope is exact</td></tr>
+    <tr><td>MERGE / upsert</td><td>Insert new keys and update existing keys</td><td>Can be idempotent with deterministic keys/rules</td></tr>
+    <tr><td>Full overwrite</td><td>Small rebuilt table</td><td>Expensive and risky for large targets</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark + Delta - deterministic upsert</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from delta.tables import DeltaTable
+
+target = DeltaTable.forPath(spark, "/silver/orders")
+
+(
+    target.alias("t")
+    .merge(
+        latest_orders.alias("s"),
+        "t.order_id = s.order_id",
+    )
+    .whenMatchedUpdateAll(condition="s.updated_at &gt;= t.updated_at")
+    .whenNotMatchedInsertAll()
+    .execute()
+)</code></pre></div>
+  <h3>Write checklist</h3>
+  <ul class="checklist"><li>Target grain and business key are explicit.</li><li>Incoming rows are deduplicated deterministically.</li><li>Schema changes follow a controlled compatibility rule.</li><li>Partition column has useful filter patterns and reasonable cardinality.</li><li>Rerun strategy is tested with the same input twice.</li><li>Source, valid, invalid, inserted, and updated counts are reconciled.</li></ul>
+  <div class="callout tip"><div class="label">Auto Loader bridge</div><p>In Azure Databricks, Auto Loader can incrementally discover new cloud files and track discovery/schema metadata. Its checkpoint and schema location solve different problems. The Azure/MAQ resource will cover Auto Loader, Delta operations, and governance in depth; here the required PySpark contract is explicit schema, deterministic transformation, and rerun-safe Delta output.</p></div>
+  <div class="callout warn"><div class="label">Merge trap</div><p>If multiple source rows match one target key, a merge can be ambiguous or fail. Deduplicate the source to one deterministic row per target key before merge. Also make the update condition explicit so an older event cannot overwrite a newer record.</p></div>
+  <details class="qa"><summary>Why is Parquet alone not the same as Delta?</summary><div><p>Parquet is a columnar file format. Delta uses Parquet data files plus a transaction log that records table versions and actions, enabling consistent table semantics and operations such as transactional merge and time travel.</p></div></details>
+  <details class="qa"><summary>How would you prove a write is idempotent?</summary><div><p>Run the same input twice and verify that target keys, row count, values, and reconciliation metrics remain correct. Also test partial failure between transformation, write, and checkpoint update.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Write one batch, rerun it unchanged, then send a newer version of one key and an older version of another. Verify that only the valid newer update changes the target.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use this no-cost workspace for the PySpark, Delta, and final coding-gate implementation.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/sql-programming-guide.html"><b>Spark SQL and DataFrames Guide</b><span>Use as the official implementation reference for structured Spark operations.</span></a></div>
+  
+  </section>
+<section class="chapter" id="coding-gate" data-search="final coding gate: bronze json to silver delta this exercise combines the exact skills required by your tracker. type it in sections, test each contract, then rebuild it without looking at the solution.">
+    <div class="chapter-head"><div class="chapter-num">25</div><div><h2>Final coding gate: Bronze JSON to Silver Delta</h2></div><label class="mastery"><input type="checkbox" data-done="coding-gate"> Mastered <span class="pill">Must implement</span></label></div>
+    <p class="chapter-lead">This exercise combines the exact skills required by your tracker. Type it in sections, test each contract, then rebuild it without looking at the solution.</p>
+  <h3>Scenario</h3>
+  <p>New order-version JSON files arrive in Bronze. Each order contains customer details and an array of line items. Build a Silver item table that enforces schema, preserves invalid rows, retains the latest line version, enriches from a small customer dimension, calculates a customer running amount, and writes a rerun-safe partitioned Delta table.</p>
+  <h3>Target grain and keys</h3>
+  <table><thead><tr><th>Contract</th><th>Decision</th></tr></thead><tbody>
+    <tr><td>Silver grain</td><td>One latest row per <code>(order_id, line_id)</code></td></tr>
+    <tr><td>Version order</td><td><code>updated_at DESC, ingestion_id DESC</code></td></tr>
+    <tr><td>Required fields</td><td>order_id, line_id, customer_id, updated_at, quantity, price</td></tr>
+    <tr><td>Partition column</td><td><code>event_date</code> derived from updated_at</td></tr>
+    <tr><td>Bad rows</td><td>Delta quarantine table with raw context and reason</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - complete transformation</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from delta.tables import DeltaTable
+from pyspark.sql import functions as F
+from pyspark.sql.types import *
+from pyspark.sql.window import Window
+
+item_schema = StructType([
+    StructField("line_id", StringType()),
+    StructField("sku", StringType()),
+    StructField("quantity", IntegerType()),
+    StructField("price", DecimalType(18, 2)),
+])
+
+event_schema = StructType([
+    StructField("order_id", StringType(), False),
+    StructField("customer", StructType([
+        StructField("id", StringType()),
+        StructField("country", StringType()),
+    ])),
+    StructField("updated_at", TimestampType()),
+    StructField("ingestion_id", LongType()),
+    StructField("items", ArrayType(item_schema)),
+])
+
+def build_silver_orders(spark, bronze_path, customers):
+    bronze = (
+        spark.read
+        .schema(event_schema)
+        .json(bronze_path)
+        .withColumn("source_file", F.input_file_name())
+    )
+
+    flattened = (
+        bronze
+        .select(
+            "order_id",
+            F.col("customer.id").alias("customer_id"),
+            F.col("customer.country").alias("country"),
+            "updated_at",
+            "ingestion_id",
+            "source_file",
+            F.explode_outer("items").alias("item"),
+        )
+        .select(
+            "order_id", "customer_id", "country", "updated_at",
+            "ingestion_id", "source_file",
+            F.col("item.line_id").alias("line_id"),
+            F.col("item.sku").alias("sku"),
+            F.col("item.quantity").alias("quantity"),
+            F.col("item.price").alias("price"),
+        )
+        .withColumn("event_date", F.to_date("updated_at"))
+        .withColumn("line_amount", F.col("quantity") * F.col("price"))
+    )
+
+    assessed = flattened.withColumn(
+        "error_reason",
+        F.when(F.col("order_id").isNull(), "missing_order_id")
+         .when(F.col("line_id").isNull(), "missing_line_id")
+         .when(F.col("customer_id").isNull(), "missing_customer_id")
+         .when(F.col("updated_at").isNull(), "missing_updated_at")
+         .when(F.col("quantity").isNull() | (F.col("quantity") &lt;= 0), "invalid_quantity")
+         .when(F.col("price").isNull() | (F.col("price") &lt; 0), "invalid_price"),
+    )
+
+    invalid = (
+        assessed
+        .filter(F.col("error_reason").isNotNull())
+        .withColumn("rejected_at", F.current_timestamp())
+    )
+
+    valid = assessed.filter(F.col("error_reason").isNull()).drop("error_reason")
+
+    latest_window = (
+        Window.partitionBy("order_id", "line_id")
+              .orderBy(F.col("updated_at").desc(), F.col("ingestion_id").desc())
+    )
+
+    latest = (
+        valid
+        .withColumn("row_num", F.row_number().over(latest_window))
+        .filter(F.col("row_num") == 1)
+        .drop("row_num")
+    )
+
+    customer_dim = customers.select(
+        "customer_id",
+        F.col("segment").alias("customer_segment"),
+    )
+
+    enriched = latest.join(
+        F.broadcast(customer_dim),
+        on="customer_id",
+        how="left",
+    )
+
+    running_window = (
+        Window.partitionBy("customer_id")
+              .orderBy("updated_at", "order_id", "line_id")
+              .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+
+    silver = enriched.withColumn(
+        "customer_running_amount",
+        F.sum("line_amount").over(running_window),
+    )
+
+    return silver, invalid
+
+silver, invalid = build_silver_orders(
+    spark,
+    "/bronze/orders_json",
+    spark.table("reference.customers"),
+)</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark + Delta - quality and rerun-safe output</span><button class="copy-btn" type="button">Copy</button></div><pre><code>silver_path = "/silver/order_items"
+invalid_path = "/quarantine/order_items"
+
+# Keep rejected records for repair and metrics.
+(
+    invalid.write
+    .format("delta")
+    .mode("append")
+    .partitionBy("event_date")
+    .save(invalid_path)
+)
+
+if not DeltaTable.isDeltaTable(spark, silver_path):
+    (
+        silver.write
+        .format("delta")
+        .mode("overwrite")
+        .partitionBy("event_date")
+        .save(silver_path)
+    )
+else:
+    target = DeltaTable.forPath(spark, silver_path)
+    (
+        target.alias("t")
+        .merge(
+            silver.alias("s"),
+            "t.order_id = s.order_id AND t.line_id = s.line_id",
+        )
+        .whenMatchedUpdateAll(
+            condition=(
+                "s.updated_at &gt; t.updated_at OR "
+                "(s.updated_at = t.updated_at AND s.ingestion_id &gt;= t.ingestion_id)"
+            )
+        )
+        .whenNotMatchedInsertAll()
+        .execute()
+    )</code></pre></div>
+  <h3>Mandatory checks before you call it complete</h3>
+  <ul class="checklist"><li>Print and explain the input and output schemas.</li><li>Prove customer dimension key uniqueness before broadcast join.</li><li>Reconcile source orders, exploded line rows, invalid rows, valid rows, and latest rows.</li><li>Test two versions with equal updated_at and different ingestion_id.</li><li>Test a null items array and explain <code>explode_outer</code> behavior.</li><li>Run the same batch twice and prove target row count does not increase.</li><li>Inspect <code>explain("formatted")</code> and identify exchange, broadcast, sort, and window operators.</li><li>Explain why event_date is an appropriate or inappropriate partition for the sample volume.</li></ul>
+  <div class="callout tip"><div class="label">Interview narration</div><p>Begin with requirements and grain, then schema, quality split, deterministic deduplication, join cardinality, metric window, and idempotent write. End with tests, monitoring, failure recovery, and scale changes. This order makes your answer sound like production engineering rather than disconnected syntax.</p></div>
+  <div class="practice"><b>Final test</b><p>Close this document and rebuild the solution in 75 minutes. Spend 10 minutes on requirements, 45 minutes coding, 10 minutes tests, and 10 minutes explaining trade-offs aloud.</p></div>
+  <div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use this no-cost workspace for the PySpark, Delta, and final coding-gate implementation.</span></a><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_df.html"><b>PySpark DataFrame Quickstart</b><span>Run the official DataFrame examples, then adapt them to the chapter scenario.</span></a></div>
+  
+  </section>
+<section class="chapter" id="rapid-qa" data-search="rapid interview q&a use these as spoken answers. first answer in one sentence, then add the trade-off or example only if the interviewer asks deeper.">
+    <div class="chapter-head"><div class="chapter-num">26</div><div><h2>Rapid interview Q&A</h2></div><label class="mastery"><input type="checkbox" data-done="rapid-qa"> Mastered <span class="pill">Revision</span></label></div>
+    <p class="chapter-lead">Use these as spoken answers. First answer in one sentence, then add the trade-off or example only if the interviewer asks deeper.</p>
+  <table><thead><tr><th>Question</th><th>Strong short answer</th></tr></thead><tbody>
+    <tr><td>List vs tuple?</td><td>A list is mutable; a tuple is immutable and can be hashable when its elements are hashable. I use tuples for fixed records or composite keys.</td></tr>
+    <tr><td>Why set for membership?</td><td>A set uses hashing, so average membership is O(1), compared with O(n) scanning in a list.</td></tr>
+    <tr><td>Shallow vs deep copy?</td><td>A shallow copy creates a new outer container but shares nested objects; a deep copy recursively copies nested objects.</td></tr>
+    <tr><td>Why use a generator?</td><td>It produces values lazily, so I can process large files or API results without storing the entire result in memory.</td></tr>
+    <tr><td>What does a context manager provide?</td><td>It guarantees setup and cleanup around a block, such as closing a file even when an exception occurs.</td></tr>
+    <tr><td>Why avoid mutable default arguments?</td><td>The default object is created once and reused across calls, causing state to leak between invocations.</td></tr>
+    <tr><td>How do you retry an API?</td><td>I retry only transient failures with a timeout, bounded exponential backoff and jitter, respect rate-limit headers, and keep writes/checkpoints idempotent.</td></tr>
+    <tr><td>Naive vs aware datetime?</td><td>A naive datetime has no zone information; an aware datetime represents an instant with a zone/offset. I normalize internal timestamps to aware UTC.</td></tr>
+    <tr><td>Unit vs integration test?</td><td>A unit test isolates one behavior; an integration test verifies real component contracts such as parser-to-file or Spark-to-Delta.</td></tr>
+    <tr><td>Pandas vs PySpark?</td><td>Pandas is ideal for data that fits one process and needs low overhead; PySpark is for distributed data and computation or an existing Spark platform.</td></tr>
+    <tr><td>Driver vs executor?</td><td>The driver plans and coordinates the application; executors run tasks on partitions and hold cached/shuffle data.</td></tr>
+    <tr><td>Job, stage, task?</td><td>An action creates a job, shuffle boundaries split it into stages, and each stage runs tasks across its partitions.</td></tr>
+    <tr><td>Transformation vs action?</td><td>A transformation adds to a lazy plan and returns a DataFrame; an action requests a result and triggers execution.</td></tr>
+    <tr><td>Narrow vs wide transformation?</td><td>A narrow transformation keeps dependencies local to a small number of parent partitions; a wide transformation redistributes rows and normally shuffles.</td></tr>
+    <tr><td>Why is shuffle expensive?</td><td>It serializes, sorts/hashes, writes, transfers, and reads data across executors, and skew can leave a few very slow tasks.</td></tr>
+    <tr><td>Why explicit schema?</td><td>It gives a stable contract, avoids inference cost and inconsistency, and makes type failures visible early.</td></tr>
+    <tr><td>groupByKey vs reduceByKey?</td><td>For RDDs, groupByKey moves all values then groups them; reduceByKey combines values locally before shuffle and usually transfers less data. For structured data I prefer DataFrame aggregations.</td></tr>
+    <tr><td>Window vs groupBy?</td><td>groupBy collapses groups; a window keeps row-level detail and adds rankings, running metrics, or previous/next values.</td></tr>
+    <tr><td>dropDuplicates vs row_number?</td><td>dropDuplicates does not express which duplicate wins; row_number with deterministic ordering selects the required latest or highest-priority row.</td></tr>
+    <tr><td>Left semi vs left anti?</td><td>Left semi returns left rows with a match; left anti returns left rows without a match. Neither returns right-side columns.</td></tr>
+    <tr><td>When broadcast join?</td><td>When one side is safely small enough to distribute to executors, avoiding a shuffle of the large side. I verify byte size and the physical plan.</td></tr>
+    <tr><td>What is data skew?</td><td>A few keys create much larger partitions, so a few tasks dominate stage time. I verify task metrics before applying targeted fixes such as salting.</td></tr>
+    <tr><td>repartition vs coalesce?</td><td>repartition reshuffles to rebalance and can increase or decrease partitions; coalesce mainly reduces partitions with less movement and can be uneven.</td></tr>
+    <tr><td>cache vs checkpoint?</td><td>Cache reuses computed data but keeps lineage; checkpoint materializes data and truncates lineage for recovery or very long plans.</td></tr>
+    <tr><td>Why prefer built-ins over Python UDF?</td><td>Built-ins stay visible to Spark optimization and avoid much of the JVM-Python serialization cost.</td></tr>
+    <tr><td>What is a streaming checkpoint?</td><td>Reliable metadata that stores query progress and state so a streaming query can recover after restart.</td></tr>
+    <tr><td>What is a watermark?</td><td>An event-time progress boundary used by supported stateful operations to handle lateness and remove old state.</td></tr>
+    <tr><td>Can late data still be processed?</td><td>Yes, if it arrives before the relevant state is finalized/removed. Data older than the watermark may be dropped depending on the operation.</td></tr>
+    <tr><td>What gives exactly-once?</td><td>A replayable source, reliable checkpoint, deterministic processing, and an idempotent or transactional sink together provide the end-to-end guarantee.</td></tr>
+    <tr><td>Why can append duplicate Delta rows?</td><td>Append adds new files/rows and does not know they represent the same business keys; rerun safety requires dedup, overwrite scope, or merge.</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Answer shape</div><p>Use: definition -> why it matters -> one example -> one trade-off. Stop after the definition if the interviewer only asked for a definition.</p></div>
+  
+  </section>
+<section class="chapter" id="practice-plan" data-search="practice path and revision plan every external practice link is now placed directly below its related topic. use this final chapter only to fit those topic drills into your 30-day tracker.">
+    <div class="chapter-head"><div class="chapter-num">27</div><div><h2>Practice path and revision plan</h2></div><label class="mastery"><input type="checkbox" data-done="practice-plan"> Mastered <span class="pill">Use selectively</span></label></div>
+    <p class="chapter-lead">Every external practice link is now placed directly below its related topic. Use this final chapter only to fit those topic drills into your 30-day tracker.</p>
+  <h3>Where this fits in your 30-day tracker</h3>
+  <table><thead><tr><th>Tracker days</th><th>Use these chapters</th><th>Required output</th></tr></thead><tbody>
+    <tr><td>Days 1-4</td><td>01-12 Core Python and Pandas basics</td><td>Validator + paginated API skeleton + tests</td></tr>
+    <tr><td>Days 7-11</td><td>13-24 PySpark core, tuning, streaming, Delta</td><td>Join/dedup/window notebook + streaming window</td></tr>
+    <tr><td>Days 14-18</td><td>12, 11, 23 plus production patterns</td><td>Pandas reconciliation + config-driven job + error split</td></tr>
+    <tr><td>Days 21-24</td><td>25 Coding gate and troubleshooting Q&A</td><td>End-to-end batch and streaming implementation</td></tr>
+    <tr><td>Days 25-30</td><td>26 Rapid Q&A + failed-topic repair</td><td>75-90 minute mock, tests, spoken explanation</td></tr>
+  </tbody></table>
+  <h3>How to use each topic link</h3>
+  <p>Read the matching chapter, open only the link placed below that topic's Practice Drill, run one relevant official example, complete the drill, and then speak the answer. This keeps practice beside the explanation and avoids resource-hopping.</p>
+  <div class="callout tip"><div class="label">Final readiness standard</div><p>You are ready when you can rebuild the coding gate without copying, explain its execution plan and failure handling, and score at least 4/5 on every P0 rapid answer for three separate revision attempts.</p></div>
+  
+  </section><footer class="footer">Built from your MAQ 30-day tracker and topic list. Definitions are designed to be spoken in interviews; examples are designed to be re-coded without notes.</footer></main></div>
+<script>
+  const checks = [...document.querySelectorAll('[data-done]')];
+  const saved = JSON.parse(localStorage.getItem('pythonPysparkMastery') || '{}');
+  checks.forEach(c => { c.checked = Boolean(saved[c.dataset.done]); c.addEventListener('change', updateProgress); });
+  function updateProgress(){ const state={}; checks.forEach(c=>state[c.dataset.done]=c.checked); localStorage.setItem('pythonPysparkMastery',JSON.stringify(state)); const done=checks.filter(c=>c.checked).length; const pct=checks.length?Math.round(done*100/checks.length):0; document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressText').textContent=pct+'%'; }
+  updateProgress();
+  document.getElementById('printButton').addEventListener('click',()=>window.print());
+  document.getElementById('resetButton').addEventListener('click',()=>{ if(confirm('Reset all mastery checkboxes?')){ checks.forEach(c=>c.checked=false); updateProgress(); }});
+  let expanded=false; document.getElementById('expandButton').addEventListener('click',e=>{ expanded=!expanded; document.querySelectorAll('details.qa').forEach(d=>d.open=expanded); e.currentTarget.textContent=expanded?'Collapse all Q&A':'Expand all Q&A'; });
+  document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{ const value=btn.closest('.code-wrap').querySelector('code').innerText; try{ if(!navigator.clipboard) throw new Error('Clipboard API unavailable'); await navigator.clipboard.writeText(value); }catch(_error){ const area=document.createElement('textarea'); area.value=value; area.style.position='fixed'; area.style.opacity='0'; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); } const old=btn.textContent; btn.textContent='Copied'; setTimeout(()=>btn.textContent=old,1000); }));
+  document.getElementById('topicSearch').addEventListener('input',e=>{ const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.chapter').forEach(s=>{ s.classList.toggle('hidden',q && !s.innerText.toLowerCase().includes(q)); }); });
+  const links=[...document.querySelectorAll('.nav-link')]; const observer=new IntersectionObserver(entries=>{ entries.filter(e=>e.isIntersecting).forEach(e=>{ links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)); }); },{rootMargin:'-15% 0px -72%'}); document.querySelectorAll('.chapter').forEach(s=>observer.observe(s));
+</script></body></html>

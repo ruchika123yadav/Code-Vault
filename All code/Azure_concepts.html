@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Azure + MAQ Data Engineering Master - Data Engineering Interview Guide</title><style>
+  :root{--ink:#172133;--muted:#5b6678;--line:#dce3ea;--paper:#fff;--canvas:#eef2f5;--nav:#101b2a;--nav2:#17263a;--cyan:#007f8b;--cyan2:#0aa6a6;--amber:#d97706;--green:#16794b;--red:#b9362b;--violet:#6d54b5;--code:#101827;--soft:#eef8f8;--radius:8px}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.65 "Segoe UI",Arial,sans-serif;letter-spacing:0}a{color:var(--cyan);text-underline-offset:3px}code,pre{font-family:Consolas,"Courier New",monospace}
+  .layout{display:grid;grid-template-columns:286px minmax(0,1fr);max-width:1440px;margin:auto;min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);color:#dbe8f3;padding:24px 18px;border-right:1px solid #26384d}.brand{padding:4px 8px 20px;border-bottom:1px solid #2a3b50}.brand b{display:block;font-size:20px;line-height:1.25}.brand span{display:block;color:#91a6ba;font-size:12px;margin-top:6px}.progress-row{display:flex;justify-content:space-between;font-size:12px;color:#9bb0c3;margin:18px 4px 7px}.progress-track{height:7px;background:#26384d;border-radius:4px;overflow:hidden}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#1bc0b7,#f0ad4e);transition:width .2s}.search{width:100%;margin:18px 0 12px;padding:10px 11px;border:1px solid #34485f;border-radius:6px;background:#0c1623;color:white;font:inherit}.search::placeholder{color:#7690a8}.nav-group{margin-top:17px}.nav-label{padding:0 9px 5px;color:#7690a8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em}.nav-link{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;border-radius:5px;color:#bdccda;text-decoration:none;font-size:12.5px;line-height:1.35}.nav-link:hover,.nav-link.active{background:var(--nav2);color:white}.nav-link .n{color:#62d2cc;font-family:Consolas,monospace;min-width:20px}.side-note{font-size:11px;color:#7590a9;margin:20px 7px}
+  main{min-width:0;background:var(--paper);padding:0 64px 100px}.hero{max-width:980px;margin:0 auto;padding:64px 0 42px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.hero h1{font-size:48px;line-height:1.08;margin:10px 0 12px;letter-spacing:0}.hero .subtitle{font-size:19px;color:var(--muted);max-width:760px}.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid #b9dadd;background:#effafa;color:#075f66;padding:5px 10px;border-radius:5px;font-size:12px;font-weight:700}.toolbar{display:flex;gap:8px;margin-top:22px}.tool-btn{border:1px solid #cbd5df;background:#fff;color:var(--ink);border-radius:5px;padding:8px 11px;font-weight:700;cursor:pointer}.tool-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .chapter{max-width:980px;margin:0 auto;padding:56px 0 8px;scroll-margin-top:20px}.chapter.hidden{display:none}.chapter-head{display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:start;padding-bottom:16px;border-bottom:3px solid var(--cyan)}.chapter-num{font:700 13px Consolas,monospace;color:var(--cyan);padding-top:8px}.chapter h2{font-size:29px;line-height:1.2;margin:0;letter-spacing:0}.mastery{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);padding-top:7px;white-space:nowrap}.mastery input{width:17px;height:17px;accent-color:var(--green)}.priority{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:800}.priority.p0{background:#fee8e5;color:#982b22}.priority.p1{background:#fff0d5;color:#8b5207}.priority.p2{background:#e9e5f7;color:#5c4599}.chapter-lead{font-size:17px;color:var(--muted);margin:18px 0 26px;max-width:850px}.chapter h3{font-size:20px;color:#103f4d;margin:30px 0 10px}.chapter h4{font-size:16px;color:var(--amber);margin:22px 0 8px}.chapter p{margin:10px 0}.chapter ul,.chapter ol{padding-left:24px}.chapter li{margin:6px 0}
+  table{width:100%;border-collapse:collapse;margin:17px 0 23px;font-size:14px}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#143c4a;color:white}tbody tr:nth-child(even){background:#f6f9fa}td:first-child{font-weight:600}.say,.callout,.practice{border-radius:var(--radius);padding:15px 18px;margin:19px 0}.say{background:#fff7e7;border:1px solid #f0cd8d;border-left:5px solid var(--amber)}.say .label,.callout .label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.say .label{color:#8a5207}.callout.tip{background:#ebf8f2;border-left:5px solid var(--green)}.callout.tip .label{color:var(--green)}.callout.warn{background:#fff0ee;border-left:5px solid var(--red)}.callout.warn .label{color:var(--red)}.practice{background:#f1effb;border:1px solid #d4cdef;border-left:5px solid var(--violet)}.practice b{display:block;color:var(--violet);font-size:12px;text-transform:uppercase;letter-spacing:.07em}.topic-links{border:1px solid #b8d9dc;border-left:5px solid var(--cyan);border-radius:var(--radius);padding:14px 16px;margin:10px 0 24px;background:#f2fbfb;display:grid;gap:8px}.topic-links-title{color:#075f66;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.topic-links a{display:grid;grid-template-columns:minmax(160px,220px) 1fr;gap:12px;align-items:start;padding:9px 10px;border:1px solid #cfe5e6;border-radius:5px;background:#fff;text-decoration:none}.topic-links a:hover{border-color:var(--cyan);background:#f8ffff}.topic-links a b{color:#075f66;font-size:13px}.topic-links a span{color:var(--muted);font-size:12px}
+  .code-wrap{margin:18px 0;border-radius:var(--radius);overflow:hidden;background:var(--code);border:1px solid #26364c}.code-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#18243a;color:#8ea6bc;font:12px Consolas,monospace}.copy-btn{border:1px solid #3b5069;background:#111c2b;color:#d7e3ed;border-radius:4px;padding:4px 8px;cursor:pointer}.copy-btn:hover{border-color:#6ad5cf;color:white}pre{margin:0;padding:17px 18px;overflow:auto;color:#e5edf5;font-size:13px;line-height:1.58;tab-size:4}.qa{border:1px solid var(--line);border-radius:6px;margin:9px 0;background:#fff}.qa summary{cursor:pointer;padding:12px 15px;font-weight:700;color:#123c49}.qa summary:hover{background:#f0f8f8}.qa>div{padding:0 15px 14px;color:var(--muted)}.qa[open]{border-color:#9ccfd0}.learning-loop,.coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.learning-loop div,.coverage-grid div{border:1px solid var(--line);border-top:4px solid var(--cyan2);padding:14px;border-radius:6px;background:#fff}.learning-loop b,.coverage-grid b{display:block;margin-bottom:5px}.learning-loop span,.coverage-grid span{display:block;color:var(--muted);font-size:13px}.flow{display:flex;align-items:stretch;gap:8px;margin:18px 0}.flow div{flex:1;border:1px solid var(--line);border-radius:6px;padding:12px;background:#f7fafb}.flow b,.flow span{display:block}.flow span{font-size:12px;color:var(--muted)}.flow i{align-self:center;color:var(--cyan);font-style:normal;font-weight:800}.checklist{list-style:none;padding:0!important}.checklist li{position:relative;padding-left:27px}.checklist li:before{content:"[ ]";position:absolute;left:0;color:var(--cyan);font-family:Consolas,monospace}.source-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}.source-link{border:1px solid var(--line);padding:13px 14px;border-radius:6px;text-decoration:none;background:#fff}.source-link:hover{border-color:var(--cyan);background:#f4fbfb}.source-link b,.source-link span{display:block}.source-link span{font-size:12px;color:var(--muted);margin-top:4px}.footer{max-width:980px;margin:55px auto 0;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);font-size:13px;text-align:center}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:17px}.sidebar nav,.side-note{display:none}.brand{border:0;padding-bottom:4px}.search{margin:12px 0 6px}main{padding:0 24px 70px}.hero{padding-top:38px}.hero h1{font-size:38px}.learning-loop,.coverage-grid{grid-template-columns:repeat(2,1fr)}.chapter-head{grid-template-columns:auto 1fr}.mastery{grid-column:2}.source-list{grid-template-columns:1fr}}
+  @media(max-width:600px){main{padding:0 16px 60px}.hero h1{font-size:33px}.hero .subtitle{font-size:16px}.learning-loop,.coverage-grid{grid-template-columns:1fr}.chapter{padding-top:42px}.chapter h2{font-size:24px}.flow{flex-direction:column}.flow i{transform:rotate(90deg)}table{display:block;overflow-x:auto}.toolbar{flex-wrap:wrap}.topic-links a{grid-template-columns:1fr;gap:3px}}
+  @media print{body{background:#fff;font-size:11pt}.layout{display:block}.sidebar,.toolbar,.copy-btn,.mastery{display:none!important}main{padding:0 18mm 20mm}.hero{padding:12mm 0 8mm}.hero h1{font-size:30pt}.chapter{max-width:none;padding-top:10mm;page-break-before:auto}.chapter-head{page-break-after:avoid}.say,.callout,.practice,.code-wrap,table,.qa{break-inside:avoid}.qa>div{display:block!important}.qa summary{list-style:none}.footer{max-width:none}}
+
+
+    :root{--cyan:#1769aa;--cyan2:#2489cc;--nav:#152232;--nav2:#20354d;--soft:#edf6fc}
+    .chapter h3{color:#174f7d}.nav-link .n{color:#72b8ea}.topic-links{background:#f1f8fd;border-color:#afd2ea}.topic-links-title,.topic-links a b{color:#174f7d}
+  </style></head>
+<body><div class="layout"><aside class="sidebar"><div class="brand"><b>Azure + MAQ Master</b><span>Data Engineering Interview Resource</span></div><div class="progress-row"><span>Mastery progress</span><strong id="progressText">0%</strong></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><input class="search" id="topicSearch" type="search" placeholder="Find a topic..." aria-label="Find a topic"><nav><div class="nav-group"><div class="nav-label">Orientation</div><a class="nav-link" href="#how-to-use"><span class="n">00</span><span>How to use the Azure and MAQ resource</span></a><a class="nav-link" href="#azure-map"><span class="n">01</span><span>Azure data-platform map and service boundaries</span></a></div><div class="nav-group"><div class="nav-label">ADF and Azure core</div><a class="nav-link" href="#adf-objects"><span class="n">02</span><span>ADF pipeline, activity, dataset, and linked service</span></a><a class="nav-link" href="#adf-ir"><span class="n">03</span><span>Azure and self-hosted Integration Runtime</span></a><a class="nav-link" href="#adf-activities"><span class="n">04</span><span>Copy, Mapping Data Flow, and control activities</span></a><a class="nav-link" href="#adf-parameters-metadata"><span class="n">05</span><span>Parameters, variables, expressions, and metadata-driven ADF</span></a><a class="nav-link" href="#adf-triggers-watermark"><span class="n">06</span><span>ADF triggers and incremental watermark pipeline</span></a><a class="nav-link" href="#adf-reliability"><span class="n">07</span><span>ADF retries, failure paths, schema drift, and monitoring</span></a><a class="nav-link" href="#adls-design"><span class="n">08</span><span>ADLS Gen2, hierarchical namespace, and lake layout</span></a><a class="nav-link" href="#azure-identity-access"><span class="n">09</span><span>RBAC, ACLs, managed identity, service principals, and Key Vault</span></a><a class="nav-link" href="#azure-sql-synapse"><span class="n">10</span><span>Azure SQL and Synapse serverless vs dedicated SQL</span></a><a class="nav-link" href="#event-hubs-core"><span class="n">11</span><span>Event Hubs namespace, hub, partitions, and consumer groups</span></a><a class="nav-link" href="#event-hubs-operations"><span class="n">12</span><span>Event Hubs checkpoints, Capture, Kafka endpoint, and notifications</span></a></div><div class="nav-group"><div class="nav-label">Databricks and Delta</div><a class="nav-link" href="#databricks-workspace-compute"><span class="n">13</span><span>Databricks workspace, notebooks, compute, and Jobs</span></a><a class="nav-link" href="#delta-core"><span class="n">14</span><span>Delta transaction log, ACID, time travel, MERGE, and CDF</span></a><a class="nav-link" href="#delta-optimization"><span class="n">15</span><span>Delta schema evolution, compaction, OPTIMIZE, Z-ORDER, and VACUUM</span></a><a class="nav-link" href="#auto-loader"><span class="n">16</span><span>Auto Loader checkpoints and schema location</span></a><a class="nav-link" href="#lakeflow-pipelines"><span class="n">17</span><span>Lakeflow Declarative Pipelines and Expectations</span></a><a class="nav-link" href="#auto-cdc"><span class="n">18</span><span>AUTO CDC, sequence keys, and SCD Type 2</span></a><a class="nav-link" href="#unity-catalog"><span class="n">19</span><span>Unity Catalog hierarchy, permissions, and external data</span></a><a class="nav-link" href="#bundles-cicd"><span class="n">20</span><span>Declarative Automation Bundles and CI/CD</span></a></div><div class="nav-group"><div class="nav-label">Fabric and Power BI</div><a class="nav-link" href="#fabric-onelake"><span class="n">21</span><span>Microsoft Fabric workloads and OneLake</span></a><a class="nav-link" href="#fabric-lakehouse-warehouse"><span class="n">22</span><span>Fabric Lakehouse vs Warehouse</span></a><a class="nav-link" href="#fabric-pipelines-notebooks"><span class="n">23</span><span>Fabric pipelines, notebooks, Spark, and medallion</span></a><a class="nav-link" href="#fabric-shortcuts"><span class="n">24</span><span>OneLake shortcuts and zero-copy access</span></a><a class="nav-link" href="#powerbi-storage-modes"><span class="n">25</span><span>Direct Lake vs Import vs DirectQuery</span></a><a class="nav-link" href="#powerbi-modeling"><span class="n">26</span><span>Power BI semantic models, DAX, refresh, gateway, and RLS</span></a><a class="nav-link" href="#fabric-rti"><span class="n">27</span><span>Fabric Real-Time Intelligence and Eventstreams</span></a><a class="nav-link" href="#platform-comparison"><span class="n">28</span><span>Fabric vs Databricks vs Synapse vs Snowflake</span></a></div><div class="nav-group"><div class="nav-label">Production and design</div><a class="nav-link" href="#azure-production"><span class="n">29</span><span>Networking, Azure Monitor, deployment, IaC, and cost</span></a><a class="nav-link" href="#azure-batch-architecture"><span class="n">30</span><span>Architecture gate: Azure batch and BI platform</span></a><a class="nav-link" href="#azure-streaming-architecture"><span class="n">31</span><span>Architecture gate: Event Hubs to lakehouse and Power BI</span></a></div><div class="nav-group"><div class="nav-label">Resume defense</div><a class="nav-link" href="#resume-cognizant"><span class="n">32</span><span>Resume defense: Cognizant data validation experience</span></a><a class="nav-link" href="#resume-uber"><span class="n">33</span><span>Resume defense: Uber-style streaming project</span></a><a class="nav-link" href="#resume-spotify"><span class="n">34</span><span>Resume defense: Spotify-style batch/lakehouse project</span></a><a class="nav-link" href="#rapid-revision"><span class="n">35</span><span>Rapid Q&A and final MAQ revision gate</span></a></div></nav><p class="side-note">Your progress is stored only in this browser.</p></aside>
+<main><header class="hero"><div class="eyebrow">30-day DE preparation - Resource 3 of 3</div><h1>Azure + MAQ Data Engineering Master</h1><p class="subtitle">Service-level clarity, hands-on Azure practice, modern Databricks and Fabric terminology, production architecture, and resume-project defense for MAQ-style interviews.</p><div class="hero-meta"><span class="pill">ADF</span><span class="pill">ADLS</span><span class="pill">Event Hubs</span><span class="pill">Databricks</span><span class="pill">Fabric</span><span class="pill">Power BI</span><span class="pill">Resume Defense</span></div><div class="toolbar"><button class="tool-btn" id="printButton" type="button">Print / Save PDF</button><button class="tool-btn" id="expandButton" type="button">Expand all Q&amp;A</button><button class="tool-btn" id="resetButton" type="button">Reset progress</button></div></header>
+<section class="chapter" id="how-to-use" data-search="how to use the azure and maq resource this guide prepares you to explain azure services as a connected production platform and defend every technology named in your resume.">
+      <div class="chapter-head"><div class="chapter-num">00</div><div><h2>How to use the Azure and MAQ resource</h2></div><label class="mastery"><input type="checkbox" data-done="how-to-use"> Mastered <span class="pill">Start here</span></label></div>
+      <p class="chapter-lead">This guide prepares you to explain Azure services as a connected production platform and defend every technology named in your resume.</p>
+  <div class="learning-loop"><div><b>1. Say it</b><span>Use the interview-ready definition aloud.</span></div><div><b>2. Configure it</b><span>Complete the exact practical drill.</span></div><div><b>3. Defend it</b><span>Explain why this service, not its alternative.</span></div><div><b>4. Operate it</b><span>Cover security, failure, monitoring, and cost.</span></div></div>
+  <div class="callout tip"><div class="label">Four-part service answer</div><p>For every Azure service say: what it does, where it sits in your architecture, why you chose it, and how you secure/monitor/recover it. This prevents shallow definition-only answers.</p></div>
+  <h3>Current naming used here</h3>
+  <table><thead><tr><th>Current name</th><th>Older/common interview name</th><th>How to speak</th></tr></thead><tbody>
+    <tr><td>Lakeflow Spark Declarative Pipelines</td><td>Delta Live Tables / DLT</td><td>Say current name, then mention it was formerly DLT</td></tr>
+    <tr><td>Declarative Automation Bundles</td><td>Databricks Asset Bundles / DAB</td><td>Recognize both names; use current docs</td></tr>
+    <tr><td>Microsoft Entra ID</td><td>Azure Active Directory / Azure AD</td><td>Use Entra ID unless describing old wording</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Resume rule</div><p>Do not claim a feature was implemented if you only studied it. Use: implemented, configured, tested, observed, or evaluated precisely. Interviewers will ask for configuration, failure behavior, metrics, and trade-offs.</p></div>
+  
+    </section>
+<section class="chapter" id="azure-map" data-search="azure data-platform map and service boundaries a strong architecture answer assigns each service a clear responsibility instead of treating adf, databricks, synapse, and fabric as interchangeable.">
+      <div class="chapter-head"><div class="chapter-num">01</div><div><h2>Azure data-platform map and service boundaries</h2></div><label class="mastery"><input type="checkbox" data-done="azure-map"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A strong architecture answer assigns each service a clear responsibility instead of treating ADF, Databricks, Synapse, and Fabric as interchangeable.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>ADF primarily orchestrates and moves data, ADLS stores lake data, Event Hubs ingests event streams, Databricks performs scalable engineering and lakehouse processing, Azure SQL/Synapse/Fabric provide relational and analytical serving options, and Power BI provides semantic modeling and reporting.</strong></p></div>
+  <div class="flow"><div><b>Sources</b><span>Azure SQL, APIs, files, events</span></div><i>-></i><div><b>Ingest</b><span>ADF / Event Hubs</span></div><i>-></i><div><b>Store</b><span>ADLS Bronze</span></div><i>-></i><div><b>Transform</b><span>Databricks / Fabric</span></div><i>-></i><div><b>Serve</b><span>SQL / semantic model / Power BI</span></div></div>
+  <h3>Selection questions</h3>
+  <ul class="checklist"><li>Is the workload movement, transformation, orchestration, storage, or serving?</li><li>What freshness, volume, concurrency, and data-type requirements exist?</li><li>Which identity and network boundary controls access?</li><li>What is the durable replay point and idempotent target?</li><li>Who operates the service and how is cost attributed?</li></ul>
+  <details class="qa"><summary>ADF vs Databricks?</summary><div><p>ADF is strongest for orchestration, connectivity, and data movement; Databricks is strongest for code-first scalable transformation, streaming, and lakehouse workloads. They often work together rather than replacing each other.</p></div></details>
+  <details class="qa"><summary>Fabric vs separate Azure services?</summary><div><p>Fabric offers an integrated SaaS analytics experience around OneLake and shared capacities. Separate Azure services can provide more independent service/network/compute choices. Select from governance, skills, workload isolation, migration, and operating model.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Draw one batch and one streaming Azure architecture. Label identity, network path, checkpoint/watermark, raw replay layer, quality gate, serving mode, monitoring, and cost boundary.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/example-scenario/data/data-warehouse"><b>Azure Data Warehousing Architecture</b><span>Redraw the reference flow, then replace services based on a new latency and cost requirement.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-objects" data-search="adf pipeline, activity, dataset, and linked service these four objects are foundational, and interviewers expect you to explain both their roles and how parameterization prevents duplication.">
+      <div class="chapter-head"><div class="chapter-num">02</div><div><h2>ADF pipeline, activity, dataset, and linked service</h2></div><label class="mastery"><input type="checkbox" data-done="adf-objects"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">These four objects are foundational, and interviewers expect you to explain both their roles and how parameterization prevents duplication.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An ADF pipeline is a logical workflow. An activity is one unit of work. A dataset describes the shape/location of data used by an activity, and a linked service contains connection information for a data store or compute service.</strong></p></div>
+  <table><thead><tr><th>Object</th><th>Answers</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Pipeline</td><td>Which tasks and dependencies run?</td><td>Lookup watermark -> Copy -> validate -> update watermark</td></tr>
+    <tr><td>Activity</td><td>What unit of work happens?</td><td>Copy Activity or notebook execution</td></tr>
+    <tr><td>Dataset</td><td>Which data object/path/table is used?</td><td>Parameterized ADLS Parquet path</td></tr>
+    <tr><td>Linked service</td><td>How do we connect/authenticate?</td><td>Azure SQL endpoint using managed identity</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Common confusion</div><p>A dataset is not the data itself, and a linked service should not be duplicated for every table. Reuse connections and parameterize datasets/pipelines where the contract is genuinely common.</p></div>
+  <details class="qa"><summary>Can one linked service serve many datasets?</summary><div><p>Yes. A linked service represents the connection; multiple datasets can reference it for different tables, files, paths, or formats.</p></div></details>
+  <details class="qa"><summary>Where should a table name parameter live?</summary><div><p>Often the pipeline receives the table metadata and passes it into a parameterized dataset. The exact placement depends on reuse, but parameters are immutable run inputs while variables are mutable pipeline state.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Use the Copy Data tool once, then recreate the result manually. Identify the pipeline, activity, source/sink datasets, linked services, parameters, and generated monitoring output.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/copy-data-tool"><b>ADF Copy Data Tool</b><span>Create a small copy pipeline in the UI and inspect the generated datasets, linked services, and activities.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/copy-activity-overview"><b>ADF Copy Activity Overview</b><span>Implement a source-to-sink copy, inspect run metrics, and identify where staging, parallel copy, and resume apply.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-ir" data-search="azure and self-hosted integration runtime integration runtime is the execution/connectivity bridge behind adf data movement and activity dispatch. network reachability determines the choice.">
+      <div class="chapter-head"><div class="chapter-num">03</div><div><h2>Azure and self-hosted Integration Runtime</h2></div><label class="mastery"><input type="checkbox" data-done="adf-ir"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Integration Runtime is the execution/connectivity bridge behind ADF data movement and activity dispatch. Network reachability determines the choice.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Azure Integration Runtime provides managed cloud data movement and activity dispatch. Self-hosted Integration Runtime runs on a customer-managed machine or VM to reach private/on-premises networks. Azure-SSIS IR hosts SSIS package execution.</strong></p></div>
+  <table><thead><tr><th>Scenario</th><th>Choice</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>Azure Blob to ADLS</td><td>Azure IR</td><td>Cloud endpoints with managed data movement</td></tr>
+    <tr><td>Private on-prem SQL Server</td><td>Self-hosted IR</td><td>Outbound connection from a network that can reach source</td></tr>
+    <tr><td>Lift existing SSIS packages</td><td>Azure-SSIS IR</td><td>Managed SSIS runtime</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Security reasoning</div><p>A self-hosted IR normally initiates outbound connections, so inbound internet exposure is not the default requirement. Patch, monitor, size, and make the host highly available because it is your managed component.</p></div>
+  <details class="qa"><summary>Does self-hosted IR store business data permanently?</summary><div><p>It is a data-movement runtime, not the target store. It can buffer data during movement, so host security, disk capacity, and cleanup still matter.</p></div></details>
+  <details class="qa"><summary>How do you improve self-hosted IR availability?</summary><div><p>Add multiple nodes to the same runtime where supported, place them on reliable network paths, monitor resource/queue health, and avoid one under-sized workstation as a production dependency.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>For on-prem SQL, Azure SQL, SFTP, and private ADLS endpoints, draw the network path and choose an IR. Include DNS, firewall, credentials, and high availability.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime"><b>ADF Integration Runtime</b><span>Map three connectivity scenarios to Azure, self-hosted, or Azure-SSIS IR and explain the network path.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-activities" data-search="copy, mapping data flow, and control activities choose copy activity for movement, mapping data flow for visual spark transformations, and control activities to build reusable orchestration logic.">
+      <div class="chapter-head"><div class="chapter-num">04</div><div><h2>Copy, Mapping Data Flow, and control activities</h2></div><label class="mastery"><input type="checkbox" data-done="adf-activities"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Choose Copy Activity for movement, Mapping Data Flow for visual Spark transformations, and control activities to build reusable orchestration logic.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Copy Activity moves data between supported sources and sinks with optional mappings and conversion. Mapping Data Flow performs visual, Spark-based transformations. Lookup/Get Metadata discover control information; ForEach iterates; If branches; Execute Pipeline composes reusable child pipelines.</strong></p></div>
+  <table><thead><tr><th>Need</th><th>ADF choice</th><th>Why</th></tr></thead><tbody>
+    <tr><td>Move a table unchanged</td><td>Copy Activity</td><td>Efficient connector-based movement</td></tr>
+    <tr><td>Join/filter/aggregate visually at scale</td><td>Mapping Data Flow</td><td>Managed Spark transformation</td></tr>
+    <tr><td>Read control-table rows</td><td>Lookup</td><td>Returns configuration to orchestration</td></tr>
+    <tr><td>List files/inspect properties</td><td>Get Metadata</td><td>Discovers child items, existence, timestamps</td></tr>
+    <tr><td>Reusable per-table work</td><td>Execute Pipeline</td><td>Separates parent metadata loop from child logic</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">ForEach scaling</div><p>Do not launch unlimited parallel copies against a source that cannot handle them. Set batch/concurrency from source limits, IR capacity, sink limits, and SLA.</p></div>
+  <details class="qa"><summary>Copy Activity vs Databricks transformation?</summary><div><p>Use Copy for movement and lightweight mapping. Use Databricks when transformations need code, complex Spark logic, streaming, Delta operations, reusable libraries, or deep performance control.</p></div></details>
+  <details class="qa"><summary>Lookup vs Get Metadata?</summary><div><p>Lookup reads rows or a result set from supported data; Get Metadata reads properties of a dataset such as file existence, size, modified time, or child items.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a parent pipeline that reads two table configurations, loops with controlled concurrency, calls a child copy pipeline, and records per-table status.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/copy-activity-overview"><b>ADF Copy Activity Overview</b><span>Implement a source-to-sink copy, inspect run metrics, and identify where staging, parallel copy, and resume apply.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-parameters-metadata" data-search="parameters, variables, expressions, and metadata-driven adf metadata-driven design scales repeated patterns while keeping table-specific contracts visible and governable.">
+      <div class="chapter-head"><div class="chapter-num">05</div><div><h2>Parameters, variables, expressions, and metadata-driven ADF</h2></div><label class="mastery"><input type="checkbox" data-done="adf-parameters-metadata"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Metadata-driven design scales repeated patterns while keeping table-specific contracts visible and governable.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>ADF parameters are immutable inputs supplied to a pipeline, dataset, linked service, or data flow. Variables are mutable values within a pipeline run. Dynamic expressions combine parameters, activity output, system variables, and functions at run time.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>JSON - control table example</span><button class="copy-btn" type="button">Copy</button></div><pre><code>{
+  "source_table": "sales.orders",
+  "sink_path": "bronze/orders",
+  "load_type": "watermark",
+  "watermark_column": "updated_at",
+  "business_key": ["order_id"],
+  "parallel_copies": 4,
+  "quality_profile": "orders_v2",
+  "enabled": true
+}</code></pre></div>
+  <div class="code-wrap"><div class="code-head"><span>ADF expression examples</span><button class="copy-btn" type="button">Copy</button></div><pre><code>@pipeline().parameters.sourceTable
+@activity('LookupConfig').output.value
+@concat(pipeline().parameters.basePath, '/', item().sink_path)
+@formatDateTime(pipeline().TriggerTime, 'yyyy/MM/dd/HH')</code></pre></div>
+  <h3>Metadata framework layers</h3>
+  <ol><li>Parent reads enabled configurations.</li><li>ForEach calls a reusable child with one config.</li><li>Child selects full/watermark/CDC behavior.</li><li>Audit table records range, counts, status, error, and version.</li><li>Only successful reconciled runs advance state.</li></ol>
+  <div class="callout warn"><div class="label">Dynamic SQL trap</div><p>Parameterization does not make arbitrary table or column input safe. Control metadata must be validated/allow-listed, and data values should use connector query parameters where possible.</p></div>
+  <details class="qa"><summary>Parameters vs variables?</summary><div><p>Parameters define immutable run inputs and support reuse; variables change during execution. Avoid variables for parallel ForEach state unless race behavior is deliberately controlled.</p></div></details>
+  <details class="qa"><summary>What should not be generic?</summary><div><p>Do not hide unique business transformations, keys, delete semantics, or quality rules behind an overly generic copy framework. Parameterize repeatable mechanics and keep contracts explicit.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design a control table for 20 sources and implement one metadata-driven pipeline. Include load type, key, source query, sink path, schema policy, quality rules, retry policy, and owner.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/parameters-data-flow"><b>ADF Mapping Data Flow Parameters</b><span>Pass a pipeline parameter into a data flow and verify expression evaluation at run time.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/copy-activity-overview"><b>ADF Copy Activity Overview</b><span>Implement a source-to-sink copy, inspect run metrics, and identify where staging, parallel copy, and resume apply.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-triggers-watermark" data-search="adf triggers and incremental watermark pipeline scheduling and incremental state must be designed together. trigger time is not automatically the data interval or watermark.">
+      <div class="chapter-head"><div class="chapter-num">06</div><div><h2>ADF triggers and incremental watermark pipeline</h2></div><label class="mastery"><input type="checkbox" data-done="adf-triggers-watermark"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Scheduling and incremental state must be designed together. Trigger time is not automatically the data interval or watermark.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A schedule trigger fires on a calendar schedule, a tumbling-window trigger represents contiguous stateful time windows with dependency/retry support, and an event trigger reacts to supported storage events.</strong> A watermark pipeline reads a stable old-to-new boundary and advances state only after successful target publication.</p></div>
+  <h3>Watermark activity flow</h3>
+  <div class="flow"><div><b>Lookup old</b><span>Last committed value</span></div><i>-></i><div><b>Lookup new</b><span>Stable source high value</span></div><i>-></i><div><b>Copy range</b><span>old &lt; x &lt;= new</span></div><i>-></i><div><b>Validate</b><span>Counts + quality</span></div><i>-></i><div><b>Commit state</b><span>Only after success</span></div></div>
+  <div class="code-wrap"><div class="code-head"><span>SQL - source range</span><button class="copy-btn" type="button">Copy</button></div><pre><code>SELECT *
+FROM dbo.orders
+WHERE (updated_at &gt; @old_watermark)
+  AND (updated_at &lt;= @new_watermark);</code></pre></div>
+  <div class="callout warn"><div class="label">Tie and delete trap</div><p>If multiple rows share timestamp precision, use a composite boundary or overlapping read plus deduplication. A timestamp watermark normally captures inserts/updates, not hard deletes.</p></div>
+  <details class="qa"><summary>Schedule vs tumbling-window trigger?</summary><div><p>Use schedule for simple periodic starts. Use tumbling windows when runs represent contiguous time slices and you need state, retry, concurrency, or dependency between windows.</p></div></details>
+  <details class="qa"><summary>Why update the watermark last?</summary><div><p>Advancing it before target success can skip data after failure. Advancing last may replay a successful write if state update fails, so the target must be idempotent.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Complete the Azure SQL incremental-copy tutorial, then modify it for tied timestamps and a failed target write. Demonstrate the rerun behavior.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-overview"><b>ADF Incremental Copy Patterns</b><span>Build the old/new watermark sequence and distinguish timestamp watermarks from change tracking.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-portal"><b>ADF Incremental Copy Tutorial</b><span>Complete the Azure SQL watermark tutorial and inspect its Lookup, Copy, and state-update activities.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adf-reliability" data-search="adf retries, failure paths, schema drift, and monitoring production adf design separates transient retries, record-level rejects, contract failures, and business-quality failures.">
+      <div class="chapter-head"><div class="chapter-num">07</div><div><h2>ADF retries, failure paths, schema drift, and monitoring</h2></div><label class="mastery"><input type="checkbox" data-done="adf-reliability"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Production ADF design separates transient retries, record-level rejects, contract failures, and business-quality failures.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I configure bounded retries for transient activity failures, explicit success/failure dependencies, structured audit logging, and actionable alerts. I treat schema drift as a policy decision: compatible approved changes may flow; breaking or unknown changes are quarantined or fail the pipeline.</strong></p></div>
+  <table><thead><tr><th>Failure</th><th>Response</th><th>Evidence</th></tr></thead><tbody>
+    <tr><td>Timeout/throttling</td><td>Retry with delay; alert after budget</td><td>Retry count and final error</td></tr>
+    <tr><td>Bad row in supported copy</td><td>Fault-tolerant skip/quarantine if policy allows</td><td>Rejected count and file/log</td></tr>
+    <tr><td>Breaking schema</td><td>Stop affected contract</td><td>Expected vs observed schema</td></tr>
+    <tr><td>Quality/reconciliation gap</td><td>Do not publish/advance state</td><td>Rule and count/amount difference</td></tr>
+  </tbody></table>
+  <h3>Useful monitoring fields</h3>
+  <p>Pipeline/activity run IDs, trigger, parameter set, source range, IR, rows/bytes read and written, throughput, duration, queue time, retries, files skipped, error code, and user properties that identify dataset/table.</p>
+  <details class="qa"><summary>How do you rerun only a failed table in a metadata pipeline?</summary><div><p>Persist per-table run state and source boundary, then invoke the child pipeline for that configuration/range. Do not rerun successful tables if doing so creates unnecessary source load or duplicate risk.</p></div></details>
+  <details class="qa"><summary>Would you skip every incompatible row?</summary><div><p>No. Skip/quarantine only known record-level defects within an agreed threshold. A systemic schema or mapping error should fail because most output could be wrong.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Force connector timeout, malformed row, missing required column, and reconciliation gap. Configure distinct retry/fail/quarantine paths and verify the audit record for each.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/copy-activity-overview"><b>ADF Copy Activity Overview</b><span>Implement a source-to-sink copy, inspect run metrics, and identify where staging, parallel copy, and resume apply.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/tutorial-log-alert"><b>Create a Log Search Alert</b><span>Create an action group and a log-search alert with warning/critical reasoning.</span></a></div>
+  
+    </section>
+<section class="chapter" id="adls-design" data-search="adls gen2, hierarchical namespace, and lake layout adls gen2 combines blob storage capabilities with hierarchical namespace semantics useful for analytics paths and directory-level operations.">
+      <div class="chapter-head"><div class="chapter-num">08</div><div><h2>ADLS Gen2, hierarchical namespace, and lake layout</h2></div><label class="mastery"><input type="checkbox" data-done="adls-design"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">ADLS Gen2 combines Blob Storage capabilities with hierarchical namespace semantics useful for analytics paths and directory-level operations.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>ADLS Gen2 is Azure Blob Storage with hierarchical namespace enabled, organizing objects as directories and files and supporting directory-level operations and POSIX-style ACLs.</strong> I design paths from data ownership, layer, dataset, and useful partition filters, not from an arbitrary folder tree.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Path convention</span><button class="copy-btn" type="button">Copy</button></div><pre><code>abfss://raw@account.dfs.core.windows.net/commerce/orders/
+  ingest_date=2026-07-23/hour=10/part-0001.json
+
+abfss://curated@account.dfs.core.windows.net/commerce/orders_silver/
+  event_date=2026-07-22/part-0001.parquet</code></pre></div>
+  <h3>Design choices</h3>
+  <ul><li>Separate security/ownership boundaries with accounts or containers only when needed.</li><li>Use dataset-oriented directories and partition columns used by queries.</li><li>Keep checkpoint/schema/control paths distinct from business data.</li><li>Apply lifecycle tiers/deletion from access pattern and retention obligations.</li><li>Avoid secrets and PII in object names because names appear in logs and listings.</li></ul>
+  <details class="qa"><summary>Why enable hierarchical namespace?</summary><div><p>It provides real directory semantics, efficient directory rename/delete behavior, and ACLs that align with analytics engines. The choice should be made at account creation with feature compatibility considered.</p></div></details>
+  <details class="qa"><summary>Should Bronze be partitioned by event date or ingestion date?</summary><div><p>Ingestion date is dependable for operational replay and arrival tracking; event date supports event-time queries but can be late or invalid. Many designs retain ingestion organization in Bronze and event-date organization in curated layers.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a Bronze/Silver/Gold directory design for orders, customers, and streaming checkpoints. Add retention and lifecycle rules and explain how a 30-day replay locates input.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-namespace"><b>ADLS Gen2 Hierarchical Namespace</b><span>Create a directory layout and explain atomic directory operations plus analytics access patterns.</span></a></div>
+  
+    </section>
+<section class="chapter" id="azure-identity-access" data-search="rbac, acls, managed identity, service principals, and key vault authentication proves identity; authorization grants actions; network controls determine reachability. secure architecture needs all three.">
+      <div class="chapter-head"><div class="chapter-num">09</div><div><h2>RBAC, ACLs, managed identity, service principals, and Key Vault</h2></div><label class="mastery"><input type="checkbox" data-done="azure-identity-access"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Authentication proves identity; authorization grants actions; network controls determine reachability. Secure architecture needs all three.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Azure RBAC grants management or data-plane roles at Azure resource scopes. ADLS ACLs grant directory/file permissions and require execute permission to traverse parent directories. A managed identity is an Azure-managed service identity; a service principal is an application identity whose credential lifecycle you manage. Key Vault protects secrets, keys, and certificates.</strong></p></div>
+  <table><thead><tr><th>Need</th><th>Preferred control</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>ADF reads one ADLS container</td><td>ADF managed identity + least data role/ACL</td><td>No stored client secret</td></tr>
+    <tr><td>Fine directory access</td><td>POSIX ACL plus parent traversal</td><td>Path-level restriction</td></tr>
+    <tr><td>External automation identity</td><td>Service principal/certificate or federation</td><td>Non-human application principal</td></tr>
+    <tr><td>Legacy secret needed</td><td>Key Vault reference + rotation</td><td>Centralized access/audit</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Secret-zero problem</div><p>Putting a Key Vault secret name in configuration is fine; putting the vault credential in the same configuration defeats the design. Use managed identity or another credential-free/federated bootstrap where possible.</p></div>
+  <details class="qa"><summary>RBAC vs ACL in ADLS?</summary><div><p>RBAC applies at Azure scopes such as account/container and is simpler for broad access. ACLs provide fine-grained directory/file permissions. Effective access can involve both models, so test with the actual identity.</p></div></details>
+  <details class="qa"><summary>System-assigned vs user-assigned managed identity?</summary><div><p>A system-assigned identity is tied to one resource lifecycle. A user-assigned identity is a separate reusable Azure resource that can be attached to multiple services and managed independently.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Trace ADF managed identity reading one ADLS path and retrieving one allowed Key Vault secret. List token acquisition, RBAC/ACL, firewall/private endpoint, and audit checks.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control-model"><b>ADLS Gen2 Access Control Model</b><span>Test RBAC at account/container scope and POSIX ACL traversal at directory/file scope.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/key-vault/general/authentication"><b>Azure Key Vault Authentication</b><span>Trace a managed identity token flow and map authentication, authorization, and firewall checks.</span></a></div>
+  
+    </section>
+<section class="chapter" id="azure-sql-synapse" data-search="azure sql and synapse serverless vs dedicated sql azure sql is a managed relational database family; synapse sql adds distributed analytical choices for querying lake files or reserved warehouse compute.">
+      <div class="chapter-head"><div class="chapter-num">10</div><div><h2>Azure SQL and Synapse serverless vs dedicated SQL</h2></div><label class="mastery"><input type="checkbox" data-done="azure-sql-synapse"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Azure SQL is a managed relational database family; Synapse SQL adds distributed analytical choices for querying lake files or reserved warehouse compute.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Azure SQL Database is a managed relational database suited to operational and serving workloads. Synapse serverless SQL queries supported lake data in place with automatically managed compute and pay-per-data-processed behavior. Dedicated SQL pool uses provisioned distributed compute and stored/distributed tables for predictable warehouse workloads.</strong></p></div>
+  <table><thead><tr><th>Requirement</th><th>Likely choice</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>Application transactions</td><td>Azure SQL Database</td><td>OLTP and relational constraints</td></tr>
+    <tr><td>Occasional exploration of Parquet in ADLS</td><td>Synapse serverless</td><td>Query in place without reserved warehouse</td></tr>
+    <tr><td>Large predictable enterprise warehouse</td><td>Dedicated SQL pool</td><td>Reserved distributed compute and warehouse tables</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>T-SQL - serverless Parquet query</span><button class="copy-btn" type="button">Copy</button></div><pre><code>SELECT event_date, SUM(amount) AS revenue
+FROM OPENROWSET(
+    BULK 'https://account.dfs.core.windows.net/gold/orders/**',
+    FORMAT = 'PARQUET'
+) WITH (
+    event_date date,
+    amount decimal(18,2)
+) AS rows
+WHERE event_date &gt;= '2026-07-01'
+GROUP BY event_date;</code></pre></div>
+  <h3>Performance and security anchors</h3>
+  <p>Use least-privilege Entra identities, private connectivity/firewall controls, indexes and query plans for Azure SQL, and partition/file pruning for serverless. Dedicated pools additionally require good table distribution to reduce data movement.</p>
+  <details class="qa"><summary>Why can serverless SQL become expensive?</summary><div><p>It charges based on data processed, so repeated broad scans, poor file formats, missing partition filters, and too many tiny files increase both latency and cost.</p></div></details>
+  <details class="qa"><summary>Hash vs replicated table in a dedicated pool?</summary><div><p>Hash-distribute large tables on a well-distributed join key to colocate work. Replicate small dimensions to each compute node to avoid data movement. Validate skew and query patterns.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Query a partitioned Parquet dataset with Synapse serverless, first broadly and then with projected columns and partition filters. Explain the scan/cost difference.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture"><b>Synapse SQL Architecture</b><span>Compare serverless queries over lake files with dedicated distributed tables and compute.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/synapse-analytics/quickstart-serverless-sql-pool"><b>Synapse Serverless SQL Quickstart</b><span>Query CSV and Parquet in ADLS using serverless SQL and compare bytes scanned.</span></a></div>
+  
+    </section>
+<section class="chapter" id="event-hubs-core" data-search="event hubs namespace, hub, partitions, and consumer groups event hubs is a managed event-ingestion service. correct design centers on partition key, capacity, retention, and independent consumer progress.">
+      <div class="chapter-head"><div class="chapter-num">11</div><div><h2>Event Hubs namespace, hub, partitions, and consumer groups</h2></div><label class="mastery"><input type="checkbox" data-done="event-hubs-core"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Event Hubs is a managed event-ingestion service. Correct design centers on partition key, capacity, retention, and independent consumer progress.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An Event Hubs namespace is the management and capacity boundary, an event hub is the event stream, partitions are ordered logs used for parallelism, and consumer groups provide independent views/progress for separate consuming applications.</strong></p></div>
+  <div class="flow"><div><b>Publishers</b><span>Events + partition key</span></div><i>-></i><div><b>Event hub</b><span>Partitioned retained log</span></div><i>-></i><div><b>Consumer groups</b><span>Fraud / lake / dashboard</span></div></div>
+  <h3>Partition key</h3>
+  <p>Use <code>order_id</code> when order-event ordering matters. Events with the same key are routed together, but a hot key can overload one partition. Without a key, distribution improves but entity ordering is not guaranteed.</p>
+  <details class="qa"><summary>Can two applications share a consumer group?</summary><div><p>They can, but processors in the same group compete for partition ownership and split the stream. Independent applications that each need every event should use separate consumer groups.</p></div></details>
+  <details class="qa"><summary>How do you estimate partition needs?</summary><div><p>Use peak event/byte rate, required processing parallelism, key distribution, service-tier limits, consumer throughput, and growth. Partitions define ordering and cannot be treated as a free tuning knob.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design an Event Hubs namespace for order events with fraud, lake-ingestion, and dashboard consumers. Choose partition key, consumer groups, retention, and capacity assumptions.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features"><b>Azure Event Hubs Features</b><span>Create a hub design with partitions, consumer groups, retention, and a partition-key rule.</span></a></div>
+  
+    </section>
+<section class="chapter" id="event-hubs-operations" data-search="event hubs checkpoints, capture, kafka endpoint, and notifications checkpointing tracks consumer progress; capture archives the stream to storage. neither replaces event-time watermarks or business deduplication.">
+      <div class="chapter-head"><div class="chapter-num">12</div><div><h2>Event Hubs checkpoints, Capture, Kafka endpoint, and notifications</h2></div><label class="mastery"><input type="checkbox" data-done="event-hubs-operations"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Checkpointing tracks consumer progress; Capture archives the stream to storage. Neither replaces event-time watermarks or business deduplication.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An Event Hubs consumer checkpoint stores the last processed position per partition so processing can resume. Event Hubs Capture automatically writes event batches to Blob/ADLS for durable archive. The Kafka endpoint lets compatible Kafka clients use Event Hubs without running Kafka brokers.</strong></p></div>
+  <table><thead><tr><th>Concept</th><th>Purpose</th><th>Not the same as</th></tr></thead><tbody>
+    <tr><td>Checkpoint</td><td>Consumer recovery position</td><td>Late-event watermark</td></tr>
+    <tr><td>Capture</td><td>Managed archive to storage windows</td><td>Curated/validated Bronze table</td></tr>
+    <tr><td>Consumer group</td><td>Independent consumption view</td><td>Security group</td></tr>
+    <tr><td>Logic Apps alert</td><td>Workflow/notification after a signal</td><td>Primary metrics/log store</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Checkpoint timing</div><p>Checkpoint only after durable business output. If you checkpoint first, a crash can lose events; if you checkpoint after, replay is possible and the sink must be idempotent.</p></div>
+  <details class="qa"><summary>Capture vs a streaming consumer writing Bronze?</summary><div><p>Capture is a low-operations archival path with time/size windows. A streaming consumer can validate, enrich metadata, control file/table format, and produce lower-latency structured Bronze, but it requires compute and checkpoint operations.</p></div></details>
+  <details class="qa"><summary>Where should Logic Apps fit?</summary><div><p>Use it after an Azure Monitor alert or pipeline failure event to route notifications/tickets with context. Do not make alert delivery the only evidence; keep durable logs and alert state.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Configure or diagram Capture to ADLS using managed identity, then design a consumer checkpoint store and simulate processor rebalancing. Explain replay and duplicate handling.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-capture-managed-identity"><b>Event Hubs Capture with Managed Identity</b><span>Configure the identity and storage permissions needed for automatic event capture to ADLS.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-processor-balance-partition-load"><b>Event Processor Partition Balancing</b><span>Study ownership/checkpoint behavior and explain what changes when processors join or leave.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/azure-event-hubs-kafka-overview"><b>Event Hubs for Apache Kafka</b><span>Map Kafka producer/consumer concepts to Event Hubs and identify compatibility boundaries.</span></a></div>
+  
+    </section>
+<section class="chapter" id="databricks-workspace-compute" data-search="databricks workspace, notebooks, compute, and jobs a workspace organizes assets and governance integration; compute executes code; lakeflow jobs orchestrates production tasks.">
+      <div class="chapter-head"><div class="chapter-num">13</div><div><h2>Databricks workspace, notebooks, compute, and Jobs</h2></div><label class="mastery"><input type="checkbox" data-done="databricks-workspace-compute"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A workspace organizes assets and governance integration; compute executes code; Lakeflow Jobs orchestrates production tasks.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An Azure Databricks workspace is the collaborative environment for notebooks, repos/workspace files, jobs, SQL, and governed data access. All-purpose compute supports interactive development; job compute is created or used for automated runs and provides cleaner isolation and cost attribution.</strong></p></div>
+  <table><thead><tr><th>Compute pattern</th><th>Use</th><th>Trade-off</th></tr></thead><tbody>
+    <tr><td>All-purpose</td><td>Exploration, development, debugging</td><td>Fast iteration but can stay running and mix workloads</td></tr>
+    <tr><td>New job compute</td><td>Repeatable production run</td><td>Startup time; strong isolation and reproducibility</td></tr>
+    <tr><td>Existing compute</td><td>Selected shared workflows</td><td>Faster start but shared state/capacity risk</td></tr>
+    <tr><td>Serverless where supported</td><td>Managed elastic execution</td><td>Feature, policy, and cost-model considerations</td></tr>
+  </tbody></table>
+  <h3>Job design</h3>
+  <p>Split a workflow into meaningful tasks with durable table handoffs, task parameters, retries for transient errors, notifications, timeout, maximum concurrent runs, and repair-run behavior. Pin runtime/dependencies through policies or environment definitions.</p>
+  <details class="qa"><summary>Why prefer job compute for production?</summary><div><p>It reduces interactive state leakage, supports run-specific sizing/policy, terminates after work, and improves reproducibility and cost ownership. Startup latency is the main trade-off.</p></div></details>
+  <details class="qa"><summary>Notebook vs Python wheel task?</summary><div><p>Notebooks are strong for exploration and transparent workflows; packaged code is easier to test, reuse, version, and deploy. A common pattern is thin notebooks or job tasks calling tested library code.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a three-task Job: Bronze ingestion, Silver validation, and Gold aggregation. Add parameters, dependency, retry, notification, timeout, and a repair-run test.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use the no-cost workspace for Delta, Auto Loader, Lakeflow, Jobs, and Unity Catalog practice where available.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/jobs/"><b>Lakeflow Jobs</b><span>Build a multi-task job with parameters, dependency, retry, notification, and repair-run behavior.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/training/modules/automate-jobs-azure-databricks/"><b>Automate Jobs on Azure Databricks</b><span>Complete the free Microsoft Learn module and explain job compute plus task orchestration.</span></a></div>
+  
+    </section>
+<section class="chapter" id="delta-core" data-search="delta transaction log, acid, time travel, merge, and cdf delta adds table-level reliability and history around data files. interview depth includes conflict behavior, deterministic merge, and replay boundaries.">
+      <div class="chapter-head"><div class="chapter-num">14</div><div><h2>Delta transaction log, ACID, time travel, MERGE, and CDF</h2></div><label class="mastery"><input type="checkbox" data-done="delta-core"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Delta adds table-level reliability and history around data files. Interview depth includes conflict behavior, deterministic merge, and replay boundaries.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Delta table stores data files plus a transaction log containing ordered table actions and metadata. Optimistic concurrency and atomic commits provide ACID table behavior, time travel reads prior versions, MERGE applies matched/unmatched changes, and Change Data Feed exposes row-level changes between versions when enabled.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>SQL - deterministic Delta merge</span><button class="copy-btn" type="button">Copy</button></div><pre><code>MERGE INTO silver.customer AS t
+USING staged_customer AS s
+ON t.customer_id = s.customer_id
+WHEN MATCHED AND s.sequence_no &gt; t.sequence_no THEN UPDATE SET *
+WHEN NOT MATCHED THEN INSERT *;</code></pre></div>
+  <h3>Important distinctions</h3>
+  <ul><li>Time travel uses retained transaction history/files; retention cleanup can remove old versions.</li><li>CDF gives changes produced by a Delta table; it is not automatically the original source-database CDC log.</li><li>MERGE is only deterministic when one winning source row exists per target key and sequence rules are explicit.</li><li>ACID protects table commits; cross-table business transactions need separate design.</li></ul>
+  <div class="callout warn"><div class="label">Multiple-match trap</div><p>Deduplicate source changes to one deterministic winner per target key or use logic that intentionally handles ordered events. Multiple ambiguous source matches can fail or produce incorrect updates.</p></div>
+  <details class="qa"><summary>How does optimistic concurrency work?</summary><div><p>A writer reads a table snapshot, prepares changes, then validates at commit that conflicting actions have not invalidated its assumptions. Non-conflicting commits can succeed; conflicts are retried or resolved.</p></div></details>
+  <details class="qa"><summary>Time travel vs backup?</summary><div><p>Time travel is convenient table-version access within retained history, not a complete independent disaster-recovery strategy. Retention, accidental deletion, account failure, and external dependencies still require backup/DR planning.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a Delta table, run insert/update/delete MERGE, read old versions, enable/read CDF, then replay the same staged batch and verify one final row per key.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use the no-cost workspace for Delta, Auto Loader, Lakeflow, Jobs, and Unity Catalog practice where available.</span></a></div>
+  
+    </section>
+<section class="chapter" id="delta-optimization" data-search="delta schema evolution, compaction, optimize, z-order, and vacuum optimization changes physical layout and retention, so it must follow measured query patterns and recovery requirements.">
+      <div class="chapter-head"><div class="chapter-num">15</div><div><h2>Delta schema evolution, compaction, OPTIMIZE, Z-ORDER, and VACUUM</h2></div><label class="mastery"><input type="checkbox" data-done="delta-optimization"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Optimization changes physical layout and retention, so it must follow measured query patterns and recovery requirements.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Schema enforcement rejects incompatible writes by default; controlled evolution accepts approved compatible changes. OPTIMIZE compacts small files, Z-ORDER can colocate values to improve data skipping for selected columns, and VACUUM removes old unreferenced files after the retention period.</strong></p></div>
+  <table><thead><tr><th>Operation</th><th>Solves</th><th>Does not solve</th></tr></thead><tbody>
+    <tr><td>OPTIMIZE/compaction</td><td>Small-file overhead</td><td>Bad business grain or duplicates</td></tr>
+    <tr><td>Z-ORDER</td><td>Skipping for selective filters</td><td>Every possible query pattern</td></tr>
+    <tr><td>VACUUM</td><td>Storage from obsolete files</td><td>Immediate logical row deletion alone</td></tr>
+    <tr><td>Schema evolution</td><td>Approved compatible shape change</td><td>Semantic compatibility</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">VACUUM trap</div><p>Reducing retention aggressively can break readers/jobs using old snapshots and remove time-travel/recovery options. Align retention with maximum job duration, replay, and governance requirements.</p></div>
+  <details class="qa"><summary>When would you use Z-ORDER?</summary><div><p>For frequently filtered high-value columns where file-level clustering improves skipping, after confirming scan behavior. Avoid blindly Z-Ordering every column because optimization has compute cost.</p></div></details>
+  <details class="qa"><summary>What is predictive optimization?</summary><div><p>For supported Unity Catalog managed tables, Databricks can automatically run maintenance such as optimization based on observed needs. Know current scope and still monitor workload outcomes.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Generate many small Delta files, measure a filtered query, compact/optimize, and compare file count plus scan behavior. Then test time travel before and after the configured retention boundary.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/optimizations/predictive-optimization"><b>Predictive Optimization</b><span>Learn current managed-table optimization behavior and compare it with manual OPTIMIZE/VACUUM planning.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use the no-cost workspace for Delta, Auto Loader, Lakeflow, Jobs, and Unity Catalog practice where available.</span></a></div>
+  
+    </section>
+<section class="chapter" id="auto-loader" data-search="auto loader checkpoints and schema location auto loader incrementally discovers cloud files. checkpoint and schema location solve different state problems and should not be shared carelessly.">
+      <div class="chapter-head"><div class="chapter-num">16</div><div><h2>Auto Loader checkpoints and schema location</h2></div><label class="mastery"><input type="checkbox" data-done="auto-loader"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Auto Loader incrementally discovers cloud files. Checkpoint and schema location solve different state problems and should not be shared carelessly.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Databricks Auto Loader uses the cloudFiles source to incrementally discover and process new files from cloud object storage. The streaming checkpoint tracks query progress and state; the schema location stores inferred schema and schema-evolution metadata.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>PySpark - Auto Loader</span><button class="copy-btn" type="button">Copy</button></div><pre><code>raw = (
+    spark.readStream
+         .format("cloudFiles")
+         .option("cloudFiles.format", "json")
+         .option("cloudFiles.schemaLocation", "/control/orders_schema")
+         .option("cloudFiles.schemaEvolutionMode", "addNewColumns")
+         .load("/landing/orders")
+)
+
+query = (
+    raw.writeStream
+       .format("delta")
+       .option("checkpointLocation", "/checkpoints/orders_bronze")
+       .trigger(availableNow=True)
+       .toTable("bronze.orders")
+)</code></pre></div>
+  <h3>Production design</h3>
+  <ul class="checklist"><li>One logical query has its own reliable checkpoint.</li><li>Schema location is separate from checkpoint and data output.</li><li>Rescued/unexpected data is retained and monitored.</li><li>Source file identity and ingestion metadata are preserved.</li><li>Duplicate file/content behavior is tested.</li><li>Schema changes follow a contract, not unlimited auto-merge.</li></ul>
+  <details class="qa"><summary>What happens if you delete the checkpoint?</summary><div><p>The query loses its recorded progress and may rediscover/reprocess files. Target idempotency becomes critical, and stateful query compatibility must be considered before resetting.</p></div></details>
+  <details class="qa"><summary>Auto Loader vs ADF Copy?</summary><div><p>Auto Loader is a Databricks streaming file-ingestion mechanism integrated with Spark/Delta state and schema handling. ADF Copy is connector-driven movement/orchestration. Choose from transformation engine, latency, file scale, state, and operating model.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Ingest JSON files with Auto Loader, add a nullable field, add an incompatible type, inspect schema metadata/rescued data, restart from the same checkpoint, and prove old files are not duplicated.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ingestion/cloud-object-storage/auto-loader/"><b>Databricks Auto Loader</b><span>Ingest cloud files with a checkpoint and separate schema location; then add one compatible field.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use the no-cost workspace for Delta, Auto Loader, Lakeflow, Jobs, and Unity Catalog practice where available.</span></a></div>
+  
+    </section>
+<section class="chapter" id="lakeflow-pipelines" data-search="lakeflow declarative pipelines and expectations lakeflow spark declarative pipelines, formerly dlt, lets you declare datasets and quality behavior while the platform manages dependency execution and operational metadata.">
+      <div class="chapter-head"><div class="chapter-num">17</div><div><h2>Lakeflow Declarative Pipelines and Expectations</h2></div><label class="mastery"><input type="checkbox" data-done="lakeflow-pipelines"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Lakeflow Spark Declarative Pipelines, formerly DLT, lets you declare datasets and quality behavior while the platform manages dependency execution and operational metadata.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Lakeflow Spark Declarative Pipelines is a framework for defining batch and streaming data pipelines as tables, views, and flows with managed dependency orchestration. Expectations declare data-quality rules and whether violations are monitored, dropped, or fail an update.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - declarative pipeline pattern</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark import pipelines as dp
+from pyspark.sql import functions as F
+
+@dp.table(name="orders_bronze")
+def orders_bronze():
+    return (
+        spark.readStream.format("cloudFiles")
+             .option("cloudFiles.format", "json")
+             .load("/landing/orders")
+    )
+
+@dp.table(name="orders_silver")
+@dp.expect_or_drop("valid_order_id", "order_id IS NOT NULL")
+@dp.expect_or_fail("valid_amount", "amount &gt;= 0")
+def orders_silver():
+    return spark.readStream.table("orders_bronze").select(
+        "order_id", "customer_id", "event_time", "amount"
+    )</code></pre></div>
+  <table><thead><tr><th>Expectation action</th><th>Use</th><th>Risk</th></tr></thead><tbody>
+    <tr><td>Warn/track</td><td>Observe noncritical drift</td><td>Bad data still flows</td></tr>
+    <tr><td>Drop</td><td>Known invalid rows with acceptable loss/quarantine design</td><td>Silent loss if metrics ignored</td></tr>
+    <tr><td>Fail update</td><td>Critical contract/correctness condition</td><td>Freshness impact until repaired</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Terminology note</div><p>Many interviewers still say DLT. Answer that it is now Lakeflow Spark Declarative Pipelines, then explain the same declarative tables/flows, expectations, lineage, and managed operations.</p></div>
+  <details class="qa"><summary>Lakeflow pipeline vs Lakeflow Job?</summary><div><p>A declarative pipeline defines and updates a dataflow graph of datasets. A Job orchestrates tasks such as notebooks, pipelines, SQL, and other work. A Job can trigger a pipeline.</p></div></details>
+  <details class="qa"><summary>Should invalid rows always be dropped?</summary><div><p>No. Choose from warn, quarantine/drop, or fail based on business severity and threshold. Preserve enough context to repair, replay, and reconcile.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build Bronze and Silver tables with one warn, one drop, and one fail expectation. Inject each violation and inspect update status plus quality metrics.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ldp/tutorials"><b>Lakeflow Declarative Pipelines Tutorials</b><span>Create a Bronze-to-Silver pipeline and inspect declarative dependencies and update behavior.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ldp/expectations"><b>Lakeflow Expectations</b><span>Implement warn, drop, and fail policies for different quality rules and inspect metrics.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/getting-started/free-edition"><b>Azure Databricks Free Edition</b><span>Use the no-cost workspace for Delta, Auto Loader, Lakeflow, Jobs, and Unity Catalog practice where available.</span></a></div>
+  
+    </section>
+<section class="chapter" id="auto-cdc" data-search="auto cdc, sequence keys, and scd type 2 auto cdc simplifies ordered change application, but correctness still depends on source operation semantics, business keys, and sequence ordering.">
+      <div class="chapter-head"><div class="chapter-num">18</div><div><h2>AUTO CDC, sequence keys, and SCD Type 2</h2></div><label class="mastery"><input type="checkbox" data-done="auto-cdc"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">AUTO CDC simplifies ordered change application, but correctness still depends on source operation semantics, business keys, and sequence ordering.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>AUTO CDC APIs apply source change events to a target using declared keys, sequence ordering, operation rules, and SCD type.</strong> For SCD Type 2, the sequence must order versions correctly so out-of-order arrival does not corrupt effective history.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - conceptual AUTO CDC flow</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from pyspark import pipelines as dp
+from pyspark.sql.functions import col, struct
+
+dp.create_streaming_table("customer_scd2")
+
+dp.create_auto_cdc_flow(
+    target="customer_scd2",
+    source="customer_changes",
+    keys=["customer_id"],
+    sequence_by=struct(col("event_ts"), col("source_sequence")),
+    apply_as_deletes=col("operation") == "DELETE",
+    except_column_list=["operation"],
+    stored_as_scd_type=2,
+)</code></pre></div>
+  <h3>Input contract</h3>
+  <ul><li>Stable business key.</li><li>Operation semantics for insert/update/delete.</li><li>Monotonic or deterministic sequence per key.</li><li>Columns excluded from target business state.</li><li>Policy for null updates, truncates, and snapshots.</li></ul>
+  <div class="callout warn"><div class="label">Timestamp trap</div><p>Do not assume ingestion timestamp is a correct sequence. Delayed source events can arrive later with an older business version. Prefer database log sequence/version or a composite deterministic ordering field.</p></div>
+  <details class="qa"><summary>AUTO CDC vs MERGE?</summary><div><p>MERGE is a general row matching/upsert command that you orchestrate. AUTO CDC provides declarative ordered CDC application and SCD handling in Lakeflow pipelines. Both require correct keys and source semantics.</p></div></details>
+  <details class="qa"><summary>Can watermark-based updates feed AUTO CDC?</summary><div><p>They can feed an upsert-style stream if you construct a correct sequence and operation contract, but if hard deletes are absent it is not full CDC. Say that limitation explicitly.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Feed out-of-order customer INSERT, UPDATE, and DELETE events into an SCD2 target. Verify effective history, one current row, deletion behavior, and deterministic ties.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/data-engineering/what-is-cdc"><b>AUTO CDC Overview</b><span>Map source change operations and sequence keys to an SCD1 or SCD2 target.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ldp/cdc-advanced"><b>Advanced AUTO CDC Tutorial</b><span>Practice out-of-order CDC with sequencing and confirm the expected SCD history.</span></a></div>
+  
+    </section>
+<section class="chapter" id="unity-catalog" data-search="unity catalog hierarchy, permissions, and external data unity catalog centralizes governed data and ai objects. interviewers expect the object hierarchy and the separation among identity, storage credential, external location, and table.">
+      <div class="chapter-head"><div class="chapter-num">19</div><div><h2>Unity Catalog hierarchy, permissions, and external data</h2></div><label class="mastery"><input type="checkbox" data-done="unity-catalog"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Unity Catalog centralizes governed data and AI objects. Interviewers expect the object hierarchy and the separation among identity, storage credential, external location, and table.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Unity Catalog uses a three-level namespace: catalog.schema.object. Privileges are granted to account-level principals. A storage credential represents the cloud identity used to access storage, and an external location combines that credential with a governed cloud path.</strong></p></div>
+  <div class="flow"><div><b>Principal</b><span>User/group/service principal</span></div><i>-></i><div><b>UC privilege</b><span>USE / SELECT / MODIFY</span></div><i>-></i><div><b>External location</b><span>Path + storage credential</span></div><i>-></i><div><b>ADLS</b><span>Managed identity + RBAC</span></div></div>
+  <table><thead><tr><th>Object</th><th>Role</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Metastore</td><td>Top governance boundary assigned to workspaces</td><td>Regional organization metastore</td></tr>
+    <tr><td>Catalog</td><td>Top namespace/data-domain or environment boundary</td><td><code>prod_commerce</code></td></tr>
+    <tr><td>Schema</td><td>Grouping within catalog</td><td><code>gold</code></td></tr>
+    <tr><td>Managed table</td><td>UC manages data lifecycle/location</td><td>Preferred governed table default</td></tr>
+    <tr><td>External table</td><td>UC governs metadata; files remain at external path</td><td>Shared/migrated data with independent lifecycle</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Storage credential vs external location?</summary><div><p>The credential encapsulates the Azure identity/authentication method. The external location binds a governed cloud URL to that credential and is the object on which location access is controlled.</p></div></details>
+  <details class="qa"><summary>Why managed identity for ADLS?</summary><div><p>It avoids stored client secrets and Azure manages the identity credential. Grant only required storage permissions and govern which UC external locations may use it.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design catalogs/schemas for dev and prod commerce data. Map an Azure Databricks access connector managed identity to a storage credential and external location, then define analyst and engineer grants.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/data-governance/unity-catalog/managed-versus-external"><b>Unity Catalog Managed vs External</b><span>Classify sample tables/volumes and defend managed or external ownership for each.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/azure-managed-identities"><b>Unity Catalog with Azure Managed Identity</b><span>Trace the access connector/managed identity path from Unity Catalog to ADLS.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-storage-credentials"><b>Unity Catalog Storage Credentials</b><span>Create or review a storage credential and map its permissions to an external location.</span></a></div>
+  
+    </section>
+<section class="chapter" id="bundles-cicd" data-search="declarative automation bundles and ci/cd bundles, formerly databricks asset bundles, define deployable workspace resources as versioned configuration and integrate them with tested code artifacts.">
+      <div class="chapter-head"><div class="chapter-num">20</div><div><h2>Declarative Automation Bundles and CI/CD</h2></div><label class="mastery"><input type="checkbox" data-done="bundles-cicd"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Bundles, formerly Databricks Asset Bundles, define deployable workspace resources as versioned configuration and integrate them with tested code artifacts.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Declarative Automation Bundles package Databricks resources such as Jobs and pipelines with source code, variables, and environment targets so they can be validated, deployed, and run consistently through CI/CD.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>YAML - compact bundle structure</span><button class="copy-btn" type="button">Copy</button></div><pre><code>bundle:
+  name: commerce_pipeline
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Target Unity Catalog catalog
+
+targets:
+  dev:
+    default: true
+    mode: development
+    variables: {catalog: dev_commerce}
+  prod:
+    mode: production
+    variables: {catalog: prod_commerce}</code></pre></div>
+  <h3>Deployment flow</h3>
+  <ol><li>Lint/unit/contract tests and package code.</li><li>Validate bundle configuration.</li><li>Deploy to isolated dev/test target.</li><li>Run smoke/integration test and reconcile.</li><li>Approve and deploy the same commit/artifact to production.</li><li>Verify resource configuration and first run; rollback code/config deliberately.</li></ol>
+  <div class="callout warn"><div class="label">Name migration</div><p>Older resumes and questions may say DAB or Databricks Asset Bundles. Recognize the term, then state that current documentation calls them Declarative Automation Bundles.</p></div>
+  <details class="qa"><summary>What belongs in target overrides?</summary><div><p>Environment-specific catalog, workspace host, service identity, schedules, cluster policy, and scale limits. Business logic should not silently diverge between environments.</p></div></details>
+  <details class="qa"><summary>What is rollback for a bundle deployment?</summary><div><p>Redeploy the known-good code/resource version, but also check schema migrations, checkpoints, and output versions. Workspace config rollback alone may not restore data correctness.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a bundle with one Job and one pipeline for dev/prod targets. Validate, deploy to dev, run a smoke test, and explain how production identity and catalog differ.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/"><b>Declarative Automation Bundles</b><span>Validate a bundle, deploy to a development target, and inspect resources and variables.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/workspace-tutorial"><b>Bundle Workspace Tutorial</b><span>Complete the workspace tutorial and compare development and production target overrides.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops"><b>Azure Pipelines Documentation</b><span>Build a YAML CI/CD flow with tests, immutable artifact, environments, approval, and deployment.</span></a></div>
+  
+    </section>
+<section class="chapter" id="fabric-onelake" data-search="microsoft fabric workloads and onelake fabric is an integrated saas analytics platform whose workloads share onelake, identity, governance, and capacity concepts.">
+      <div class="chapter-head"><div class="chapter-num">21</div><div><h2>Microsoft Fabric workloads and OneLake</h2></div><label class="mastery"><input type="checkbox" data-done="fabric-onelake"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Fabric is an integrated SaaS analytics platform whose workloads share OneLake, identity, governance, and capacity concepts.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Microsoft Fabric brings data integration, engineering, warehouse, real-time analytics, data science, semantic models, and Power BI experiences into one SaaS platform. OneLake is the tenant-wide logical data lake built on ADLS Gen2 and exposed through Fabric workspaces and items.</strong></p></div>
+  <table><thead><tr><th>Fabric workload/item</th><th>Main use</th><th>Typical output</th></tr></thead><tbody>
+    <tr><td>Data Factory</td><td>Copy, pipelines, orchestration</td><td>Lakehouse/Warehouse data</td></tr>
+    <tr><td>Data Engineering</td><td>Spark notebooks and lakehouse processing</td><td>Delta tables/files</td></tr>
+    <tr><td>Data Warehouse</td><td>T-SQL warehouse modeling/serving</td><td>Relational warehouse tables</td></tr>
+    <tr><td>Real-Time Intelligence</td><td>Event ingestion, transformation, real-time analysis</td><td>Eventhouse/KQL/query/alerts</td></tr>
+    <tr><td>Power BI</td><td>Semantic model, measures, reports</td><td>Governed business analytics</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Capacity thinking</div><p>Fabric experiences share capacity. Workload isolation, concurrency, throttling, refresh timing, and cost must be considered even though the user experience is integrated.</p></div>
+  <details class="qa"><summary>Is OneLake one physical storage account?</summary><div><p>It is a tenant-wide logical lake/namespace. Fabric manages the underlying storage experience and organizes data through workspaces/items; shortcuts can reference data without copying it.</p></div></details>
+  <details class="qa"><summary>Is Fabric only Power BI?</summary><div><p>No. Power BI is one major workload. Fabric also provides data ingestion, engineering, science, warehouse, databases, and real-time capabilities integrated through OneLake.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create or diagram a Fabric workspace with a Lakehouse, pipeline, notebook, semantic model, and report. Identify which objects store data and which reference/process it.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-lakehouse-introduction"><b>Fabric Lakehouse End-to-End Tutorial</b><span>Complete the staged tutorial path from ingestion through transformation and reporting.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/training/paths/implement-lakehouse-microsoft-fabric/"><b>Implement a Fabric Lakehouse</b><span>Complete the free learning path and use its exercises for medallion and Spark revision.</span></a></div>
+  
+    </section>
+<section class="chapter" id="fabric-lakehouse-warehouse" data-search="fabric lakehouse vs warehouse both store analytical data in onelake but expose different primary engineering and sql experiences.">
+      <div class="chapter-head"><div class="chapter-num">22</div><div><h2>Fabric Lakehouse vs Warehouse</h2></div><label class="mastery"><input type="checkbox" data-done="fabric-lakehouse-warehouse"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Both store analytical data in OneLake but expose different primary engineering and SQL experiences.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Fabric Lakehouse combines files and Delta tables for Spark/data-engineering and SQL access. A Fabric Warehouse provides a T-SQL-first relational warehouse experience on OneLake.</strong> I choose from developer skill, data shape, transformation engine, transaction/modeling needs, and BI serving pattern.</p></div>
+  <table><thead><tr><th>Need</th><th>Lakehouse</th><th>Warehouse</th></tr></thead><tbody>
+    <tr><td>Files and semi-structured data</td><td>Natural fit</td><td>Usually curated relational input</td></tr>
+    <tr><td>Spark notebooks</td><td>Primary engineering experience</td><td>Can integrate, but not the defining surface</td></tr>
+    <tr><td>T-SQL modeling</td><td>SQL analytics endpoint has serving limitations to know</td><td>Primary authoring/serving model</td></tr>
+    <tr><td>Medallion engineering</td><td>Strong Bronze/Silver/Gold fit</td><td>Strong curated dimensional serving fit</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Can a Fabric solution use both?</summary><div><p>Yes. A Lakehouse can support raw and engineering layers, while a Warehouse supports curated relational marts. Avoid copying data unless the serving requirement justifies it.</p></div></details>
+  <details class="qa"><summary>What is the SQL analytics endpoint?</summary><div><p>It provides a T-SQL query surface over Lakehouse Delta tables for analytics and BI. It is not identical to a full Warehouse authoring experience, so know its current capabilities and constraints.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a small Lakehouse, load one Delta table, query it through its SQL endpoint, then model the same curated data in a Warehouse and compare the authoring experience.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-build-lakehouse"><b>Build Your First Fabric Lakehouse</b><span>Create a Lakehouse, load data, inspect tables/files, and use its SQL analytics endpoint.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-lakehouse-introduction"><b>Fabric Lakehouse End-to-End Tutorial</b><span>Complete the staged tutorial path from ingestion through transformation and reporting.</span></a></div>
+  
+    </section>
+<section class="chapter" id="fabric-pipelines-notebooks" data-search="fabric pipelines, notebooks, spark, and medallion fabric data factory orchestrates movement and activities, while fabric notebooks perform spark transformations against onelake.">
+      <div class="chapter-head"><div class="chapter-num">23</div><div><h2>Fabric pipelines, notebooks, Spark, and medallion</h2></div><label class="mastery"><input type="checkbox" data-done="fabric-pipelines-notebooks"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Fabric Data Factory orchestrates movement and activities, while Fabric notebooks perform Spark transformations against OneLake.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Fabric pipelines coordinate copy and processing activities with triggers, parameters, and monitoring. Fabric notebooks run Spark code for transformation and lakehouse engineering. In a medallion design, Bronze preserves source fidelity, Silver creates validated conformed data, and Gold serves business-ready models.</strong></p></div>
+  <h3>Layer contract</h3>
+  <table><thead><tr><th>Layer</th><th>Purpose</th><th>Do not claim</th></tr></thead><tbody>
+    <tr><td>Bronze</td><td>Replayable source data plus ingestion metadata</td><td>That it is automatically trusted</td></tr>
+    <tr><td>Silver</td><td>Typed, deduplicated, quality-controlled, conformed</td><td>That every team must use one giant table</td></tr>
+    <tr><td>Gold</td><td>Business-grain facts, dimensions, aggregates</td><td>That Gold means one physical technology</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Fabric pipeline vs ADF pipeline?</summary><div><p>The concepts overlap, but they are different services with different integration, runtime, connector, deployment, and feature details. Fabric pipelines are integrated into Fabric and OneLake; compare current capabilities for migration.</p></div></details>
+  <details class="qa"><summary>Where should notebook business logic live?</summary><div><p>Keep core transformations in testable functions/packages where possible, with notebooks handling parameters and orchestration-facing flow. Log input/output table versions and metrics.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a Fabric pipeline that copies sample data into a Lakehouse, runs a notebook to produce Silver, then checks a Gold aggregate. Inspect monitoring and rerun behavior.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-overview"><b>Fabric Data Factory Pipelines</b><span>Create a pipeline with copy and notebook activities and inspect run monitoring.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-factory/create-first-pipeline-with-sample-data"><b>Create Your First Fabric Pipeline</b><span>Complete the sample pipeline and identify which parts correspond to ADF concepts.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-lakehouse-data-ingestion"><b>Fabric Lakehouse Data Ingestion</b><span>Practice a supported ingestion route and document the resulting OneLake objects.</span></a></div>
+  
+    </section>
+<section class="chapter" id="fabric-shortcuts" data-search="onelake shortcuts and zero-copy access a shortcut exposes data from another location through onelake without making a full physical copy, but it does not remove source ownership, security, performance, or availability dependencies.">
+      <div class="chapter-head"><div class="chapter-num">24</div><div><h2>OneLake shortcuts and zero-copy access</h2></div><label class="mastery"><input type="checkbox" data-done="fabric-shortcuts"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A shortcut exposes data from another location through OneLake without making a full physical copy, but it does not remove source ownership, security, performance, or availability dependencies.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A OneLake shortcut is a metadata reference that makes data in another OneLake location or supported external storage appear within a Fabric item without duplicating the data.</strong> I use it to reduce copies when source governance, performance, and availability are acceptable.</p></div>
+  <table><thead><tr><th>Benefit</th><th>Risk/question</th></tr></thead><tbody>
+    <tr><td>No ingestion copy and fresher source view</td><td>What happens if source changes or becomes unavailable?</td></tr>
+    <tr><td>Reuse across domains</td><td>Which identity and permissions govern access?</td></tr>
+    <tr><td>Lower storage duplication</td><td>Are latency, egress, and query performance acceptable?</td></tr>
+    <tr><td>Faster onboarding</td><td>Who owns schema and data-quality contract?</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Shortcut vs copy?</summary><div><p>A shortcut references source data and stays dependent on it. A copy creates an independently controlled snapshot that can be transformed, retained, and served even if the source changes. Choose from freshness, control, performance, and governance.</p></div></details>
+  <details class="qa"><summary>Does zero-copy mean zero cost?</summary><div><p>No. Storage duplication may be avoided, but compute, requests, network/egress depending on source, and source performance still matter.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design a shortcut from an ADLS-curated dataset into a Fabric Lakehouse. Document ownership, credentials, refresh/freshness behavior, schema-change response, and fallback if source access fails.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/onelake/onelake-shortcuts"><b>OneLake Shortcuts</b><span>Create or design a shortcut and explain permissions, source dependency, and zero-copy trade-offs.</span></a></div>
+  
+    </section>
+<section class="chapter" id="powerbi-storage-modes" data-search="direct lake vs import vs directquery power bi storage mode controls where query execution happens, how fresh data can be, and which performance/refresh constraints apply.">
+      <div class="chapter-head"><div class="chapter-num">25</div><div><h2>Direct Lake vs Import vs DirectQuery</h2></div><label class="mastery"><input type="checkbox" data-done="powerbi-storage-modes"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Power BI storage mode controls where query execution happens, how fresh data can be, and which performance/refresh constraints apply.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Import loads data into the Power BI semantic model for fast in-memory queries but requires refresh. DirectQuery sends queries to the source at report time. Direct Lake lets supported Fabric semantic models read OneLake data with an architecture designed to avoid traditional import duplication while retaining high performance.</strong></p></div>
+  <table><thead><tr><th>Mode</th><th>Strength</th><th>Watch-out</th></tr></thead><tbody>
+    <tr><td>Import</td><td>Fast interactive model and broad modeling support</td><td>Refresh latency, model size, capacity</td></tr>
+    <tr><td>DirectQuery</td><td>Source freshness and no full import</td><td>Source latency/concurrency, query limits, modeling constraints</td></tr>
+    <tr><td>Direct Lake</td><td>Fabric/OneLake integration with reduced data duplication</td><td>Eligibility, fallback behavior, capacity, model/table design</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Why can DirectQuery reports be slow?</summary><div><p>Each interaction can generate source queries, so model relationships, visual count, source indexes/partitions, concurrency, network, and generated query efficiency all affect latency.</p></div></details>
+  <details class="qa"><summary>Does Direct Lake mean no semantic model?</summary><div><p>No. The semantic model still defines relationships, measures, security, and business meaning. Direct Lake changes how data is accessed, not the need for modeling.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create or plan the same sales semantic model in Import, DirectQuery, and Direct Lake. Compare refresh/freshness, source load, model size, query latency, and security.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview"><b>Direct Lake Overview</b><span>Trace how a semantic model reads OneLake data and compare refresh/latency behavior with Import.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-use-directquery"><b>Power BI DirectQuery</b><span>Build a small DirectQuery model and observe source-query behavior and modeling limitations.</span></a></div>
+  
+    </section>
+<section class="chapter" id="powerbi-modeling" data-search="power bi semantic models, dax, refresh, gateway, and rls data engineers should understand how gold data becomes a usable semantic model and why relationships, measure context, and security affect report correctness.">
+      <div class="chapter-head"><div class="chapter-num">26</div><div><h2>Power BI semantic models, DAX, refresh, gateway, and RLS</h2></div><label class="mastery"><input type="checkbox" data-done="powerbi-modeling"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Data engineers should understand how Gold data becomes a usable semantic model and why relationships, measure context, and security affect report correctness.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A Power BI semantic model defines tables, relationships, measures, hierarchies, formats, and security for business analysis. Measures are evaluated in filter context at query time; calculated columns are materialized row by row during refresh. CALCULATE evaluates an expression under modified filter context.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>DAX - core measures</span><button class="copy-btn" type="button">Copy</button></div><pre><code>Total Revenue = SUM(FactSales[Revenue])
+
+Revenue Previous Year =
+CALCULATE(
+    [Total Revenue],
+    SAMEPERIODLASTYEAR(DimDate[Date])
+)
+
+Customer Revenue =
+CALCULATE(
+    [Total Revenue],
+    KEEPFILTERS(DimCustomer[IsActive] = TRUE())
+)</code></pre></div>
+  <h3>Model rules</h3>
+  <ul><li>Prefer a star with one-to-many dimension-to-fact relationships.</li><li>Use single filter direction unless a proven many-to-many scenario needs more.</li><li>Avoid ambiguous paths and uncontrolled bidirectional filtering.</li><li>Use measures for aggregations that respond to report filters.</li><li>Use a gateway when the service must securely reach supported on-premises sources.</li><li>Test RLS using real role/user mapping and remember workspace roles can affect behavior.</li></ul>
+  <details class="qa"><summary>Measure vs calculated column?</summary><div><p>A calculated column is computed per row during refresh and stored, increasing model size. A measure is computed at query time in filter context and is usually appropriate for aggregations.</p></div></details>
+  <details class="qa"><summary>What is filter context?</summary><div><p>It is the set of filters applied by visuals, slicers, relationships, and DAX. CALCULATE can add, replace, or preserve filters while evaluating an expression.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a star semantic model, create revenue and prior-period measures, test relationship direction, configure one RLS role, and explain refresh/gateway needs.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/training/paths/model-data-power-bi/"><b>Model Data in Power BI</b><span>Practice relationships, measures, filter context, and model performance in the free learning path.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/security/service-admin-row-level-security"><b>Power BI Row-Level Security</b><span>Define a role, test as role, and explain where identity mapping is evaluated.</span></a></div>
+  
+    </section>
+<section class="chapter" id="fabric-rti" data-search="fabric real-time intelligence and eventstreams fabric real-time intelligence provides event ingestion, transformation, analysis, monitoring, and action patterns integrated into fabric.">
+      <div class="chapter-head"><div class="chapter-num">27</div><div><h2>Fabric Real-Time Intelligence and Eventstreams</h2></div><label class="mastery"><input type="checkbox" data-done="fabric-rti"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Fabric Real-Time Intelligence provides event ingestion, transformation, analysis, monitoring, and action patterns integrated into Fabric.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Fabric Eventstreams can ingest, transform, and route streaming events to supported destinations, while Real-Time Intelligence provides experiences such as Real-Time hub, Eventhouse/KQL, dashboards, and activator-style actions for low-latency analytics.</strong></p></div>
+  <div class="flow"><div><b>Source</b><span>Event Hubs / custom / CDC</span></div><i>-></i><div><b>Eventstream</b><span>Route + transform</span></div><i>-></i><div><b>Destination</b><span>Eventhouse / Lakehouse</span></div><i>-></i><div><b>Analyze</b><span>KQL / dashboard / action</span></div></div>
+  <details class="qa"><summary>Event Hubs vs Fabric Eventstreams?</summary><div><p>Event Hubs is a managed Azure event-ingestion backbone. Eventstreams is a Fabric experience that connects, transforms, and routes streams into Fabric destinations. They can be used together.</p></div></details>
+  <details class="qa"><summary>Real-time dashboard vs durable lake?</summary><div><p>The real-time store serves low-latency analysis, while a Lakehouse can retain and integrate history. Use both when operational speed and long-term replay/modeling are required.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Use the Eventstreams module to route sample events, apply one transformation, land a durable destination, and define a threshold alert with an owner.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/training/modules/explore-event-streams-microsoft-fabric/"><b>Explore Fabric Eventstreams</b><span>Use the free module to route a stream, transform events, and choose a destination.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/fabric/real-time-hub/tutorial-monitor-streaming-data"><b>Monitor Streaming Data in Fabric</b><span>Complete the monitoring tutorial and define an alert/action for a streaming condition.</span></a></div>
+  
+    </section>
+<section class="chapter" id="platform-comparison" data-search="fabric vs databricks vs synapse vs snowflake platform comparisons should be requirement-driven and honest about overlap. avoid declaring one universal winner.">
+      <div class="chapter-head"><div class="chapter-num">28</div><div><h2>Fabric vs Databricks vs Synapse vs Snowflake</h2></div><label class="mastery"><input type="checkbox" data-done="platform-comparison"> Mastered <span class="priority p0">P0/P2</span></label></div>
+      <p class="chapter-lead">Platform comparisons should be requirement-driven and honest about overlap. Avoid declaring one universal winner.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Fabric emphasizes an integrated Microsoft SaaS analytics experience with OneLake and Power BI. Azure Databricks emphasizes Spark/lakehouse engineering, streaming, ML, and code-first workflows. Synapse provides Azure analytical SQL, Spark, and integration capabilities, while Snowflake provides a cloud data platform centered on governed data and independently scalable virtual warehouses.</strong></p></div>
+  <table><thead><tr><th>Decision axis</th><th>Questions to ask</th></tr></thead><tbody>
+    <tr><td>Primary users</td><td>BI analysts, SQL engineers, Spark engineers, data scientists?</td></tr>
+    <tr><td>Workloads</td><td>Batch, streaming, warehouse concurrency, ML, unstructured data?</td></tr>
+    <tr><td>Governance</td><td>OneLake/Purview, Unity Catalog, existing enterprise controls?</td></tr>
+    <tr><td>Operations</td><td>SaaS integration or independently managed service boundaries?</td></tr>
+    <tr><td>Economics</td><td>Shared capacity, job compute, serverless scans, virtual warehouses, egress?</td></tr>
+    <tr><td>Migration</td><td>Existing code, skills, SLAs, security, contracts, and lock-in?</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">MAQ comparison answer</div><p>Start with the client requirement, shortlist two viable designs, compare six axes, run a representative proof of concept, and choose with measurable acceptance criteria. This sounds like consulting judgment, not product loyalty.</p></div>
+  <details class="qa"><summary>When might Fabric be preferred?</summary><div><p>When tight Power BI integration, OneLake reuse, unified SaaS administration, and an integrated analyst-to-engineer workflow outweigh the need for independently controlled specialist platforms.</p></div></details>
+  <details class="qa"><summary>When might Databricks be preferred?</summary><div><p>When complex Spark engineering, large-scale streaming, code-first pipelines, ML/AI workflows, open lakehouse patterns, and specialized runtime control are central.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a weighted decision matrix for a client with 70% Power BI users, 20 TB lake data, streaming telemetry, existing PySpark, and strict workload isolation. Defend the winner and runner-up.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/training/paths/implement-lakehouse-microsoft-fabric/"><b>Implement a Fabric Lakehouse</b><span>Complete the free learning path and use its exercises for medallion and Spark revision.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/overview-architecture"><b>Synapse SQL Architecture</b><span>Compare serverless queries over lake files with dedicated distributed tables and compute.</span></a><a target="_blank" rel="noopener" href="https://docs.snowflake.com/en/user-guide"><b>Snowflake User Guide</b><span>Review storage, virtual warehouses, data loading, and governance concepts for platform-comparison awareness.</span></a></div>
+  
+    </section>
+<section class="chapter" id="azure-production" data-search="networking, azure monitor, deployment, iac, and cost production readiness connects private access, identity, diagnostics, deployment evidence, infrastructure repeatability, and cost controls.">
+      <div class="chapter-head"><div class="chapter-num">29</div><div><h2>Networking, Azure Monitor, deployment, IaC, and cost</h2></div><label class="mastery"><input type="checkbox" data-done="azure-production"> Mastered <span class="priority p0">P0/P1</span></label></div>
+      <p class="chapter-lead">Production readiness connects private access, identity, diagnostics, deployment evidence, infrastructure repeatability, and cost controls.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A private endpoint gives a service a private IP in a VNet for private-link access; firewalls restrict allowed network paths; public-network access should be disabled where the design supports it. Azure Monitor collects metrics/logs, Log Analytics queries logs with KQL, and alert rules route actionable conditions through action groups.</strong></p></div>
+  <h3>End-to-end control map</h3>
+  <table><thead><tr><th>Layer</th><th>Control</th><th>Verification</th></tr></thead><tbody>
+    <tr><td>Network</td><td>Private endpoint, DNS, firewall, public access setting</td><td>Connectivity test from approved/unapproved network</td></tr>
+    <tr><td>Identity</td><td>Managed identity/service principal, least RBAC/ACL</td><td>Positive and negative permission tests</td></tr>
+    <tr><td>Secrets</td><td>Key Vault, rotation, no log exposure</td><td>Secret scan and access logs</td></tr>
+    <tr><td>Observability</td><td>Diagnostic settings -> Log Analytics -> alert/action group</td><td>Injected failure fires useful alert</td></tr>
+    <tr><td>Deployment</td><td>Repos, YAML pipeline, artifact, environment approval</td><td>Version trace from commit to resource</td></tr>
+    <tr><td>Infrastructure</td><td>Bicep/Terraform modules and state</td><td>Plan/review/drift detection</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>KQL - failed pipeline trend</span><button class="copy-btn" type="button">Copy</button></div><pre><code>ADFActivityRun
+| where TimeGenerated &gt; ago(24h)
+| where Status == "Failed"
+| summarize failures=count(), last_error=arg_max(TimeGenerated, ErrorMessage)
+    by PipelineName, ActivityName
+| order by failures desc</code></pre></div>
+  <details class="qa"><summary>Private endpoint vs service endpoint?</summary><div><p>A private endpoint maps the service to a private IP through Private Link. A service endpoint keeps the service public endpoint but extends VNet identity/routing for supported firewall rules. DNS and source-service support affect design.</p></div></details>
+  <details class="qa"><summary>What would your Azure DevOps release promote?</summary><div><p>Versioned ADF/Fabric/Databricks artifacts and IaC definitions, not manually recreated resources. The release injects environment configuration/secrets, runs tests, uses approvals, and verifies post-deploy behavior.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Send ADF/Databricks diagnostics to Log Analytics, write a failure query, create an alert/action group, and define a YAML release with dev/test/prod approval plus rollback.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview"><b>Azure Monitor Log Analytics</b><span>Run a KQL query over resource logs and turn a meaningful condition into an alert.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/tutorial-log-alert"><b>Create a Log Search Alert</b><span>Create an action group and a log-search alert with warning/critical reasoning.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops"><b>Azure Pipelines Documentation</b><span>Build a YAML CI/CD flow with tests, immutable artifact, environments, approval, and deployment.</span></a></div>
+  
+    </section>
+<section class="chapter" id="azure-batch-architecture" data-search="architecture gate: azure batch and bi platform this gate tests whether your service definitions form one reliable system with explicit data state, security, monitoring, and serving choices.">
+      <div class="chapter-head"><div class="chapter-num">30</div><div><h2>Architecture gate: Azure batch and BI platform</h2></div><label class="mastery"><input type="checkbox" data-done="azure-batch-architecture"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">This gate tests whether your service definitions form one reliable system with explicit data state, security, monitoring, and serving choices.</p>
+  <h3>Scenario</h3>
+  <p>Azure SQL contains orders and customer master data. The business needs 15-minute operational metrics, daily finance facts, seven-year history, Power BI, and safe replay after transformation changes.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I would use managed identity for service access, ADF metadata-driven incremental ingestion for relational tables, ADLS Bronze for replayable source data, Databricks/Delta for Silver conformance and Gold facts/dimensions, and a Power BI semantic model over the selected SQL/Direct Lake serving path.</strong> Every load range is audited, reconciled, and committed idempotently before its watermark advances.</p></div>
+  <div class="flow"><div><b>Azure SQL</b><span>Change tracking/watermark</span></div><i>-></i><div><b>ADF</b><span>Metadata + range</span></div><i>-></i><div><b>ADLS Bronze</b><span>Raw + run metadata</span></div><i>-></i><div><b>Databricks</b><span>Delta Silver/Gold</span></div><i>-></i><div><b>Power BI</b><span>Semantic model + RLS</span></div></div>
+  <h3>Answer checklist</h3>
+  <ul class="checklist"><li>Source keys, update column/log mechanism, and delete behavior.</li><li>Old/new watermark state and commit sequence.</li><li>Bronze path, schema version, source identity, and retention.</li><li>Silver deduplication, quarantine, quality, and reconciliation.</li><li>Gold fact grain, dimensions, SCD policy, and serving mode.</li><li>Managed identities, Key Vault only where a secret remains, RBAC/ACL, private access.</li><li>ADF/Databricks run IDs correlated in Azure Monitor/Log Analytics.</li><li>Backfill compute isolation, table versions, and rollback.</li><li>Power BI refresh/Direct Lake choice, gateway if on-prem, and RLS.</li></ul>
+  <details class="qa"><summary>Where is the source of truth?</summary><div><p>For source business events, the source system/log remains authoritative; Bronze is the immutable analytical replay record; Silver is the governed conformed truth for downstream engineering; Gold is the consumer-specific business model. State the scope rather than naming one universal table.</p></div></details>
+  <details class="qa"><summary>How would you migrate this to Fabric?</summary><div><p>Inventory ADF connectors/activities, Databricks code and Delta features, governance, BI models, schedules, network controls, and SLAs. Map to Fabric pipelines/notebooks/Lakehouse/Warehouse/OneLake, prove parity with a pilot, run dual reconciliation, and cut over by domain.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Draw and explain this architecture in ten minutes. Then handle a tied watermark, source delete, bad schema, Databricks failure after merge, Power BI freshness complaint, and 90-day backfill.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/architecture/example-scenario/data/data-warehouse"><b>Azure Data Warehousing Architecture</b><span>Redraw the reference flow, then replace services based on a new latency and cost requirement.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-overview"><b>ADF Incremental Copy Patterns</b><span>Build the old/new watermark sequence and distinguish timestamp watermarks from change tracking.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/jobs/"><b>Lakeflow Jobs</b><span>Build a multi-task job with parameters, dependency, retry, notification, and repair-run behavior.</span></a></div>
+  
+    </section>
+<section class="chapter" id="azure-streaming-architecture" data-search="architecture gate: event hubs to lakehouse and power bi this gate separates true streaming from scheduled orchestration and forces you to define checkpoints, event-time lateness, replay, and serving freshness.">
+      <div class="chapter-head"><div class="chapter-num">31</div><div><h2>Architecture gate: Event Hubs to lakehouse and Power BI</h2></div><label class="mastery"><input type="checkbox" data-done="azure-streaming-architecture"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">This gate separates true streaming from scheduled orchestration and forces you to define checkpoints, event-time lateness, replay, and serving freshness.</p>
+  <h3>Scenario</h3>
+  <p>Trip events arrive continuously. The dashboard target is under two minutes, events can arrive one hour late, customer updates arrive from Azure SQL every 15 minutes, and all raw events must remain replayable.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I would publish trip events to Event Hubs keyed by trip ID, consume continuously into a checkpointed Bronze Delta path, apply schema/quality and event-time logic into Silver, and write correction-capable Gold outputs.</strong> ADF's 15-minute trigger can refresh reference/customer data or orchestrate batch work; it is not the trigger for the continuously running trip stream.</p></div>
+  <div class="flow"><div><b>Event Hubs</b><span>Trip-key partitions</span></div><i>-></i><div><b>Streaming Bronze</b><span>Checkpoint + raw event</span></div><i>-></i><div><b>Silver</b><span>Dedup + 1h watermark</span></div><i>-></i><div><b>Gold</b><span>Updatable windows</span></div><i>-></i><div><b>BI/RTI</b><span>&lt;2m freshness</span></div></div>
+  <h3>Two independent state boundaries</h3>
+  <table><thead><tr><th>State</th><th>Meaning</th><th>Failure behavior</th></tr></thead><tbody>
+    <tr><td>Event Hubs/stream checkpoint</td><td>Which partition positions are durably processed</td><td>Replay after last committed position</td></tr>
+    <tr><td>Event-time watermark</td><td>How long state waits for late events</td><td>Very late data needs correction/replay path</td></tr>
+    <tr><td>ADF customer watermark</td><td>Which SQL customer updates are loaded</td><td>Rerun bounded source range</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Real-time wording</div><p>If the trip stream is continuously running but reference ingestion is every 15 minutes, say so. If all processing starts every 15 minutes, call it micro-batch or near-real-time, not real time.</p></div>
+  <details class="qa"><summary>How do you join streaming trips to customer data?</summary><div><p>Maintain a governed Delta dimension refreshed incrementally, then use an appropriate stream-static or temporal enrichment pattern. State whether historical trips should use event-time customer history or the latest customer state.</p></div></details>
+  <details class="qa"><summary>What happens when the stream is down for three hours?</summary><div><p>Event retention must exceed outage plus recovery margin. Restart from the checkpoint, autoscale/catch up while protecting sinks, monitor lag, and use Capture/Bronze replay if retention is exceeded.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Defend this streaming design with partition count, key, consumer groups, retention, checkpoint, one-hour watermark, dedup state, correction path, Gold merge, and six alerts.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features"><b>Azure Event Hubs Features</b><span>Create a hub design with partitions, consumer groups, retention, and a partition-key rule.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-processor-balance-partition-load"><b>Event Processor Partition Balancing</b><span>Study ownership/checkpoint behavior and explain what changes when processors join or leave.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ingestion/cloud-object-storage/auto-loader/"><b>Databricks Auto Loader</b><span>Ingest cloud files with a checkpoint and separate schema location; then add one compatible field.</span></a></div>
+  
+    </section>
+<section class="chapter" id="resume-cognizant" data-search="resume defense: cognizant data validation experience a credible experience answer names the source/target grain, checks, automation flow, evidence, and how claimed percentages were calculated.">
+      <div class="chapter-head"><div class="chapter-num">32</div><div><h2>Resume defense: Cognizant data validation experience</h2></div><label class="mastery"><input type="checkbox" data-done="resume-cognizant"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A credible experience answer names the source/target grain, checks, automation flow, evidence, and how claimed percentages were calculated.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I validated each pipeline at multiple levels: technical reconciliation of rows and keys, field/business-rule checks, aggregate comparisons, schema compatibility, and UI-to-database checks where the application displayed transformed data.</strong> Failures were recorded with run ID, rule, key sample, expected/actual values, severity, and evidence for triage.</p></div>
+  <h3>Validation matrix</h3>
+  <table><thead><tr><th>Check</th><th>Implementation</th><th>What it catches</th></tr></thead><tbody>
+    <tr><td>Row count</td><td>Source count vs valid + rejected + filtered</td><td>Unexplained loss/duplication</td></tr>
+    <tr><td>Distinct key</td><td>Count and duplicate query by business key</td><td>Duplicate/missing entities</td></tr>
+    <tr><td>NULL/domain</td><td>Critical columns and allowed values</td><td>Contract/business defects</td></tr>
+    <tr><td>Aggregate</td><td>Amount/count by date/status/region</td><td>Value corruption despite equal counts</td></tr>
+    <tr><td>Transformation</td><td>Independent expected SQL on controlled keys</td><td>Incorrect business logic</td></tr>
+    <tr><td>Schema</td><td>Name/type/nullability/precision comparison</td><td>Breaking drift and truncation</td></tr>
+    <tr><td>UI vs DB</td><td>Selenium reads visible value; API/DB query reads expected key</td><td>Presentation/cache/mapping mismatch</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Python - validation result contract</span><button class="copy-btn" type="button">Copy</button></div><pre><code>result = {
+    "run_id": run_id,
+    "rule_id": "ORDER_TOTAL_MATCH",
+    "status": "FAILED",
+    "severity": "critical",
+    "failed_rows": 27,
+    "total_rows": 80421,
+    "sample_keys": ["O-1021", "O-8820"],
+    "expected_total": "184320.40",
+    "actual_total": "184017.10",
+}
+write_validation_result(result)</code></pre></div>
+  <h3>Defend numeric claims</h3>
+  <p><strong>Data integrity rate:</strong> define critical rules and report <code>passed evaluated records/rules / total evaluated</code> for a stated period. <strong>Manual effort reduction:</strong> compare measured baseline person-hours with automated-process person-hours for the same scope.</p>
+  <div class="code-wrap"><div class="code-head"><span>Metric examples</span><button class="copy-btn" type="button">Copy</button></div><pre><code>integrity_rate = passed_critical_checks / executed_critical_checks * 100
+effort_reduction = (baseline_hours - automated_hours) / baseline_hours * 100
+
+# Example only: replace with your evidence.
+# (100 hours - 60 hours) / 100 hours = 40%</code></pre></div>
+  <div class="callout warn"><div class="label">Truth rule</div><p>If you cannot show the numerator, denominator, time window, and evidence for 90% or 40%, soften or remove the claim. Never invent numbers during the interview.</p></div>
+  <details class="qa"><summary>How did Selenium integrate with data validation?</summary><div><p>The UI test captured a stable business key and displayed value, then a data-access helper queried the authorized API/database for the expected transformed value. The assertion logged both values, key, timestamp, environment, and screenshot/query evidence.</p></div></details>
+  <details class="qa"><summary>How was the framework structured?</summary><div><p>A defensible structure is config/connection layer, source and target adapters, reusable rule library, test/data orchestration, result store, reporting, and CI runner. Name only components you actually used.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Prepare one real example for each matrix row using your actual project. Recalculate every percentage from evidence and practice a two-minute framework explanation.</p></div>
+  
+    </section>
+<section class="chapter" id="resume-uber" data-search="resume defense: uber-style streaming project this project must be defendable from event schema through event hubs, bronze/silver/gold, lakeflow quality, scd2, orchestration, and recovery.">
+      <div class="chapter-head"><div class="chapter-num">33</div><div><h2>Resume defense: Uber-style streaming project</h2></div><label class="mastery"><input type="checkbox" data-done="resume-uber"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">This project must be defendable from event schema through Event Hubs, Bronze/Silver/Gold, Lakeflow quality, SCD2, orchestration, and recovery.</p>
+  <h3>Two-minute architecture answer</h3>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Trip events were ingested through Event Hubs for continuous, partitioned event transport, while ADF handled scheduled/control-plane ingestion such as reference data and batch orchestration. Raw events landed in Bronze with source metadata, Silver enforced schema, deduplicated event versions, handled lateness, and applied quality rules, and Gold modeled trip facts plus conformed dimensions for serving.</strong></p></div>
+  <div class="code-wrap"><div class="code-head"><span>JSON - interview-defendable trip event</span><button class="copy-btn" type="button">Copy</button></div><pre><code>{
+  "event_id": "evt-9912",
+  "trip_id": "trip-104",
+  "event_type": "TRIP_COMPLETED",
+  "event_version": 7,
+  "event_time": "2026-07-23T10:14:21Z",
+  "driver_id": "drv-22",
+  "rider_id": "rdr-81",
+  "pickup_zone_id": "Z11",
+  "dropoff_zone_id": "Z42",
+  "fare": {"amount": 18.40, "currency": "USD"},
+  "producer": "trip-service"
+}</code></pre></div>
+  <h3>Bronze, Silver, Gold contracts</h3>
+  <table><thead><tr><th>Layer</th><th>Exact content</th><th>Key/state</th></tr></thead><tbody>
+    <tr><td>Bronze</td><td>Raw payload, Event Hubs partition/offset, enqueue/ingest time, schema version</td><td>Replay identity</td></tr>
+    <tr><td>Silver</td><td>Typed trip events, error split, latest deterministic event version, standardized zones/currency</td><td>event_id/trip_id + sequence</td></tr>
+    <tr><td>Gold</td><td>One row per completed trip or declared aggregate grain; conformed Date/Driver/Zone</td><td>Surrogate dimension keys</td></tr>
+  </tbody></table>
+  <h3>Metadata and Jinja2-style generation</h3>
+  <div class="code-wrap"><div class="code-head"><span>Python/Jinja2 - simplified</span><button class="copy-btn" type="button">Copy</button></div><pre><code>template = """
+CREATE OR REFRESH STREAMING TABLE {{ target }}
+AS SELECT {{ columns | join(', ') }}
+FROM STREAM({{ source }});
+"""
+
+config = {
+    "source": "bronze.trip_events",
+    "target": "silver.trip_events",
+    "columns": ["trip_id", "event_time", "driver_id", "fare_amount"],
+}
+sql_text = environment.from_string(template).render(**config)</code></pre></div>
+  <div class="callout warn"><div class="label">Real-time plus 15-minute trigger</div><p>Your defense must state that the Event Hubs stream ran continuously and the 15-minute ADF trigger handled batch/reference/orchestration work. If the stream itself waited for that trigger, describe it as micro-batch/near-real-time.</p></div>
+  <details class="qa"><summary>Checkpoint vs watermark in this project?</summary><div><p>The checkpoint stored streaming progress and state for recovery. The watermark bounded event-time state and defined late-event handling. They solve different problems and both were required.</p></div></details>
+  <details class="qa"><summary>How did restart work?</summary><div><p>The stream reused its durable checkpoint and resumed source positions. Bronze/Silver writes were transactional/idempotent, event IDs/versions neutralized replay, and quality/reconciliation metrics confirmed recovery.</p></div></details>
+  <details class="qa"><summary>How did AUTO CDC implement SCD2?</summary><div><p>Customer/driver changes used business keys and a trustworthy sequence column; ordered changes created effective-dated versions with one current row. Deletes and out-of-order events followed explicit source-operation rules.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Rebuild this project on paper and answer: why Event Hubs and ADF, partition key, event schema, each layer, checkpoint vs watermark, late data, expectations, AUTO CDC, Jinja2 metadata, restart, fact grain, and Job orchestration.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features"><b>Azure Event Hubs Features</b><span>Create a hub design with partitions, consumer groups, retention, and a partition-key rule.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ldp/expectations"><b>Lakeflow Expectations</b><span>Implement warn, drop, and fail policies for different quality rules and inspect metrics.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ldp/cdc-advanced"><b>Advanced AUTO CDC Tutorial</b><span>Practice out-of-order CDC with sequencing and confirm the expected SCD history.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/jobs/"><b>Lakeflow Jobs</b><span>Build a multi-task job with parameters, dependency, retry, notification, and repair-run behavior.</span></a></div>
+  
+    </section>
+<section class="chapter" id="resume-spotify" data-search="resume defense: spotify-style batch/lakehouse project this defense focuses on azure sql incremental ingestion, truthful cdc wording, auto loader placement, unity catalog access, scd2, deployment, and monitoring.">
+      <div class="chapter-head"><div class="chapter-num">34</div><div><h2>Resume defense: Spotify-style batch/lakehouse project</h2></div><label class="mastery"><input type="checkbox" data-done="resume-spotify"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">This defense focuses on Azure SQL incremental ingestion, truthful CDC wording, Auto Loader placement, Unity Catalog access, SCD2, deployment, and monitoring.</p>
+  <h3>Two-minute architecture answer</h3>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>ADF extracted bounded incremental ranges from Azure SQL into an ADLS landing/Bronze area. Auto Loader incrementally discovered the landed files into Delta, Lakeflow pipelines applied quality and modeled Silver/Gold tables, Unity Catalog governed tables and storage access through managed identity, Bundles deployed versioned resources, and Azure Monitor/Logic Apps routed operational alerts.</strong></p></div>
+  <h3>Watermark state contract</h3>
+  <div class="code-wrap"><div class="code-head"><span>SQL - composite incremental range</span><button class="copy-btn" type="button">Copy</button></div><pre><code>SELECT *
+FROM dbo.tracks
+WHERE updated_at &gt; @old_ts
+   OR (updated_at = @old_ts AND track_id &gt; @old_track_id)
+  AND (
+       updated_at &lt; @new_ts
+       OR (updated_at = @new_ts AND track_id &lt;= @new_track_id)
+  );</code></pre></div>
+  <p>Store dataset, old/new timestamp, tie-breaker key, run ID, status, source/target counts, and commit time in a control table. Commit the new boundary only after target write and reconciliation succeed.</p>
+  <div class="callout warn"><div class="label">CDC wording</div><p>A last-modified watermark captures inserts/updates that change the column. It is not full CDC when hard deletes are absent. Say watermark-based incremental ingestion unless a real change log/tracking mechanism captured operations.</p></div>
+  <h3>Auto Loader and Unity flow</h3>
+  <div class="flow"><div><b>ADF landing</b><span>Bounded files + run ID</span></div><i>-></i><div><b>Auto Loader</b><span>File discovery + schema state</span></div><i>-></i><div><b>Delta Bronze</b><span>Checkpointed ingest</span></div><i>-></i><div><b>Lakeflow</b><span>Expectations + SCD</span></div><i>-></i><div><b>Unity Catalog</b><span>Governed tables/access</span></div></div>
+  <details class="qa"><summary>Why Auto Loader after ADF already copied files?</summary><div><p>ADF handled source connectivity, bounded extraction, and landing. Auto Loader efficiently and incrementally discovered those cloud files inside Databricks and integrated their progress/schema state with the streaming Delta pipeline.</p></div></details>
+  <details class="qa"><summary>How did managed identity reach ADLS through Unity Catalog?</summary><div><p>An Azure Databricks access connector or supported managed identity received least storage permissions. Unity Catalog represented it as a storage credential, bound it to an external location, and granted users/services UC privileges rather than raw cloud credentials.</p></div></details>
+  <details class="qa"><summary>How did Logic Apps monitoring work?</summary><div><p>ADF/Databricks diagnostics and run signals fed Azure Monitor/Log Analytics; an alert or failure event triggered an action group/Logic Apps workflow that sent a contextual notification or ticket. Durable run logs remained the source for investigation.</p></div></details>
+  <details class="qa"><summary>What would happen to deletes?</summary><div><p>If only the timestamp watermark existed, hard deletes would be missed. I would use SQL Change Tracking/CDC, soft-delete flags, periodic anti-join reconciliation, or a source deletion feed based on source capability and SLA.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Prepare exact answers for watermark column, state table, tie handling, updates, deletes, Auto Loader stage, schema mode, Unity identity flow, expectations, SCD2, bundle files, and alert path.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-portal"><b>ADF Incremental Copy Tutorial</b><span>Complete the Azure SQL watermark tutorial and inspect its Lookup, Copy, and state-update activities.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/ingestion/cloud-object-storage/auto-loader/"><b>Databricks Auto Loader</b><span>Ingest cloud files with a checkpoint and separate schema location; then add one compatible field.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/azure-managed-identities"><b>Unity Catalog with Azure Managed Identity</b><span>Trace the access connector/managed identity path from Unity Catalog to ADLS.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/"><b>Declarative Automation Bundles</b><span>Validate a bundle, deploy to a development target, and inspect resources and variables.</span></a><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/tutorial-log-alert"><b>Create a Log Search Alert</b><span>Create an action group and a log-search alert with warning/critical reasoning.</span></a></div>
+  
+    </section>
+<section class="chapter" id="rapid-revision" data-search="rapid q&amp;a and final maq revision gate use this chapter for timed retrieval after completing the linked drill in each topic. it is not a replacement for the implementation chapters.">
+      <div class="chapter-head"><div class="chapter-num">35</div><div><h2>Rapid Q&A and final MAQ revision gate</h2></div><label class="mastery"><input type="checkbox" data-done="rapid-revision"> Mastered <span class="pill">Final gate</span></label></div>
+      <p class="chapter-lead">Use this chapter for timed retrieval after completing the linked drill in each topic. It is not a replacement for the implementation chapters.</p>
+  <h3>Rapid answers</h3>
+  <table><thead><tr><th>Question</th><th>Answer anchor</th></tr></thead><tbody>
+    <tr><td>ADF dataset vs linked service?</td><td>Dataset describes the data object; linked service defines connection/authentication.</td></tr>
+    <tr><td>Azure IR vs self-hosted IR?</td><td>Managed cloud movement vs customer-hosted runtime for private/on-prem reachability.</td></tr>
+    <tr><td>Copy vs Mapping Data Flow?</td><td>Movement/light mapping vs managed Spark visual transformation.</td></tr>
+    <tr><td>Parameter vs variable?</td><td>Immutable run input vs mutable pipeline state.</td></tr>
+    <tr><td>RBAC vs ACL?</td><td>Azure scope roles vs fine-grained directory/file permissions and traversal.</td></tr>
+    <tr><td>Event Hubs checkpoint vs watermark?</td><td>Consumer recovery position vs event-time lateness/state boundary.</td></tr>
+    <tr><td>All-purpose vs job compute?</td><td>Interactive development vs isolated automated production execution.</td></tr>
+    <tr><td>Delta vs Parquet?</td><td>Transactional table log and operations around data files vs columnar file format.</td></tr>
+    <tr><td>Auto Loader checkpoint vs schema location?</td><td>Processing progress/state vs inferred/evolved schema metadata.</td></tr>
+    <tr><td>Lakeflow pipeline vs Job?</td><td>Declarative dataset graph vs general multi-task orchestration.</td></tr>
+    <tr><td>Storage credential vs external location?</td><td>Cloud identity/authentication object vs governed path bound to that credential.</td></tr>
+    <tr><td>Direct Lake vs Import vs DirectQuery?</td><td>OneLake access, in-memory refreshed copy, or live source queries.</td></tr>
+    <tr><td>Measure vs calculated column?</td><td>Query-time filter-context expression vs refresh-time stored row value.</td></tr>
+    <tr><td>Watermark ingestion vs CDC?</td><td>Column range for visible changes vs operation log that can include deletes.</td></tr>
+    <tr><td>Why ADF and Event Hubs?</td><td>Scheduled connector/orchestration path and continuous partitioned event-ingestion path.</td></tr>
+  </tbody></table>
+  <h3>Five-day finishing loop</h3>
+  <table><thead><tr><th>Day</th><th>Focus</th><th>Evidence</th></tr></thead><tbody>
+    <tr><td>1</td><td>ADF + ADLS + identity</td><td>Metadata watermark pipeline and access diagram</td></tr>
+    <tr><td>2</td><td>Event Hubs + Databricks core</td><td>Checkpointed event flow and Delta merge</td></tr>
+    <tr><td>3</td><td>Auto Loader + Lakeflow + Unity + Bundles</td><td>Bronze/Silver pipeline and deployment explanation</td></tr>
+    <tr><td>4</td><td>Fabric + Power BI + platform comparison</td><td>Decision matrix and semantic model</td></tr>
+    <tr><td>5</td><td>Three resume defenses + two architectures</td><td>Timed recording, gap list, corrected answers</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Final readiness standard</div><p>For every resume technology, answer what, why, how configured, input/output contract, failure/restart, monitoring, security, cost, and alternative. If any answer depends on invented project facts, revise the resume wording.</p></div>
+  <div class="practice"><b>Practice drill</b><p>Run a 75-minute mock: 15 rapid questions, one ADF batch design, one Event Hubs streaming design, and all three resume defenses. Record only the missed subtopics for repair.</p></div>
+  
+    </section><footer class="footer">Built from your 30-day tracker, MAQ topic list, and resume grilling checklist. Every practical link is attached to the chapter that uses it.</footer></main></div>
+<script>
+  const checks = [...document.querySelectorAll('[data-done]')];
+  const saved = JSON.parse(localStorage.getItem('azureMaqMastery') || '{}');
+  checks.forEach(c => { c.checked = Boolean(saved[c.dataset.done]); c.addEventListener('change', updateProgress); });
+  function updateProgress(){ const state={}; checks.forEach(c=>state[c.dataset.done]=c.checked); localStorage.setItem('azureMaqMastery',JSON.stringify(state)); const done=checks.filter(c=>c.checked).length; const pct=checks.length?Math.round(done*100/checks.length):0; document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressText').textContent=pct+'%'; }
+  updateProgress();
+  document.getElementById('printButton').addEventListener('click',()=>window.print());
+  document.getElementById('resetButton').addEventListener('click',()=>{ if(confirm('Reset all mastery checkboxes?')){ checks.forEach(c=>c.checked=false); updateProgress(); }});
+  let expanded=false; document.getElementById('expandButton').addEventListener('click',e=>{ expanded=!expanded; document.querySelectorAll('details.qa').forEach(d=>d.open=expanded); e.currentTarget.textContent=expanded?'Collapse all Q&A':'Expand all Q&A'; });
+  document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{ const value=btn.closest('.code-wrap').querySelector('code').innerText; try{ if(!navigator.clipboard) throw new Error('Clipboard API unavailable'); await navigator.clipboard.writeText(value); }catch(_error){ const area=document.createElement('textarea'); area.value=value; area.style.position='fixed'; area.style.opacity='0'; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); } const old=btn.textContent; btn.textContent='Copied'; setTimeout(()=>btn.textContent=old,1000); }));
+  document.getElementById('topicSearch').addEventListener('input',e=>{ const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.chapter').forEach(s=>{ s.classList.toggle('hidden',q && !s.innerText.toLowerCase().includes(q)); }); });
+  const links=[...document.querySelectorAll('.nav-link')]; const observer=new IntersectionObserver(entries=>{ entries.filter(e=>e.isIntersecting).forEach(e=>{ links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)); }); },{rootMargin:'-15% 0px -72%'}); document.querySelectorAll('.chapter').forEach(s=>observer.observe(s));
+</script></body></html>

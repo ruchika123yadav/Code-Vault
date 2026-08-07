@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Generic Data Engineering Master - Data Engineering Interview Guide</title><style>
+  :root{--ink:#172133;--muted:#5b6678;--line:#dce3ea;--paper:#fff;--canvas:#eef2f5;--nav:#101b2a;--nav2:#17263a;--cyan:#007f8b;--cyan2:#0aa6a6;--amber:#d97706;--green:#16794b;--red:#b9362b;--violet:#6d54b5;--code:#101827;--soft:#eef8f8;--radius:8px}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.65 "Segoe UI",Arial,sans-serif;letter-spacing:0}a{color:var(--cyan);text-underline-offset:3px}code,pre{font-family:Consolas,"Courier New",monospace}
+  .layout{display:grid;grid-template-columns:286px minmax(0,1fr);max-width:1440px;margin:auto;min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);color:#dbe8f3;padding:24px 18px;border-right:1px solid #26384d}.brand{padding:4px 8px 20px;border-bottom:1px solid #2a3b50}.brand b{display:block;font-size:20px;line-height:1.25}.brand span{display:block;color:#91a6ba;font-size:12px;margin-top:6px}.progress-row{display:flex;justify-content:space-between;font-size:12px;color:#9bb0c3;margin:18px 4px 7px}.progress-track{height:7px;background:#26384d;border-radius:4px;overflow:hidden}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#1bc0b7,#f0ad4e);transition:width .2s}.search{width:100%;margin:18px 0 12px;padding:10px 11px;border:1px solid #34485f;border-radius:6px;background:#0c1623;color:white;font:inherit}.search::placeholder{color:#7690a8}.nav-group{margin-top:17px}.nav-label{padding:0 9px 5px;color:#7690a8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em}.nav-link{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;border-radius:5px;color:#bdccda;text-decoration:none;font-size:12.5px;line-height:1.35}.nav-link:hover,.nav-link.active{background:var(--nav2);color:white}.nav-link .n{color:#62d2cc;font-family:Consolas,monospace;min-width:20px}.side-note{font-size:11px;color:#7590a9;margin:20px 7px}
+  main{min-width:0;background:var(--paper);padding:0 64px 100px}.hero{max-width:980px;margin:0 auto;padding:64px 0 42px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.hero h1{font-size:48px;line-height:1.08;margin:10px 0 12px;letter-spacing:0}.hero .subtitle{font-size:19px;color:var(--muted);max-width:760px}.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid #b9dadd;background:#effafa;color:#075f66;padding:5px 10px;border-radius:5px;font-size:12px;font-weight:700}.toolbar{display:flex;gap:8px;margin-top:22px}.tool-btn{border:1px solid #cbd5df;background:#fff;color:var(--ink);border-radius:5px;padding:8px 11px;font-weight:700;cursor:pointer}.tool-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .chapter{max-width:980px;margin:0 auto;padding:56px 0 8px;scroll-margin-top:20px}.chapter.hidden{display:none}.chapter-head{display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:start;padding-bottom:16px;border-bottom:3px solid var(--cyan)}.chapter-num{font:700 13px Consolas,monospace;color:var(--cyan);padding-top:8px}.chapter h2{font-size:29px;line-height:1.2;margin:0;letter-spacing:0}.mastery{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);padding-top:7px;white-space:nowrap}.mastery input{width:17px;height:17px;accent-color:var(--green)}.priority{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:800}.priority.p0{background:#fee8e5;color:#982b22}.priority.p1{background:#fff0d5;color:#8b5207}.priority.p2{background:#e9e5f7;color:#5c4599}.chapter-lead{font-size:17px;color:var(--muted);margin:18px 0 26px;max-width:850px}.chapter h3{font-size:20px;color:#103f4d;margin:30px 0 10px}.chapter h4{font-size:16px;color:var(--amber);margin:22px 0 8px}.chapter p{margin:10px 0}.chapter ul,.chapter ol{padding-left:24px}.chapter li{margin:6px 0}
+  table{width:100%;border-collapse:collapse;margin:17px 0 23px;font-size:14px}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#143c4a;color:white}tbody tr:nth-child(even){background:#f6f9fa}td:first-child{font-weight:600}.say,.callout,.practice{border-radius:var(--radius);padding:15px 18px;margin:19px 0}.say{background:#fff7e7;border:1px solid #f0cd8d;border-left:5px solid var(--amber)}.say .label,.callout .label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.say .label{color:#8a5207}.callout.tip{background:#ebf8f2;border-left:5px solid var(--green)}.callout.tip .label{color:var(--green)}.callout.warn{background:#fff0ee;border-left:5px solid var(--red)}.callout.warn .label{color:var(--red)}.practice{background:#f1effb;border:1px solid #d4cdef;border-left:5px solid var(--violet)}.practice b{display:block;color:var(--violet);font-size:12px;text-transform:uppercase;letter-spacing:.07em}.topic-links{border:1px solid #b8d9dc;border-left:5px solid var(--cyan);border-radius:var(--radius);padding:14px 16px;margin:10px 0 24px;background:#f2fbfb;display:grid;gap:8px}.topic-links-title{color:#075f66;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.topic-links a{display:grid;grid-template-columns:minmax(160px,220px) 1fr;gap:12px;align-items:start;padding:9px 10px;border:1px solid #cfe5e6;border-radius:5px;background:#fff;text-decoration:none}.topic-links a:hover{border-color:var(--cyan);background:#f8ffff}.topic-links a b{color:#075f66;font-size:13px}.topic-links a span{color:var(--muted);font-size:12px}
+  .code-wrap{margin:18px 0;border-radius:var(--radius);overflow:hidden;background:var(--code);border:1px solid #26364c}.code-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#18243a;color:#8ea6bc;font:12px Consolas,monospace}.copy-btn{border:1px solid #3b5069;background:#111c2b;color:#d7e3ed;border-radius:4px;padding:4px 8px;cursor:pointer}.copy-btn:hover{border-color:#6ad5cf;color:white}pre{margin:0;padding:17px 18px;overflow:auto;color:#e5edf5;font-size:13px;line-height:1.58;tab-size:4}.qa{border:1px solid var(--line);border-radius:6px;margin:9px 0;background:#fff}.qa summary{cursor:pointer;padding:12px 15px;font-weight:700;color:#123c49}.qa summary:hover{background:#f0f8f8}.qa>div{padding:0 15px 14px;color:var(--muted)}.qa[open]{border-color:#9ccfd0}.learning-loop,.coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.learning-loop div,.coverage-grid div{border:1px solid var(--line);border-top:4px solid var(--cyan2);padding:14px;border-radius:6px;background:#fff}.learning-loop b,.coverage-grid b{display:block;margin-bottom:5px}.learning-loop span,.coverage-grid span{display:block;color:var(--muted);font-size:13px}.flow{display:flex;align-items:stretch;gap:8px;margin:18px 0}.flow div{flex:1;border:1px solid var(--line);border-radius:6px;padding:12px;background:#f7fafb}.flow b,.flow span{display:block}.flow span{font-size:12px;color:var(--muted)}.flow i{align-self:center;color:var(--cyan);font-style:normal;font-weight:800}.checklist{list-style:none;padding:0!important}.checklist li{position:relative;padding-left:27px}.checklist li:before{content:"[ ]";position:absolute;left:0;color:var(--cyan);font-family:Consolas,monospace}.source-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}.source-link{border:1px solid var(--line);padding:13px 14px;border-radius:6px;text-decoration:none;background:#fff}.source-link:hover{border-color:var(--cyan);background:#f4fbfb}.source-link b,.source-link span{display:block}.source-link span{font-size:12px;color:var(--muted);margin-top:4px}.footer{max-width:980px;margin:55px auto 0;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);font-size:13px;text-align:center}
+  .beginner-box{margin:18px 0 26px;padding:18px;border:1px solid #b8d9ca;border-left:6px solid var(--green);border-radius:var(--radius);background:#f4fbf7}.beginner-title{display:flex;align-items:center;gap:9px;margin-bottom:13px;color:#185a42;font-weight:800}.beginner-title span{display:inline-block;padding:2px 7px;border-radius:4px;background:#dff3e8;color:#185a42;font-size:11px;text-transform:uppercase;letter-spacing:.07em}.beginner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.beginner-item{padding:12px;background:#fff;border:1px solid #d7e7de;border-radius:6px}.beginner-item b{display:block;margin-bottom:5px;color:#254537;font-size:12px;text-transform:uppercase;letter-spacing:.04em}.beginner-item p{margin:0;color:#394b42;font-size:14px;line-height:1.55}.beginner-link{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:10px 12px;border:1px solid #abd1bd;border-radius:6px;background:#fff;text-decoration:none;font-weight:700}.beginner-link:hover{border-color:var(--green);background:#fafffc}.beginner-link small{display:block;color:var(--muted);font-weight:400}.beginner-arrow{color:var(--green);font-weight:900}.hero .beginner-pill{background:#e8f7ef;border-color:#a9d5bd;color:#155b40}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:17px}.sidebar nav,.side-note{display:none}.brand{border:0;padding-bottom:4px}.search{margin:12px 0 6px}main{padding:0 24px 70px}.hero{padding-top:38px}.hero h1{font-size:38px}.learning-loop,.coverage-grid{grid-template-columns:repeat(2,1fr)}.chapter-head{grid-template-columns:auto 1fr}.mastery{grid-column:2}.source-list{grid-template-columns:1fr}.beginner-grid{grid-template-columns:1fr}}
+  @media(max-width:600px){main{padding:0 16px 60px}.hero h1{font-size:33px}.hero .subtitle{font-size:16px}.learning-loop,.coverage-grid{grid-template-columns:1fr}.chapter{padding-top:42px}.chapter h2{font-size:24px}.flow{flex-direction:column}.flow i{transform:rotate(90deg)}table{display:block;overflow-x:auto}.toolbar{flex-wrap:wrap}.topic-links a{grid-template-columns:1fr;gap:3px}}
+  @media print{body{background:#fff;font-size:11pt}.layout{display:block}.sidebar,.toolbar,.copy-btn,.mastery{display:none!important}main{padding:0 18mm 20mm}.hero{padding:12mm 0 8mm}.hero h1{font-size:30pt}.chapter{max-width:none;padding-top:10mm;page-break-before:auto}.chapter-head{page-break-after:avoid}.say,.callout,.practice,.code-wrap,table,.qa,.beginner-box{break-inside:avoid}.qa>div{display:block!important}.qa summary{list-style:none}.footer{max-width:none}}
+
+
+    :root{--cyan:#147a57;--cyan2:#2f9b70;--nav:#15231e;--nav2:#20372f;--soft:#eef8f3}
+    .chapter h3{color:#185a42}.nav-link .n{color:#79d4ae}.topic-links{background:#f1faf6;border-color:#afd7c4}.topic-links-title,.topic-links a b{color:#185a42}
+  </style></head>
+<body><div class="layout"><aside class="sidebar"><div class="brand"><b>Generic DE Master</b><span>Data Engineering Interview Resource</span></div><div class="progress-row"><span>Mastery progress</span><strong id="progressText">0%</strong></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><input class="search" id="topicSearch" type="search" placeholder="Find a topic..." aria-label="Find a topic"><nav><div class="nav-group"><div class="nav-label">Orientation</div><a class="nav-link" href="#how-to-use"><span class="n">00</span><span>How to use this resource</span></a></div><div class="nav-group"><div class="nav-label">Reliable pipelines</div><a class="nav-link" href="#etl-elt"><span class="n">01</span><span>ETL vs ELT and transformation placement</span></a><a class="nav-link" href="#batch-streaming"><span class="n">02</span><span>Batch vs streaming vs micro-batch</span></a><a class="nav-link" href="#incremental-cdc"><span class="n">03</span><span>Full load, incremental load, CDC, and watermarks</span></a><a class="nav-link" href="#idempotency"><span class="n">04</span><span>Idempotency, retries, checkpoints, and safe reruns</span></a><a class="nav-link" href="#backfill"><span class="n">05</span><span>Backfills, replay, and recovery boundaries</span></a><a class="nav-link" href="#late-data"><span class="n">06</span><span>Late and out-of-order data</span></a><a class="nav-link" href="#schema-contracts"><span class="n">07</span><span>Schema drift, evolution, and data contracts</span></a><a class="nav-link" href="#quality-reconciliation"><span class="n">08</span><span>Data quality and source-to-target reconciliation</span></a><a class="nav-link" href="#observability"><span class="n">09</span><span>Observability, SLAs, SLOs, lineage, and triage</span></a><a class="nav-link" href="#delivery-semantics"><span class="n">10</span><span>At-most-once, at-least-once, and exactly-once</span></a></div><div class="nav-group"><div class="nav-label">Storage and modeling</div><a class="nav-link" href="#lake-warehouse-lakehouse"><span class="n">11</span><span>Data lake vs warehouse vs lakehouse</span></a><a class="nav-link" href="#file-formats"><span class="n">12</span><span>CSV, JSON, Avro, Parquet, and Delta</span></a><a class="nav-link" href="#partitioning-files"><span class="n">13</span><span>Partitioning, pruning, compression, and small files</span></a><a class="nav-link" href="#oltp-olap"><span class="n">14</span><span>OLTP, OLAP, normalization, and denormalization</span></a><a class="nav-link" href="#dimensional-core"><span class="n">15</span><span>Grain, facts, dimensions, and keys</span></a><a class="nav-link" href="#schema-fact-types"><span class="n">16</span><span>Star, snowflake, fact types, and advanced dimensions</span></a><a class="nav-link" href="#scd-late-dimensions"><span class="n">17</span><span>SCD Type 1, Type 2, and late-arriving dimensions</span></a></div><div class="nav-group"><div class="nav-label">Events and operations</div><a class="nav-link" href="#kafka-core"><span class="n">18</span><span>Kafka producers, brokers, topics, and partitions</span></a><a class="nav-link" href="#kafka-reliability"><span class="n">19</span><span>Kafka offsets, groups, rebalancing, acks, and retention</span></a><a class="nav-link" href="#kafka-contracts-eventhubs"><span class="n">20</span><span>Kafka vs Event Hubs and Schema Registry</span></a><a class="nav-link" href="#orchestration-airflow"><span class="n">21</span><span>Orchestration, DAGs, schedules, and Airflow</span></a><a class="nav-link" href="#governance-security"><span class="n">22</span><span>Governance, security, PII, lineage, and retention</span></a><a class="nav-link" href="#cost-performance"><span class="n">23</span><span>Cost, performance, scaling, and workload isolation</span></a><a class="nav-link" href="#dataops-cicd"><span class="n">24</span><span>DataOps, CI/CD, promotion, and rollback</span></a></div><div class="nav-group"><div class="nav-label">Design gates</div><a class="nav-link" href="#batch-system-design"><span class="n">25</span><span>System design gate: reliable batch platform</span></a><a class="nav-link" href="#streaming-system-design"><span class="n">26</span><span>System design gate: reliable streaming platform</span></a><a class="nav-link" href="#incident-revision"><span class="n">27</span><span>Incident method, rapid Q&A, and revision gate</span></a></div></nav><p class="side-note">Your progress is stored only in this browser.</p></aside>
+<main><header class="hero"><div class="eyebrow">30-day DE preparation - Resource 2 of 3</div><h1>Generic Data Engineering Master</h1><p class="subtitle">Easy definitions, architecture reasoning, production failure handling, practical drills, and interview-ready answers for company-independent Data Engineering fundamentals.</p><div class="hero-meta"><span class="pill">Pipelines</span><span class="pill">Data Modeling</span><span class="pill">Kafka</span><span class="pill">Quality</span><span class="pill">System Design</span><span class="pill">Interview Q&A</span></div><div class="toolbar"><button class="tool-btn" id="printButton" type="button">Print / Save PDF</button><button class="tool-btn" id="expandButton" type="button">Expand all Q&amp;A</button><button class="tool-btn" id="resetButton" type="button">Reset progress</button></div></header>
+<section class="chapter" id="how-to-use" data-search="how to use this resource this guide trains the part of data engineering interviews that asks what you would design, why you chose it, and how it behaves when production becomes messy.">
+      <div class="chapter-head"><div class="chapter-num">00</div><div><h2>How to use this resource</h2></div><label class="mastery"><input type="checkbox" data-done="how-to-use"> Mastered <span class="pill">Start here</span></label></div>
+      <p class="chapter-lead">This guide trains the part of Data Engineering interviews that asks what you would design, why you chose it, and how it behaves when production becomes messy.</p>
+  <div class="learning-loop">
+    <div><b>1. Define</b><span>Speak the highlighted answer in your own words.</span></div>
+    <div><b>2. Compare</b><span>Name the closest alternative and the deciding trade-off.</span></div>
+    <div><b>3. Design</b><span>Apply the idea to one realistic pipeline.</span></div>
+    <div><b>4. Break it</b><span>Explain failure, recovery, observability, and cost.</span></div>
+  </div>
+  <div class="callout tip"><div class="label">Mastery rule</div><p>A topic is mastered only when you can give a clean definition, choose it in a scenario, reject an alternative for a reason, and explain one failure path without reading notes.</p></div>
+  <h3>The answer framework</h3>
+  <table><thead><tr><th>Step</th><th>What to say</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Requirement</td><td>Volume, velocity, latency, correctness, consumers, retention</td><td>Five-minute dashboard latency; deletes must be reflected</td></tr>
+    <tr><td>Decision</td><td>The design or service you choose</td><td>Log-based CDC into an append-only Bronze layer</td></tr>
+    <tr><td>Reason</td><td>Why it matches the requirement</td><td>Captures inserts, updates, and deletes with low source scanning</td></tr>
+    <tr><td>Reliability</td><td>Keys, state, retries, checkpoints, reconciliation</td><td>Source LSN plus idempotent merge</td></tr>
+    <tr><td>Operations</td><td>Metrics, alerts, security, scale, cost</td><td>Lag alert, quarantine rate, least privilege, autoscaling guardrail</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Interview habit to avoid</div><p>Do not answer architecture questions as a shopping list of tools. Every component should solve a named requirement and have an owner, input contract, output contract, and recovery behavior.</p></div>
+  
+    </section>
+<section class="chapter" id="etl-elt" data-search="etl vs elt and transformation placement the difference is where transformation happens, but the real interview question is how governance, compute, data sensitivity, and reuse affect that choice.">
+      <div class="chapter-head"><div class="chapter-num">01</div><div><h2>ETL vs ELT and transformation placement</h2></div><label class="mastery"><input type="checkbox" data-done="etl-elt"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">The difference is where transformation happens, but the real interview question is how governance, compute, data sensitivity, and reuse affect that choice.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>ETL extracts data, transforms it before the analytical target, and then loads the result. ELT extracts and loads raw or lightly processed data first, then transforms it inside the target platform.</strong> I choose based on where scalable compute exists, whether raw data may enter the target, latency, transformation reuse, and governance requirements.</p></div>
+  <table><thead><tr><th>Decision</th><th>ETL is stronger when</th><th>ELT is stronger when</th></tr></thead><tbody>
+    <tr><td>Data access</td><td>Sensitive fields must be masked before landing</td><td>Governed raw storage is allowed</td></tr>
+    <tr><td>Compute</td><td>A dedicated transformation engine already exists</td><td>The warehouse/lakehouse has elastic compute</td></tr>
+    <tr><td>Reuse</td><td>Only a narrow curated target is needed</td><td>Multiple teams may reuse raw history</td></tr>
+    <tr><td>Change</td><td>Source and target contracts are stable</td><td>Business logic changes frequently and raw replay is valuable</td></tr>
+  </tbody></table>
+  <h3>A practical hybrid</h3>
+  <p>Most real systems are hybrid: validate transport-level structure and remove prohibited data before landing, preserve an immutable Bronze copy, then perform business transformations as ELT in a lakehouse or warehouse.</p>
+  <details class="qa"><summary>Is ELT always better for cloud platforms?</summary><div><p>No. Cloud compute makes ELT attractive, but regulatory rules, network egress, target limitations, or the need to reject prohibited data before landing can require ETL or a hybrid design.</p></div></details>
+  <details class="qa"><summary>Where would you validate data in ELT?</summary><div><p>I validate the ingestion contract before or during landing, retain rejected records with reason codes, and then run business-quality checks at each modeled layer. ELT changes transformation placement; it does not remove validation.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Take a customer source containing PII and design ETL, ELT, and hybrid versions. State exactly where masking, deduplication, and business rules execute, then choose one.</p></div>
+  
+    </section>
+<section class="chapter" id="batch-streaming" data-search="batch vs streaming vs micro-batch latency is only one axis. correct selection also considers event ordering, operational complexity, cost, traffic shape, and how quickly the business can act on data.">
+      <div class="chapter-head"><div class="chapter-num">02</div><div><h2>Batch vs streaming vs micro-batch</h2></div><label class="mastery"><input type="checkbox" data-done="batch-streaming"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Latency is only one axis. Correct selection also considers event ordering, operational complexity, cost, traffic shape, and how quickly the business can act on data.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Batch processes a bounded collection on a schedule. Streaming processes an unbounded sequence continuously. Micro-batch is a streaming implementation that repeatedly processes small bounded groups.</strong> I select the simplest model that meets the business action time, not the smallest technically possible latency.</p></div>
+  <table><thead><tr><th>Model</th><th>Typical fit</th><th>Main trade-off</th></tr></thead><tbody>
+    <tr><td>Batch</td><td>Daily finance, periodic reconciliation, historical rebuilds</td><td>Simple and cost-efficient, but freshness waits for the schedule</td></tr>
+    <tr><td>Micro-batch</td><td>Minute-level dashboards and operational analytics</td><td>Good balance; latency includes trigger and processing time</td></tr>
+    <tr><td>Continuous streaming</td><td>Fraud signals, live monitoring, time-sensitive actions</td><td>Lowest latency but more state, recovery, and capacity complexity</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Latency decomposition</div><p>End-to-end latency is source delay + transport delay + queue wait + processing + sink commit + serving/refresh. Calling one component real time does not make the whole path real time.</p></div>
+  <details class="qa"><summary>Can a 15-minute triggered pipeline be called real time?</summary><div><p>Usually it is near-real-time or micro-batch because records wait up to the trigger interval before processing. A separate continuously running event stream can still be real time while the 15-minute trigger handles batch reference data or maintenance.</p></div></details>
+  <details class="qa"><summary>When would you deliberately choose batch over streaming?</summary><div><p>When the business only acts daily, the source arrives as files, exact reconciliation is easier in bounded runs, or streaming operating cost and complexity do not produce business value.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>For an order dashboard, fraud alert, payroll report, and hourly inventory feed, define the freshness requirement and choose batch, micro-batch, or streaming. Include one cost and one recovery implication for each.</p></div>
+  
+    </section>
+<section class="chapter" id="incremental-cdc" data-search="full load, incremental load, cdc, and watermarks incremental ingestion is not one pattern. you must know which changes are visible, how progress is stored, and whether deletes can be reproduced.">
+      <div class="chapter-head"><div class="chapter-num">03</div><div><h2>Full load, incremental load, CDC, and watermarks</h2></div><label class="mastery"><input type="checkbox" data-done="incremental-cdc"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Incremental ingestion is not one pattern. You must know which changes are visible, how progress is stored, and whether deletes can be reproduced.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A full load reads the complete source. An incremental load reads only a changed subset. A watermark filters on a monotonic or last-modified column, while log-based CDC reads database change records and can preserve insert, update, and delete operations.</strong></p></div>
+  <table><thead><tr><th>Method</th><th>Captures</th><th>Key risk</th></tr></thead><tbody>
+    <tr><td>Full load</td><td>Current complete state</td><td>High source load and long windows</td></tr>
+    <tr><td>Increasing ID watermark</td><td>Usually inserts</td><td>Misses updates and deletes</td></tr>
+    <tr><td>Updated timestamp watermark</td><td>Inserts and updates</td><td>Clock precision, ties, late commits, and deletes</td></tr>
+    <tr><td>Log-based CDC</td><td>Ordered inserts, updates, deletes</td><td>Retention, connector state, schema changes, and replay handling</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Pseudo SQL - bounded watermark</span><button class="copy-btn" type="button">Copy</button></div><pre><code>-- Read a stable half-open range.
+SELECT *
+FROM source_orders
+WHERE updated_at &gt; :previous_watermark
+  AND updated_at &lt;= :new_high_watermark;
+
+-- Advance state only after the target commit and reconciliation succeed.</code></pre></div>
+  <p>Capture the new high watermark at the beginning of the run, read a bounded interval, write idempotently, reconcile, and only then commit progress. Use a composite boundary such as <code>(updated_at, primary_key)</code> when timestamps can tie.</p>
+  <div class="callout warn"><div class="label">Resume trap</div><p>A last-modified watermark is not full CDC if it cannot capture deletes. Say exactly which change types your design captures and how hard deletes are represented.</p></div>
+  <details class="qa"><summary>How do you avoid missing rows with the same timestamp?</summary><div><p>Use a half-open interval plus a tie-breaker key, or overlap the read window and deduplicate by business key/version. The state must represent a deterministic ordered boundary.</p></div></details>
+  <details class="qa"><summary>When is a full load still reasonable?</summary><div><p>For a small reference table, an unreliable source change column, an initial load, or a periodic reconciliation snapshot. Simplicity can be safer than fragile incremental logic at small scale.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design a customer incremental load with inserts, updates, and hard deletes. Write the source predicate, state table fields, target merge rule, and a reconciliation query.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-update/"><b>Delta Lake MERGE and Updates</b><span>Implement an upsert with deterministic keys and prove that replaying the same source does not duplicate rows.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-change-data-feed/"><b>Delta Change Data Feed</b><span>Read inserted, updated, and deleted row changes and identify the downstream checkpoint needed by a consumer.</span></a></div>
+  
+    </section>
+<section class="chapter" id="idempotency" data-search="idempotency, retries, checkpoints, and safe reruns a reliable pipeline expects retries and repeated input. its correctness cannot depend on a task running exactly once.">
+      <div class="chapter-head"><div class="chapter-num">04</div><div><h2>Idempotency, retries, checkpoints, and safe reruns</h2></div><label class="mastery"><input type="checkbox" data-done="idempotency"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A reliable pipeline expects retries and repeated input. Its correctness cannot depend on a task running exactly once.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An idempotent pipeline can process the same logical input more than once and still produce the same correct target state.</strong> I achieve this with stable input identity, deterministic transformations, transactional or atomic writes, and progress that is committed only after successful output.</p></div>
+  <h3>Separate the concepts</h3>
+  <table><thead><tr><th>Concept</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Retry</td><td>Repeat transiently failed work</td><td>Exponential backoff for a throttled API</td></tr>
+    <tr><td>Checkpoint</td><td>Remember durable progress/state</td><td>Last committed source offset</td></tr>
+    <tr><td>Idempotent write</td><td>Neutralize duplicate execution</td><td>MERGE by event ID and version</td></tr>
+    <tr><td>Atomic commit</td><td>Avoid visible partial target state</td><td>Transaction or publish-by-pointer swap</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>Pseudo code - commit protocol</span><button class="copy-btn" type="button">Copy</button></div><pre><code>run_id = create_run(source_range)
+input_rows = read_source(source_range)
+result = deterministic_transform(input_rows)
+
+begin_transaction()
+merge_target(result, key="event_id", version="event_version")
+write_audit(run_id, source_range, counts(result))
+commit_transaction()
+
+mark_source_range_committed(source_range)</code></pre></div>
+  <div class="callout warn"><div class="label">Retry rule</div><p>Retry transient failures such as timeouts and throttling with bounded exponential backoff and jitter. Do not blindly retry deterministic failures such as an incompatible schema, invalid credentials, or a broken business rule.</p></div>
+  <details class="qa"><summary>Is overwrite always idempotent?</summary><div><p>No. It is idempotent only when the replacement scope is exact, the rebuilt data is deterministic, and readers cannot observe a partial overwrite. A broad or non-atomic overwrite can delete valid data.</p></div></details>
+  <details class="qa"><summary>What if writing succeeds but checkpoint update fails?</summary><div><p>The source range will be replayed, so the target write must tolerate duplicates. This is why checkpointing alone is not the idempotency mechanism.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Inject a failure after target write but before progress commit. Rerun the same range and prove row count, keys, aggregates, and audit status remain correct.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-update/"><b>Delta Lake MERGE and Updates</b><span>Implement an upsert with deterministic keys and prove that replaying the same source does not duplicate rows.</span></a></div>
+  
+    </section>
+<section class="chapter" id="backfill" data-search="backfills, replay, and recovery boundaries a backfill is controlled historical recomputation. it needs an explicit range, isolated resources, deterministic logic, and a safe publication strategy.">
+      <div class="chapter-head"><div class="chapter-num">05</div><div><h2>Backfills, replay, and recovery boundaries</h2></div><label class="mastery"><input type="checkbox" data-done="backfill"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A backfill is controlled historical recomputation. It needs an explicit range, isolated resources, deterministic logic, and a safe publication strategy.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A backfill reprocesses a defined historical interval to repair missing data or apply corrected logic.</strong> I parameterize the interval, pin the code/config version, make writes idempotent, limit concurrency, reconcile each partition, and publish only validated output.</p></div>
+  <div class="flow"><div><b>Scope</b><span>Dates, entities, expected volume</span></div><i>-></i><div><b>Recompute</b><span>Versioned code and input snapshot</span></div><i>-></i><div><b>Validate</b><span>Counts, keys, totals, quality</span></div><i>-></i><div><b>Publish</b><span>Merge or atomic partition replacement</span></div></div>
+  <h3>Protect current production</h3>
+  <ul class="checklist"><li>Use a separate queue, cluster, or concurrency pool.</li><li>Prevent old versions from overwriting newer records.</li><li>Track backfill run ID and code version in audit metadata.</li><li>Pause downstream notifications until the range is consistent.</li><li>Define rollback as a table version or previous partition set.</li></ul>
+  <details class="qa"><summary>Would you backfill directly into Gold?</summary><div><p>Usually I replay from the earliest trusted retained layer and rebuild downstream deterministically. Writing only Gold can hide inconsistencies with Silver unless the repair is narrowly proven and audited.</p></div></details>
+  <details class="qa"><summary>How do you handle events updated after the historical range?</summary><div><p>Use version-aware merge rules so the backfill cannot replace a newer target version, or rebuild into a shadow target and reconcile before switching consumers.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Plan a 90-day backfill after a tax-rule bug. Define source snapshot, partition range, parallelism cap, validation gates, publication, and rollback.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/backfill.html"><b>Apache Airflow Backfill</b><span>Practice a bounded historical rerun and reason about ordering, concurrency, and existing runs.</span></a></div>
+  
+    </section>
+<section class="chapter" id="late-data" data-search="late and out-of-order data event time and arrival time are different. a correct design states how long it waits, what happens after that boundary, and which outputs may change.">
+      <div class="chapter-head"><div class="chapter-num">06</div><div><h2>Late and out-of-order data</h2></div><label class="mastery"><input type="checkbox" data-done="late-data"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Event time and arrival time are different. A correct design states how long it waits, what happens after that boundary, and which outputs may change.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Late data arrives after the time when it was expected, and out-of-order data arrives in a sequence different from event order.</strong> I process by event time, use stable event IDs and versions, define an allowed-lateness policy, retain replayable raw data, and specify how very late corrections reach downstream tables.</p></div>
+  <table><thead><tr><th>Decision</th><th>Question</th><th>Typical answer</th></tr></thead><tbody>
+    <tr><td>Event timestamp</td><td>Which source field represents business occurrence?</td><td><code>event_time</code>, not ingestion time</td></tr>
+    <tr><td>Lateness budget</td><td>How late is common and acceptable?</td><td>Based on measured distribution and SLA</td></tr>
+    <tr><td>State cleanup</td><td>When can windows/dedup state be removed?</td><td>After watermark or retention boundary</td></tr>
+    <tr><td>Very late path</td><td>Drop, quarantine, or correction?</td><td>Usually correction/replay for financial facts</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Watermark misunderstanding</div><p>A watermark is not a promise that every older event is always dropped. It is an event-time progress boundary that lets a supported stateful operation finalize or clean old state; exact behavior depends on the operation and engine.</p></div>
+  <details class="qa"><summary>How do you choose watermark duration?</summary><div><p>Measure the event-delay distribution, identify business correction requirements, estimate state cost, and choose a threshold that meets correctness while bounding state. Monitor late-beyond-threshold rate.</p></div></details>
+  <details class="qa"><summary>What if a late event changes an already published daily total?</summary><div><p>Use an updatable sink or write a correction fact, recompute the affected partition/window, update the semantic layer, and audit the correction. Append-only final output is unsuitable if business values can change.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create an event timeline with on-time, 10-minute-late, and two-day-late updates. Define the online policy, correction path, and three metrics that show whether the policy is adequate.</p></div>
+  
+    </section>
+<section class="chapter" id="schema-contracts" data-search="schema drift, evolution, and data contracts schema drift is an observed change; schema evolution is the controlled response. a data contract makes compatibility and ownership explicit before production breaks.">
+      <div class="chapter-head"><div class="chapter-num">07</div><div><h2>Schema drift, evolution, and data contracts</h2></div><label class="mastery"><input type="checkbox" data-done="schema-contracts"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Schema drift is an observed change; schema evolution is the controlled response. A data contract makes compatibility and ownership explicit before production breaks.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Schema drift is an unexpected or detected change in fields, types, or structure. Schema evolution is the governed process for accepting compatible changes and migrating incompatible ones.</strong> A data contract defines schema, semantics, keys, quality expectations, ownership, versioning, and change rules between producer and consumer.</p></div>
+  <table><thead><tr><th>Change</th><th>Compatibility</th><th>Response</th></tr></thead><tbody>
+    <tr><td>Add nullable field</td><td>Usually backward compatible</td><td>Accept, monitor adoption, update documentation</td></tr>
+    <tr><td>Remove/rename field</td><td>Breaking for existing consumers</td><td>Deprecate, dual-publish, version contract</td></tr>
+    <tr><td>Integer to string</td><td>Potentially breaking</td><td>Quarantine or explicit migration</td></tr>
+    <tr><td>Meaning/unit changes</td><td>Breaking even if type is same</td><td>New field/version and consumer migration</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>YAML - compact data contract</span><button class="copy-btn" type="button">Copy</button></div><pre><code>dataset: orders
+version: 2
+owner: commerce-data
+grain: one row per order version
+keys: [order_id, version]
+fields:
+  order_id: {type: string, nullable: false}
+  amount: {type: decimal(18,2), nullable: false, min: 0}
+  updated_at: {type: timestamp_utc, nullable: false}
+compatibility: backward
+freshness_sla_minutes: 15</code></pre></div>
+  <details class="qa"><summary>Why is automatic schema merge risky?</summary><div><p>It can silently accept misspelled fields, unexpected types, or uncontrolled growth. I allow only approved compatible changes and alert or quarantine unknown breaking changes.</p></div></details>
+  <details class="qa"><summary>Schema validation passed. Is the data valid?</summary><div><p>Not necessarily. Schema checks structure and types; business validity also needs allowed values, ranges, referential integrity, uniqueness, and semantic rules.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Version the order contract above after renaming amount to gross_amount and changing currency behavior. Design a migration that keeps two consumers working during the transition.</p></div>
+  
+    </section>
+<section class="chapter" id="quality-reconciliation" data-search="data quality and source-to-target reconciliation quality must be measurable and tied to a business consequence. a single row-count check cannot prove data correctness.">
+      <div class="chapter-head"><div class="chapter-num">08</div><div><h2>Data quality and source-to-target reconciliation</h2></div><label class="mastery"><input type="checkbox" data-done="quality-reconciliation"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Quality must be measurable and tied to a business consequence. A single row-count check cannot prove data correctness.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Data quality describes whether data is fit for its intended use.</strong> I measure completeness, validity, uniqueness, consistency, timeliness, and referential integrity at the correct grain. Reconciliation proves that source records and amounts are accounted for through valid, rejected, and intentionally filtered outcomes.</p></div>
+  <table><thead><tr><th>Dimension</th><th>Example test</th><th>Metric</th></tr></thead><tbody>
+    <tr><td>Completeness</td><td>Required customer ID is present</td><td>Non-null percentage</td></tr>
+    <tr><td>Validity</td><td>Amount is non-negative; status is allowed</td><td>Invalid rows by rule</td></tr>
+    <tr><td>Uniqueness</td><td>One current row per business key</td><td>Duplicate key count</td></tr>
+    <tr><td>Consistency</td><td>Order total equals line totals</td><td>Mismatch count/value</td></tr>
+    <tr><td>Timeliness</td><td>Data available before SLA</td><td>Freshness lag</td></tr>
+  </tbody></table>
+  <div class="code-wrap"><div class="code-head"><span>SQL - reconciliation skeleton</span><button class="copy-btn" type="button">Copy</button></div><pre><code>SELECT run_id,
+       source_count,
+       valid_count,
+       rejected_count,
+       filtered_count,
+       source_count - valid_count - rejected_count - filtered_count AS unexplained,
+       source_amount - valid_amount - rejected_amount - filtered_amount AS amount_gap
+FROM pipeline_audit
+WHERE run_id = :run_id;</code></pre></div>
+  <div class="callout tip"><div class="label">Defending a percentage</div><p>Do not say 90% data integrity unless the numerator, denominator, covered rules, measurement period, and threshold are documented. A defensible example is: 99.7% of 8.2 million daily rows passed six agreed critical rules over 30 days.</p></div>
+  <details class="qa"><summary>When should a quality failure stop the pipeline?</summary><div><p>Stop for contract-breaking or critical correctness failures, such as missing primary keys or material reconciliation gaps. Quarantine known record-level defects when the valid subset remains useful and the invalid-rate threshold is not exceeded.</p></div></details>
+  <details class="qa"><summary>Why compare aggregates as well as counts?</summary><div><p>Equal counts can still hide changed amounts, duplicate-and-missing pairs, or field corruption. Compare keys, totals, min/max, nulls, and business-specific checksums by a useful partition.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Create a reconciliation table for orders with source, valid, rejected, duplicate, and filtered outcomes. Add row-count, distinct-key, amount, and freshness checks with pass/fail thresholds.</p></div>
+  
+    </section>
+<section class="chapter" id="observability" data-search="observability, slas, slos, lineage, and triage monitoring tells you that a known condition happened. observability gives enough evidence to understand unfamiliar failures across the pipeline.">
+      <div class="chapter-head"><div class="chapter-num">09</div><div><h2>Observability, SLAs, SLOs, lineage, and triage</h2></div><label class="mastery"><input type="checkbox" data-done="observability"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Monitoring tells you that a known condition happened. Observability gives enough evidence to understand unfamiliar failures across the pipeline.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Pipeline observability combines logs, metrics, traces/run context, data-quality signals, and lineage so operators can detect, diagnose, and recover failures.</strong> An SLA is the external commitment; an SLO is the internal measurable target used to protect that commitment.</p></div>
+  <h3>Minimum telemetry per run</h3>
+  <ul class="checklist"><li>Run ID, code/config version, source range, start/end, status.</li><li>Rows and bytes read, written, rejected, inserted, updated, deleted.</li><li>Freshness lag, duration, throughput, retries, and queue delay.</li><li>Quality-rule results and source-to-target reconciliation.</li><li>Input/output dataset lineage and downstream impact.</li><li>Error category, owner, runbook link, and correlation ID.</li></ul>
+  <div class="code-wrap"><div class="code-head"><span>JSON log - structured event</span><button class="copy-btn" type="button">Copy</button></div><pre><code>{
+  "event": "pipeline_run_failed",
+  "pipeline": "orders_silver",
+  "run_id": "2026-07-23T02:00Z",
+  "source_range": "offsets:10420-11890",
+  "error_class": "schema_incompatible",
+  "invalid_rate": 0.37,
+  "owner": "commerce-data"
+}</code></pre></div>
+  <details class="qa"><summary>What would you alert on?</summary><div><p>Alert on symptoms that need action: missed freshness SLO, sustained consumer lag, critical quality failure, unexplained reconciliation gap, repeated retries, or abnormal duration. Avoid paging on every isolated log line.</p></div></details>
+  <details class="qa"><summary>How does lineage help during an incident?</summary><div><p>It identifies which upstream change introduced the issue and which downstream datasets, dashboards, or teams may be affected, reducing diagnosis and communication time.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Define an SLO and alert set for a pipeline due every 15 minutes. Include warning/critical thresholds, owner, runbook action, and a no-data alert.</p></div>
+  
+    </section>
+<section class="chapter" id="delivery-semantics" data-search="at-most-once, at-least-once, and exactly-once delivery semantics describe outcomes across failure and retry. end-to-end exactly-once is a property of the complete source-processing-sink protocol.">
+      <div class="chapter-head"><div class="chapter-num">10</div><div><h2>At-most-once, at-least-once, and exactly-once</h2></div><label class="mastery"><input type="checkbox" data-done="delivery-semantics"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Delivery semantics describe outcomes across failure and retry. End-to-end exactly-once is a property of the complete source-processing-sink protocol.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>At-most-once may lose records but does not redeliver them. At-least-once avoids loss by retrying but may create duplicates. Exactly-once means each logical event affects the final result once, which normally requires replayable input, durable progress, deterministic processing, and an idempotent or transactional sink.</strong></p></div>
+  <table><thead><tr><th>Guarantee</th><th>On failure</th><th>Suitable example</th></tr></thead><tbody>
+    <tr><td>At-most-once</td><td>Progress can advance before processing; loss is possible</td><td>Noncritical telemetry sampling</td></tr>
+    <tr><td>At-least-once</td><td>Process then acknowledge; redelivery is possible</td><td>Most event pipelines with deduplication</td></tr>
+    <tr><td>Exactly-once effect</td><td>Retry is neutralized at target state</td><td>Financial balance update keyed by event ID</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Language precision</div><p>A broker, framework, or sink may provide a local guarantee, but a side effect such as an email or external API call can still happen twice. State the guarantee boundary.</p></div>
+  <details class="qa"><summary>How do you turn at-least-once delivery into exactly-once business effect?</summary><div><p>Give each event a stable ID, persist processed IDs or merge by ID/version in the same transactional boundary as the state update, and acknowledge source progress only after that commit.</p></div></details>
+  <details class="qa"><summary>Is deduplication forever practical?</summary><div><p>Usually no. State retention should match the maximum replay/duplicate horizon, or the target should enforce a durable uniqueness constraint. State cost is part of the guarantee.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Draw failure points between broker read, transformation, target write, and offset commit. For each failure, state whether a record can be lost or duplicated and how your design responds.</p></div>
+  
+    </section>
+<section class="chapter" id="lake-warehouse-lakehouse" data-search="data lake vs warehouse vs lakehouse these are architectural patterns, not quality rankings. the right answer depends on data types, governance, transactions, bi performance, and team operating model.">
+      <div class="chapter-head"><div class="chapter-num">11</div><div><h2>Data lake vs warehouse vs lakehouse</h2></div><label class="mastery"><input type="checkbox" data-done="lake-warehouse-lakehouse"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">These are architectural patterns, not quality rankings. The right answer depends on data types, governance, transactions, BI performance, and team operating model.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A data lake stores large volumes of structured and unstructured data in open files, often with schema applied when read. A warehouse stores governed, modeled analytical data with strong SQL serving. A lakehouse adds table reliability, governance, and warehouse-like operations on lake storage.</strong></p></div>
+  <table><thead><tr><th>Platform</th><th>Strength</th><th>Watch-out</th></tr></thead><tbody>
+    <tr><td>Lake</td><td>Low-cost flexible storage, raw history, ML and file interoperability</td><td>Can become hard to trust without catalog, contracts, and table management</td></tr>
+    <tr><td>Warehouse</td><td>Consistent SQL, dimensional serving, concurrency, mature BI</td><td>Raw/semi-structured flexibility and duplicated storage may be concerns</td></tr>
+    <tr><td>Lakehouse</td><td>Open files plus ACID tables, batch/stream unification, multiple workloads</td><td>Still needs governance, optimization, and workload isolation</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>Does a lakehouse remove the need for a warehouse?</summary><div><p>No. A warehouse may still be the best governed serving layer for predictable BI concurrency and dimensional SQL. Some organizations use a lakehouse for engineering and a warehouse or SQL endpoint for serving.</p></div></details>
+  <details class="qa"><summary>What makes a data lake become a data swamp?</summary><div><p>Missing ownership, catalog, schema contracts, lineage, retention, access controls, quality checks, and discoverable curated layers. The storage technology is not the main failure.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Choose a target architecture for raw IoT JSON, governed finance reporting, data science features, and 500 concurrent BI users. Explain which data is copied and which is queried in place.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://docs.delta.io/quick-start/"><b>Delta Lake Quickstart</b><span>Create a Delta table, append data, read versions, and compare its table behavior with plain Parquet files.</span></a></div>
+  
+    </section>
+<section class="chapter" id="file-formats" data-search="csv, json, avro, parquet, and delta a file or table format should match transport, schema evolution, query pattern, and mutation requirements.">
+      <div class="chapter-head"><div class="chapter-num">12</div><div><h2>CSV, JSON, Avro, Parquet, and Delta</h2></div><label class="mastery"><input type="checkbox" data-done="file-formats"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A file or table format should match transport, schema evolution, query pattern, and mutation requirements.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>CSV and JSON are text formats useful for interchange and debugging. Avro is a row-oriented binary format with an explicit schema, useful for event transport. Parquet is a columnar analytical file format. Delta is a table format that uses data files plus a transaction log for reliable table operations.</strong></p></div>
+  <table><thead><tr><th>Format</th><th>Best fit</th><th>Main limitation</th></tr></thead><tbody>
+    <tr><td>CSV</td><td>Simple flat exchange</td><td>Weak types, escaping ambiguity, poor analytics efficiency</td></tr>
+    <tr><td>JSON</td><td>APIs, nested payloads, human inspection</td><td>Verbose and costly to scan at scale</td></tr>
+    <tr><td>Avro</td><td>Compact row records and schema-based event exchange</td><td>Less suitable than columnar formats for selective analytics</td></tr>
+    <tr><td>Parquet</td><td>Large analytical scans with projection and filters</td><td>Files alone do not provide transactions or table history</td></tr>
+    <tr><td>Delta</td><td>Mutable/reliable lakehouse tables, merge, time travel</td><td>Transaction-log maintenance and engine compatibility matter</td></tr>
+  </tbody></table>
+  <h3>Why columnar matters</h3>
+  <p>If a query reads three columns from a 100-column table, a columnar reader can avoid most unrelated column data. Similar values are stored together, which also improves encoding and compression.</p>
+  <details class="qa"><summary>Why not use Parquet directly for every event message?</summary><div><p>Parquet is optimized for analytical batches, not individual low-latency messages. Avro or JSON is easier for record transport; compact those records into Parquet/Delta for analytics.</p></div></details>
+  <details class="qa"><summary>Delta vs Parquet in one sentence?</summary><div><p>Parquet defines how columnar data is stored in files; Delta adds table-level transaction metadata and operations around those data files.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Write the same sample dataset as CSV, JSON, and Parquet. Compare file size, inferred schema, projected-column read, and behavior after adding a nullable field.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://parquet.apache.org/docs/"><b>Apache Parquet Documentation</b><span>Inspect the columnar format concepts, then compare projected-column reads with a row-oriented file.</span></a><a target="_blank" rel="noopener" href="https://parquet.apache.org/docs/overview/motivation/"><b>Why Apache Parquet</b><span>Use the official motivation page to explain column projection, compression, and nested data support.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/quick-start/"><b>Delta Lake Quickstart</b><span>Create a Delta table, append data, read versions, and compare its table behavior with plain Parquet files.</span></a></div>
+  
+    </section>
+<section class="chapter" id="partitioning-files" data-search="partitioning, pruning, compression, and small files good physical design reduces data read without creating excessive directories, metadata, or tiny tasks.">
+      <div class="chapter-head"><div class="chapter-num">13</div><div><h2>Partitioning, pruning, compression, and small files</h2></div><label class="mastery"><input type="checkbox" data-done="partitioning-files"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Good physical design reduces data read without creating excessive directories, metadata, or tiny tasks.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Partitioning physically groups data by selected columns, while partition pruning skips groups that cannot satisfy a filter.</strong> A good partition column appears in common filters, has manageable cardinality, distributes data reasonably, and creates useful file sizes.</p></div>
+  <table><thead><tr><th>Choice</th><th>Good example</th><th>Bad example</th></tr></thead><tbody>
+    <tr><td>Partition key</td><td><code>event_date</code> for time-filtered events</td><td>Unique <code>order_id</code></td></tr>
+    <tr><td>Granularity</td><td>Day for moderate daily volume</td><td>Minute with only a few rows per minute</td></tr>
+    <tr><td>File size</td><td>Large enough for efficient scans and parallelism</td><td>Thousands of tiny files per partition</td></tr>
+    <tr><td>Compression</td><td>Splittable codec matched to format/engine</td><td>Maximum compression that makes CPU the bottleneck</td></tr>
+  </tbody></table>
+  <h3>Small-file problem</h3>
+  <p>Many tiny files increase listing, metadata, planning, open, and task-scheduling overhead. Fix the cause by controlling write parallelism and trigger size, then compact historical small files. Compaction changes physical layout, not logical rows.</p>
+  <div class="callout warn"><div class="label">Partition myth</div><p>More partitions do not automatically mean more speed. Too few create large slow tasks; too many create scheduler and metadata overhead. Measure input size, task duration, pruning, and target file sizes.</p></div>
+  <details class="qa"><summary>Partitioning vs bucketing/clustering?</summary><div><p>Partitioning creates coarse directory or table partitions that can be pruned. Bucketing or clustering organizes data within/across files to improve joins or selective filtering without one directory per high-cardinality value.</p></div></details>
+  <details class="qa"><summary>What is Z-Ordering at interview depth?</summary><div><p>It colocates related column values across files to improve data skipping for filters on selected columns. It is not the same as table partitioning and should be chosen from actual query patterns.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Given 2 TB per month of orders queried by date, country, and customer ID, choose partition columns and compaction cadence. Explain why customer ID should not be a folder partition.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://parquet.apache.org/docs/"><b>Apache Parquet Documentation</b><span>Inspect the columnar format concepts, then compare projected-column reads with a row-oriented file.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/quick-start/"><b>Delta Lake Quickstart</b><span>Create a Delta table, append data, read versions, and compare its table behavior with plain Parquet files.</span></a></div>
+  
+    </section>
+<section class="chapter" id="oltp-olap" data-search="oltp, olap, normalization, and denormalization operational and analytical systems optimize for different access patterns. modeling should follow workload, not a blanket rule that normalized or denormalized is better.">
+      <div class="chapter-head"><div class="chapter-num">14</div><div><h2>OLTP, OLAP, normalization, and denormalization</h2></div><label class="mastery"><input type="checkbox" data-done="oltp-olap"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Operational and analytical systems optimize for different access patterns. Modeling should follow workload, not a blanket rule that normalized or denormalized is better.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>OLTP systems handle many small concurrent transactions and usually use normalized models to reduce update anomalies. OLAP systems scan and aggregate large histories and often use dimensional or denormalized models to simplify queries and improve analytical performance.</strong></p></div>
+  <table><thead><tr><th>Property</th><th>OLTP</th><th>OLAP</th></tr></thead><tbody>
+    <tr><td>Workload</td><td>Point reads/writes, short transactions</td><td>Scans, joins, aggregates</td></tr>
+    <tr><td>Data</td><td>Current operational state</td><td>Historical integrated data</td></tr>
+    <tr><td>Model</td><td>Often 3NF normalized</td><td>Often star/dimensional</td></tr>
+    <tr><td>Optimization</td><td>Write integrity and concurrency</td><td>Read simplicity and throughput</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Normalization answer</div><p>1NF makes values atomic, 2NF removes partial dependency on part of a composite key, 3NF removes transitive dependency on non-key columns, and BCNF requires every determinant to be a candidate key.</p></div>
+  <details class="qa"><summary>Why not run all BI queries on the production OLTP database?</summary><div><p>Large scans and joins can compete with customer transactions, the schema is harder for analytics, history may be overwritten, and cross-source integration is limited.</p></div></details>
+  <details class="qa"><summary>Does denormalization mean duplicating everything?</summary><div><p>No. It deliberately stores selected redundancy to support known reads, with controlled refresh and consistency. Grain and ownership still need to be explicit.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Convert a normalized order/customer/product schema into an analytical star. Name the fact grain, dimensions, keys, and which operational attributes should not be copied.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/"><b>Kimball Dimensional Modeling Techniques</b><span>Use the official technique index to revise grain, facts, dimensions, keys, SCDs, and advanced dimension patterns.</span></a></div>
+  
+    </section>
+<section class="chapter" id="dimensional-core" data-search="grain, facts, dimensions, and keys declaring grain is the most important dimensional-modeling step because it determines what one fact row represents and which dimensions and measures are valid.">
+      <div class="chapter-head"><div class="chapter-num">15</div><div><h2>Grain, facts, dimensions, and keys</h2></div><label class="mastery"><input type="checkbox" data-done="dimensional-core"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Declaring grain is the most important dimensional-modeling step because it determines what one fact row represents and which dimensions and measures are valid.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A fact table stores measurements at a declared business-process grain, and dimensions provide descriptive context for those measurements.</strong> The grain is the exact meaning of one fact row. A natural key comes from the source business; a surrogate key is a warehouse-generated identifier used to integrate history and sources.</p></div>
+  <h3>Four-step model</h3>
+  <ol><li>Select the business process.</li><li>Declare the atomic grain in one sentence.</li><li>Identify dimensions valid at that grain.</li><li>Identify facts and their aggregation behavior.</li></ol>
+  <table><thead><tr><th>Measure type</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Additive</td><td>Can sum across all dimensions</td><td>Line revenue</td></tr>
+    <tr><td>Semi-additive</td><td>Can sum across some dimensions, not time</td><td>Account balance snapshot</td></tr>
+    <tr><td>Non-additive</td><td>Should not be summed</td><td>Percentage or unit price</td></tr>
+  </tbody></table>
+  <div class="callout warn"><div class="label">Mixed-grain trap</div><p>Do not store order-level shipping amount on every order-line row and then sum it. Either allocate it using a documented rule or place it in a fact at the correct grain.</p></div>
+  <details class="qa"><summary>Why use surrogate keys in dimensions?</summary><div><p>They separate warehouse identity from changing source keys, support multiple sources and SCD history, and let a fact point to the correct historical dimension version.</p></div></details>
+  <details class="qa"><summary>What is a conformed dimension?</summary><div><p>A consistently defined dimension shared across business processes, such as Date or Customer, so facts can be compared with the same keys and attributes.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>For a food-delivery system, declare grains for order, order line, delivery event, and daily courier snapshot. List dimensions and additive behavior for each.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/"><b>Kimball Dimensional Modeling Techniques</b><span>Use the official technique index to revise grain, facts, dimensions, keys, SCDs, and advanced dimension patterns.</span></a></div>
+  
+    </section>
+<section class="chapter" id="schema-fact-types" data-search="star, snowflake, fact types, and advanced dimensions interviewers often test whether you can model a process beyond a basic transaction fact and simple dimensions.">
+      <div class="chapter-head"><div class="chapter-num">16</div><div><h2>Star, snowflake, fact types, and advanced dimensions</h2></div><label class="mastery"><input type="checkbox" data-done="schema-fact-types"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Interviewers often test whether you can model a process beyond a basic transaction fact and simple dimensions.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A star schema keeps dimensions relatively denormalized around facts for simple and fast analytics. A snowflake normalizes dimension hierarchies, reducing some redundancy but adding joins and user complexity.</strong></p></div>
+  <table><thead><tr><th>Pattern</th><th>One row means</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Transaction fact</td><td>One business event</td><td>One order line</td></tr>
+    <tr><td>Periodic snapshot</td><td>State for an entity at a regular interval</td><td>Daily account balance</td></tr>
+    <tr><td>Accumulating snapshot</td><td>Lifecycle instance updated across milestones</td><td>Order placed, packed, shipped, delivered</td></tr>
+    <tr><td>Factless fact</td><td>An event/coverage relationship without numeric measure</td><td>Student attendance</td></tr>
+  </tbody></table>
+  <h3>Useful dimension patterns</h3>
+  <ul><li><strong>Degenerate dimension:</strong> a business identifier such as order number stored in the fact without its own descriptive table.</li><li><strong>Role-playing dimension:</strong> one Date dimension used as order date, ship date, and delivery date.</li><li><strong>Bridge table:</strong> resolves a many-to-many relationship, often with allocation rules.</li><li><strong>Junk dimension:</strong> combines low-cardinality flags into one dimension.</li></ul>
+  <details class="qa"><summary>Star vs snowflake: which is always faster?</summary><div><p>Neither universally. A star often needs fewer joins and is easier for BI, but actual performance depends on engine, data size, caching, and query pattern. Snowflaking can help govern large reusable hierarchies.</p></div></details>
+  <details class="qa"><summary>Can an accumulating snapshot receive updates?</summary><div><p>Yes. It intentionally updates milestone dates and durations as one process instance moves through its lifecycle, unlike an immutable transaction fact.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Model a hiring process using an accumulating snapshot, interview events using a transaction fact, and daily open-requisition counts using a periodic snapshot.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/"><b>Kimball Dimensional Modeling Techniques</b><span>Use the official technique index to revise grain, facts, dimensions, keys, SCDs, and advanced dimension patterns.</span></a></div>
+  
+    </section>
+<section class="chapter" id="scd-late-dimensions" data-search="scd type 1, type 2, and late-arriving dimensions slowly changing dimensions define how descriptive history is preserved and how facts find the correct dimension version.">
+      <div class="chapter-head"><div class="chapter-num">17</div><div><h2>SCD Type 1, Type 2, and late-arriving dimensions</h2></div><label class="mastery"><input type="checkbox" data-done="scd-late-dimensions"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Slowly changing dimensions define how descriptive history is preserved and how facts find the correct dimension version.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>SCD Type 1 overwrites an attribute and does not preserve its old value. SCD Type 2 expires the current row and inserts a new version with effective dates and a current flag.</strong> Facts should use the dimension version effective at the business event time.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>SQL - Type 2 lookup condition</span><button class="copy-btn" type="button">Copy</button></div><pre><code>SELECT d.customer_sk
+FROM dim_customer d
+WHERE d.customer_id = :customer_id
+  AND :event_time &gt;= d.effective_from
+  AND :event_time &lt;  d.effective_to;</code></pre></div>
+  <table><thead><tr><th>Case</th><th>Type 1</th><th>Type 2</th></tr></thead><tbody>
+    <tr><td>Correct spelling mistake</td><td>Usually appropriate</td><td>Usually unnecessary</td></tr>
+    <tr><td>Customer segment history</td><td>Loses old segment</td><td>Preserves analytical history</td></tr>
+    <tr><td>Storage/query cost</td><td>Lower/simpler</td><td>More rows and temporal logic</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Late-arriving dimension</div><p>If a fact arrives before its dimension, use an inferred member with the natural key and unknown attributes, load the fact against that surrogate key, then update the inferred dimension when details arrive. Avoid changing the surrogate key if facts already reference it.</p></div>
+  <details class="qa"><summary>What sequence column should drive Type 2 changes?</summary><div><p>Use a trustworthy source version, commit sequence, or event timestamp plus deterministic tie-breaker. Ingestion time is only a fallback because delayed events can arrive out of order.</p></div></details>
+  <details class="qa"><summary>Why use an exclusive effective_to boundary?</summary><div><p>Half-open intervals such as [effective_from, effective_to) avoid overlap at exact boundary timestamps and make temporal joins unambiguous.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Implement customer SCD2 with two updates arriving out of order. Prove there is one current row and no gaps/overlaps, then join three facts to event-time-correct versions.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/"><b>Kimball Dimensional Modeling Techniques</b><span>Use the official technique index to revise grain, facts, dimensions, keys, SCDs, and advanced dimension patterns.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-update/"><b>Delta Lake MERGE and Updates</b><span>Implement an upsert with deterministic keys and prove that replaying the same source does not duplicate rows.</span></a></div>
+  
+    </section>
+<section class="chapter" id="kafka-core" data-search="kafka producers, brokers, topics, and partitions kafka scales an ordered log by partitioning it. ordering is per partition, and the partition-key decision is both a correctness and load-distribution choice.">
+      <div class="chapter-head"><div class="chapter-num">18</div><div><h2>Kafka producers, brokers, topics, and partitions</h2></div><label class="mastery"><input type="checkbox" data-done="kafka-core"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">Kafka scales an ordered log by partitioning it. Ordering is per partition, and the partition-key decision is both a correctness and load-distribution choice.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A producer publishes records to a topic hosted by brokers. A topic is split into partitions, each an ordered append-only log. Consumers read records by offset, and a consumer group divides partitions among its members.</strong></p></div>
+  <div class="flow"><div><b>Producer</b><span>Key + value + headers</span></div><i>-></i><div><b>Topic partitions</b><span>Ordered logs on brokers</span></div><i>-></i><div><b>Consumer group</b><span>One member per assigned partition</span></div></div>
+  <h3>Partition-key reasoning</h3>
+  <p>Use a key such as <code>order_id</code> when all events for one order must remain ordered. A null/random key distributes load but loses entity ordering. A hot key can create one overloaded partition, so profile cardinality and traffic skew.</p>
+  <details class="qa"><summary>Can Kafka guarantee global topic order?</summary><div><p>Not across multiple partitions. It preserves order within each partition. Global order requires one partition or downstream sequence reconciliation, both with scalability trade-offs.</p></div></details>
+  <details class="qa"><summary>Can consumers in one group exceed the partition count?</summary><div><p>They can exist, but extra consumers have no partition assignment, so active parallelism is bounded by the number of partitions.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Run Kafka locally, create a multi-partition topic, publish keyed order events, consume them, and verify per-key ordering and offsets.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://kafka.apache.org/quickstart/"><b>Apache Kafka Quickstart</b><span>Create a local topic, produce records, consume them, and observe offsets instead of only reading theory.</span></a><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/"><b>Apache Kafka Documentation</b><span>Use the design and configuration sections for partitions, replication, producer acknowledgements, and consumer groups.</span></a></div>
+  
+    </section>
+<section class="chapter" id="kafka-reliability" data-search="kafka offsets, groups, rebalancing, acks, and retention a consumer's correctness depends on the relationship among processing, target commit, and offset commit. broker retention is not the same as consumer progress.">
+      <div class="chapter-head"><div class="chapter-num">19</div><div><h2>Kafka offsets, groups, rebalancing, acks, and retention</h2></div><label class="mastery"><input type="checkbox" data-done="kafka-reliability"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A consumer's correctness depends on the relationship among processing, target commit, and offset commit. Broker retention is not the same as consumer progress.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>An offset identifies a record position within a partition. A consumer group stores its progress and shares partition ownership. Rebalancing changes assignments when membership or partitions change, so processing must safely handle revocation and replay.</strong></p></div>
+  <table><thead><tr><th>Producer acks</th><th>Meaning</th><th>Trade-off</th></tr></thead><tbody>
+    <tr><td><code>0</code></td><td>Do not wait for broker acknowledgement</td><td>Lowest assurance</td></tr>
+    <tr><td><code>1</code></td><td>Leader acknowledges</td><td>Leader failure can still lose unreplicated data</td></tr>
+    <tr><td><code>all</code></td><td>All required in-sync replicas acknowledge</td><td>Stronger durability with latency/availability trade-off</td></tr>
+  </tbody></table>
+  <h3>Safe consumer sequence</h3>
+  <ol><li>Read records from assigned partitions.</li><li>Transform deterministically.</li><li>Commit target output idempotently or transactionally.</li><li>Commit offsets only for successfully durable output.</li></ol>
+  <div class="callout warn"><div class="label">Retention trap</div><p>Kafka retention controls how long broker log segments remain, independent of whether a consumer has read them. A consumer lagging beyond retention can lose the ability to replay old offsets.</p></div>
+  <details class="qa"><summary>What happens if offset is committed before target write?</summary><div><p>A crash can skip the record after restart, producing at-most-once behavior and data loss. Committing after the write gives at-least-once behavior, so the sink must handle replay.</p></div></details>
+  <details class="qa"><summary>Why can rebalancing cause duplicate work?</summary><div><p>A consumer may process records but lose its partition before committing the corresponding offsets. The next owner resumes from the last committed offset and repeats those records.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a consumer that writes stable event IDs to a target, then stop it after the target write but before offset commit. Restart and demonstrate a duplicate delivery with a single final business effect.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://kafka.apache.org/quickstart/"><b>Apache Kafka Quickstart</b><span>Create a local topic, produce records, consume them, and observe offsets instead of only reading theory.</span></a><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/"><b>Apache Kafka Documentation</b><span>Use the design and configuration sections for partitions, replication, producer acknowledgements, and consumer groups.</span></a></div>
+  
+    </section>
+<section class="chapter" id="kafka-contracts-eventhubs" data-search="kafka vs event hubs and schema registry the generic concept is a partitioned event log; the platform decision includes ecosystem, operations, protocol compatibility, integration, governance, and cost.">
+      <div class="chapter-head"><div class="chapter-num">20</div><div><h2>Kafka vs Event Hubs and Schema Registry</h2></div><label class="mastery"><input type="checkbox" data-done="kafka-contracts-eventhubs"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">The generic concept is a partitioned event log; the platform decision includes ecosystem, operations, protocol compatibility, integration, governance, and cost.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Kafka is an open-source distributed event-streaming platform that can be self-managed or consumed as a managed service. Azure Event Hubs is a managed Azure event-ingestion service with Kafka protocol compatibility.</strong> I compare operational ownership, Azure integration, feature requirements, throughput model, networking, and total cost.</p></div>
+  <table><thead><tr><th>Decision area</th><th>Kafka</th><th>Event Hubs</th></tr></thead><tbody>
+    <tr><td>Operations</td><td>Control depends on deployment/managed provider</td><td>Azure manages service infrastructure</td></tr>
+    <tr><td>Ecosystem</td><td>Broad Kafka-native ecosystem and APIs</td><td>Azure SDKs/integration plus Kafka endpoint</td></tr>
+    <tr><td>Capacity</td><td>Partitions, broker resources, provider model</td><td>Partitions plus service throughput/capacity model</td></tr>
+    <tr><td>Choice</td><td>Use requirements, not brand preference</td><td>Strong fit in governed Azure estates</td></tr>
+  </tbody></table>
+  <h3>Schema Registry and contracts</h3>
+  <p>A registry stores versioned schemas and compatibility rules; it does not fix semantic changes automatically. Producers still own safe evolution, and consumers must define which versions they support.</p>
+  <details class="qa"><summary>If Event Hubs supports the Kafka protocol, is it identical to Kafka?</summary><div><p>No. It enables many Kafka clients and patterns, but service operations, quotas, feature support, security, and pricing remain Event Hubs-specific. Validate required APIs and semantics.</p></div></details>
+  <details class="qa"><summary>Backward vs forward compatibility?</summary><div><p>Backward compatibility means a new reader can read old data. Forward compatibility means an old reader can read data written by a new writer. Full compatibility requires both.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Define an Avro-style order event schema, add one compatible field, then design an intentionally breaking currency change with versioning and consumer migration.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/"><b>Apache Kafka Documentation</b><span>Use the design and configuration sections for partitions, replication, producer acknowledgements, and consumer groups.</span></a></div>
+  
+    </section>
+<section class="chapter" id="orchestration-airflow" data-search="orchestration, dags, schedules, and airflow an orchestrator coordinates work; it should not hide business logic inside one giant task or replace a processing engine.">
+      <div class="chapter-head"><div class="chapter-num">21</div><div><h2>Orchestration, DAGs, schedules, and Airflow</h2></div><label class="mastery"><input type="checkbox" data-done="orchestration-airflow"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">An orchestrator coordinates work; it should not hide business logic inside one giant task or replace a processing engine.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>A DAG represents tasks and their dependencies without cycles. An orchestrator schedules runs, passes parameters, tracks state, applies retries, and exposes logs and alerts.</strong> I keep tasks idempotent and choose boundaries that can be retried independently without creating inconsistent output.</p></div>
+  <div class="code-wrap"><div class="code-head"><span>Python - Airflow-style DAG</span><button class="copy-btn" type="button">Copy</button></div><pre><code>from datetime import datetime, timedelta
+from airflow.decorators import dag, task
+
+@dag(
+    schedule="0 * * * *",
+    start_date=datetime(2026, 1, 1),
+    catchup=False,
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=2)},
+)
+def hourly_orders():
+    @task
+    def extract(interval_start: str, interval_end: str):
+        return {"start": interval_start, "end": interval_end}
+
+    @task
+    def transform(window: dict):
+        return run_idempotent_transform(window)
+
+    @task
+    def reconcile(result: dict):
+        assert_reconciliation(result)
+
+    reconcile(transform(extract("{{ data_interval_start }}", "{{ data_interval_end }}")))
+
+hourly_orders()</code></pre></div>
+  <h3>Scheduling terms</h3>
+  <ul><li><strong>Logical/data interval:</strong> the time range a run represents, not simply wall-clock start time.</li><li><strong>Catchup:</strong> creating missed historical intervals when enabled.</li><li><strong>Backfill:</strong> deliberately creating runs for a bounded past range.</li><li><strong>Dependency:</strong> a true data/control requirement, not a visual preference.</li></ul>
+  <div class="callout warn"><div class="label">XCom/message trap</div><p>Pass references and small metadata between tasks, not large datasets. Store data in the processing/storage layer and let the orchestrator coordinate it.</p></div>
+  <details class="qa"><summary>How do you choose task boundaries?</summary><div><p>Use independently observable and retryable units with durable handoffs, such as ingest, transform, quality gate, and publish. Avoid both one giant opaque task and thousands of tiny orchestration calls.</p></div></details>
+  <details class="qa"><summary>Should every failure be retried?</summary><div><p>No. Retry transient infrastructure errors. Fail fast and alert on contract errors, invalid credentials, deterministic code bugs, or quality failures that require intervention.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Build a three-task DAG with an hourly data interval, retry policy, reconciliation gate, and bounded backfill. Force the middle task to fail once and inspect the rerun.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial/fundamentals.html"><b>Apache Airflow Fundamentals Tutorial</b><span>Build the tutorial DAG and inspect task dependencies, retries, scheduling, logs, and templated values.</span></a><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial/pipeline.html"><b>Apache Airflow Data Pipeline Tutorial</b><span>Implement a small extract-transform-load DAG and test task boundaries plus reruns.</span></a><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/backfill.html"><b>Apache Airflow Backfill</b><span>Practice a bounded historical rerun and reason about ordering, concurrency, and existing runs.</span></a></div>
+  
+    </section>
+<section class="chapter" id="governance-security" data-search="governance, security, pii, lineage, and retention security protects access; governance establishes ownership, meaning, policy, discoverability, and evidence across the data lifecycle.">
+      <div class="chapter-head"><div class="chapter-num">22</div><div><h2>Governance, security, PII, lineage, and retention</h2></div><label class="mastery"><input type="checkbox" data-done="governance-security"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Security protects access; governance establishes ownership, meaning, policy, discoverability, and evidence across the data lifecycle.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Data governance defines who owns data, what it means, who may use it, how quality is measured, and how long it is retained. Security enforces controls such as identity, least privilege, encryption, network boundaries, masking, and auditing.</strong></p></div>
+  <table><thead><tr><th>Control</th><th>Purpose</th><th>Evidence</th></tr></thead><tbody>
+    <tr><td>Least privilege</td><td>Only required actions on required data</td><td>Role grants and access reviews</td></tr>
+    <tr><td>Secret management</td><td>No credentials in code/config/logs</td><td>Vault references and rotation logs</td></tr>
+    <tr><td>Encryption</td><td>Protect data in transit and at rest</td><td>TLS and key policy</td></tr>
+    <tr><td>PII masking/tokenization</td><td>Limit exposure while enabling use</td><td>Column policy and test results</td></tr>
+    <tr><td>Audit</td><td>Show who accessed or changed what</td><td>Immutable access/change logs</td></tr>
+    <tr><td>Retention/deletion</td><td>Keep data only as required</td><td>Policy, lifecycle jobs, deletion proof</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Layered access</div><p>Raw/Bronze is not automatically open. It often contains the most sensitive and least cleaned data, so access should be narrower than curated aggregates.</p></div>
+  <details class="qa"><summary>Masking vs encryption?</summary><div><p>Encryption protects bytes using keys, mainly at rest or in transit. Masking changes what an authorized query/user can see. They solve different threats and are often both required.</p></div></details>
+  <details class="qa"><summary>How does right-to-delete affect a lakehouse?</summary><div><p>Locate the subject through catalog/lineage, remove or irreversibly anonymize governed copies, propagate to derived tables/caches, respect legal exceptions, and record auditable completion. Immutable backups need a documented expiration strategy.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Classify ten customer fields as public, internal, confidential, or restricted. Design roles for engineer, analyst, support, and auditor, then define masking and retention rules.</p></div>
+  
+    </section>
+<section class="chapter" id="cost-performance" data-search="cost, performance, scaling, and workload isolation performance tuning should start with workload evidence and data scanned, not with permanently increasing compute.">
+      <div class="chapter-head"><div class="chapter-num">23</div><div><h2>Cost, performance, scaling, and workload isolation</h2></div><label class="mastery"><input type="checkbox" data-done="cost-performance"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Performance tuning should start with workload evidence and data scanned, not with permanently increasing compute.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I optimize a data platform by measuring the critical workload, reducing unnecessary data movement and scans, choosing suitable physical design, and then sizing compute.</strong> I separate workloads so ingestion, backfills, and BI concurrency cannot starve each other.</p></div>
+  <h3>Practical sequence</h3>
+  <ol><li>Define SLO and identify the actual bottleneck.</li><li>Remove unnecessary columns, rows, shuffles, and repeated work.</li><li>Improve file sizes, partitions, statistics, and join strategy.</li><li>Cache only reused expensive results.</li><li>Scale compute with bounds, timeout, and cost attribution.</li><li>Re-measure p50/p95 runtime, throughput, spill, and cost per unit.</li></ol>
+  <table><thead><tr><th>Workload</th><th>Isolation method</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>Interactive BI</td><td>Dedicated SQL/serving compute</td><td>Predictable concurrency and latency</td></tr>
+    <tr><td>Scheduled ETL</td><td>Job compute/queue</td><td>Elastic capacity and clean ownership</td></tr>
+    <tr><td>Backfill</td><td>Separate low-priority pool</td><td>Protect current SLA</td></tr>
+    <tr><td>Streaming</td><td>Stable reserved baseline</td><td>Avoid restart and lag from aggressive scale-down</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>When is autoscaling harmful?</summary><div><p>When startup/scaling lag exceeds the workload window, stateful streaming needs stable capacity, limits are too high, or poor queries simply consume more resources. Use min/max bounds and monitor cost plus queue time.</p></div></details>
+  <details class="qa"><summary>When should you cache?</summary><div><p>When the same expensive deterministic intermediate result is reused enough to repay materialization and storage cost. Do not cache one-use data or data too large for the storage level.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>A daily job doubled in cost and missed its SLA. Create a measurement plan covering input growth, scan bytes, skew, shuffle, spill, file count, concurrency, and recent code/config changes.</p></div>
+  
+    </section>
+<section class="chapter" id="dataops-cicd" data-search="dataops, ci/cd, promotion, and rollback deploying data code safely also means protecting contracts, historical state, schema, and partially processed ranges.">
+      <div class="chapter-head"><div class="chapter-num">24</div><div><h2>DataOps, CI/CD, promotion, and rollback</h2></div><label class="mastery"><input type="checkbox" data-done="dataops-cicd"> Mastered <span class="priority p1">P1</span></label></div>
+      <p class="chapter-lead">Deploying data code safely also means protecting contracts, historical state, schema, and partially processed ranges.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>Data CI/CD moves versioned code and configuration through automated tests, artifact creation, controlled environment promotion, deployment, verification, and rollback.</strong> The same artifact should be promoted; environment-specific endpoints and secrets are injected securely.</p></div>
+  <div class="flow"><div><b>Commit</b><span>Review + unit tests</span></div><i>-></i><div><b>Build</b><span>Immutable artifact</span></div><i>-></i><div><b>Test</b><span>Integration + contract + data</span></div><i>-></i><div><b>Promote</b><span>Approval + deploy</span></div><i>-></i><div><b>Verify</b><span>Canary + reconciliation</span></div></div>
+  <h3>Test pyramid for pipelines</h3>
+  <ul><li>Unit tests for transformations and edge cases.</li><li>Contract tests for schema and compatibility.</li><li>Integration tests for storage, permissions, checkpoints, and target writes.</li><li>Data-quality tests on a representative controlled sample.</li><li>Deployment smoke test and post-run reconciliation.</li></ul>
+  <div class="callout warn"><div class="label">Rollback is not only code</div><p>Old code may not understand a newly changed schema or checkpoint. A rollback plan states whether output/table version, state, migration, and downstream consumers must also be restored.</p></div>
+  <details class="qa"><summary>Why promote one artifact instead of rebuilding per environment?</summary><div><p>It proves that the tested bits are the deployed bits. Rebuilding can introduce dependency or packaging differences between test and production.</p></div></details>
+  <details class="qa"><summary>How do you test an incremental pipeline?</summary><div><p>Test initial load, no-change run, insert, update, delete, tied watermark, late arrival, duplicate input, partial failure, replay, schema change, and reconciliation.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Design a pipeline release with dev/test/prod configuration, secret injection, contract tests, a canary range, approval, post-deploy reconciliation, and code-plus-data rollback.</p></div>
+  
+    </section>
+<section class="chapter" id="batch-system-design" data-search="system design gate: reliable batch platform this gate combines ingestion, storage, transformation, modeling, serving, security, observability, reruns, backfills, and cost into one coherent answer.">
+      <div class="chapter-head"><div class="chapter-num">25</div><div><h2>System design gate: reliable batch platform</h2></div><label class="mastery"><input type="checkbox" data-done="batch-system-design"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">This gate combines ingestion, storage, transformation, modeling, serving, security, observability, reruns, backfills, and cost into one coherent answer.</p>
+  <h3>Scenario</h3>
+  <p>Design a platform that ingests 500 database tables and partner files, produces hourly operational metrics and daily finance facts, keeps seven years of history, and supports replay after logic changes.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I would begin with workload contracts, not tool names.</strong> I would classify each source by volume, change mechanism, keys, delete behavior, freshness, and sensitivity; land immutable versioned data; transform into validated conformed tables; publish dimensional marts; and make every range auditable and replayable.</p></div>
+  <div class="flow"><div><b>Sources</b><span>CDC, watermark, files</span></div><i>-></i><div><b>Bronze</b><span>Immutable + metadata</span></div><i>-></i><div><b>Silver</b><span>Contracts + dedup + conformance</span></div><i>-></i><div><b>Gold</b><span>Facts + dimensions</span></div><i>-></i><div><b>Serve</b><span>SQL + BI</span></div></div>
+  <h3>Decisions you must state</h3>
+  <ul class="checklist"><li>Target grain and business keys for each published table.</li><li>Source state: log position, composite watermark, or file manifest.</li><li>Idempotent publication and progress-commit sequence.</li><li>Quarantine plus source/valid/rejected/filtered reconciliation.</li><li>Schema compatibility and producer ownership.</li><li>Identity, PII access, encryption, audit, and retention.</li><li>Freshness/data-quality SLOs, alerts, lineage, and runbook.</li><li>Workload isolation for daily loads, hourly loads, and backfills.</li></ul>
+  <details class="qa"><summary>What changes if there are 500 tables?</summary><div><p>Use metadata-driven orchestration for repeatable ingestion behavior, but allow per-table policy fields for keys, watermark, deletes, schema, validation, partitioning, and SLA. Avoid one hard-coded pipeline per table and avoid one inflexible rule for all tables.</p></div></details>
+  <details class="qa"><summary>How do you make raw data replayable?</summary><div><p>Retain immutable source payload plus source identity, ingestion timestamp, schema version, and ordering token; version transformation code/config; and prevent lifecycle policies from deleting raw data before the required replay horizon.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Draw this architecture on paper in eight minutes. Then explain a normal run, a duplicate file, a schema-breaking column change, a target outage, and a 90-day backfill.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial/pipeline.html"><b>Apache Airflow Data Pipeline Tutorial</b><span>Implement a small extract-transform-load DAG and test task boundaries plus reruns.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-update/"><b>Delta Lake MERGE and Updates</b><span>Implement an upsert with deterministic keys and prove that replaying the same source does not duplicate rows.</span></a><a target="_blank" rel="noopener" href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/"><b>Kimball Dimensional Modeling Techniques</b><span>Use the official technique index to revise grain, facts, dimensions, keys, SCDs, and advanced dimension patterns.</span></a></div>
+  
+    </section>
+<section class="chapter" id="streaming-system-design" data-search="system design gate: reliable streaming platform a strong streaming design makes ordering, lag, state, late data, replay, sink semantics, and operational capacity explicit.">
+      <div class="chapter-head"><div class="chapter-num">26</div><div><h2>System design gate: reliable streaming platform</h2></div><label class="mastery"><input type="checkbox" data-done="streaming-system-design"> Mastered <span class="priority p0">P0</span></label></div>
+      <p class="chapter-lead">A strong streaming design makes ordering, lag, state, late data, replay, sink semantics, and operational capacity explicit.</p>
+  <h3>Scenario</h3>
+  <p>Design a near-real-time order-event platform for dashboards and fraud features. Peak rate is 80,000 events per second, events can arrive two hours late, and corrections must reach serving tables.</p>
+  <div class="say"><div class="label">Interview-ready answer</div><p><strong>I would key the event log by order ID for per-order ordering, use a versioned contract, retain enough broker history for recovery, checkpoint source progress, preserve raw events, deduplicate by event ID/version, and use event-time state with a measured lateness boundary.</strong> The sink must upsert corrections idempotently, while consumer lag, invalid rate, state size, and freshness are monitored.</p></div>
+  <h3>Failure walk-through</h3>
+  <table><thead><tr><th>Failure</th><th>Expected behavior</th><th>Control</th></tr></thead><tbody>
+    <tr><td>Consumer restarts</td><td>Resume from committed progress</td><td>Durable checkpoint + replayable log</td></tr>
+    <tr><td>Record redelivered</td><td>No duplicate business effect</td><td>Stable ID + idempotent sink</td></tr>
+    <tr><td>Partition becomes hot</td><td>Lag alert and capacity response</td><td>Key analysis, partitioning, scalable consumers</td></tr>
+    <tr><td>Breaking schema</td><td>Quarantine/stop affected contract</td><td>Registry compatibility and versioning</td></tr>
+    <tr><td>Very late correction</td><td>Repair affected result</td><td>Correction path/recompute</td></tr>
+  </tbody></table>
+  <details class="qa"><summary>How do you choose partition count?</summary><div><p>Estimate peak throughput per partition, required consumer parallelism, key distribution, future growth, and service limits. More partitions increase parallelism but also coordination, files, and ordering scope.</p></div></details>
+  <details class="qa"><summary>How do you recover after broker retention has deleted unread data?</summary><div><p>Replay from the durable raw lake or source system into a repair path, restore a consistent checkpoint boundary, and reconcile. This must be designed before an incident, not invented during one.</p></div></details>
+  <div class="practice"><b>Practice drill</b><p>Draw the streaming design and defend partition key, retention, checkpoint, two-hour lateness policy, correction path, sink guarantee, and five production alerts.</p></div><div class="topic-links"><div class="topic-links-title">Practice links for this topic</div><a target="_blank" rel="noopener" href="https://kafka.apache.org/quickstart/"><b>Apache Kafka Quickstart</b><span>Create a local topic, produce records, consume them, and observe offsets instead of only reading theory.</span></a><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/"><b>Apache Kafka Documentation</b><span>Use the design and configuration sections for partitions, replication, producer acknowledgements, and consumer groups.</span></a><a target="_blank" rel="noopener" href="https://docs.delta.io/delta-change-data-feed/"><b>Delta Change Data Feed</b><span>Read inserted, updated, and deleted row changes and identify the downstream checkpoint needed by a consumer.</span></a></div>
+  
+    </section>
+<section class="chapter" id="incident-revision" data-search="incident method, rapid q&amp;a, and revision gate the final skill is staying structured under pressure: protect correctness first, restore service deliberately, and communicate evidence rather than guesses.">
+      <div class="chapter-head"><div class="chapter-num">27</div><div><h2>Incident method, rapid Q&A, and revision gate</h2></div><label class="mastery"><input type="checkbox" data-done="incident-revision"> Mastered <span class="pill">Final gate</span></label></div>
+      <p class="chapter-lead">The final skill is staying structured under pressure: protect correctness first, restore service deliberately, and communicate evidence rather than guesses.</p>
+  <h3>Incident response sequence</h3>
+  <ol><li><strong>Detect and scope:</strong> which runs, partitions, tables, and consumers are affected?</li><li><strong>Contain:</strong> stop bad publication, preserve evidence, and protect downstream users.</li><li><strong>Diagnose:</strong> compare first failing run, deployment, schema, source, capacity, and permissions.</li><li><strong>Recover:</strong> rollback or repair from a known boundary; reconcile before reopening.</li><li><strong>Prevent:</strong> root cause, missing control, owner, due date, and runbook/test update.</li></ol>
+  <h3>Rapid answers</h3>
+  <table><thead><tr><th>Question</th><th>Answer anchor</th></tr></thead><tbody>
+    <tr><td>ETL vs ELT?</td><td>Transformation before vs after load; choose from compute, raw-data policy, reuse, and governance.</td></tr>
+    <tr><td>CDC vs watermark?</td><td>CDC reads change operations including deletes; watermark filters a comparable column and may miss deletes.</td></tr>
+    <tr><td>Idempotent pipeline?</td><td>Repeated logical input gives the same correct target state.</td></tr>
+    <tr><td>Checkpoint vs watermark?</td><td>Checkpoint stores progress/recovery state; watermark is an event-time lateness/state boundary.</td></tr>
+    <tr><td>Exactly-once?</td><td>End-to-end effect from replayable source, durable progress, deterministic logic, and transactional/idempotent sink.</td></tr>
+    <tr><td>Grain?</td><td>The exact business meaning of one fact row.</td></tr>
+    <tr><td>SCD1 vs SCD2?</td><td>Overwrite current value vs add effective-dated history.</td></tr>
+    <tr><td>Small files?</td><td>Metadata/planning/task overhead; fix write pattern and compact.</td></tr>
+    <tr><td>Kafka ordering?</td><td>Guaranteed within a partition, so key choice defines ordering scope.</td></tr>
+    <tr><td>Backfill safety?</td><td>Bounded range, versioned inputs/code, isolated capacity, idempotent writes, reconciliation, rollback.</td></tr>
+  </tbody></table>
+  <div class="callout tip"><div class="label">Final readiness standard</div><p>For three separate attempts, score at least 4/5 on every P0 chapter: define it, compare it, apply it, name a failure, and state a metric. Rework only the failed dimension instead of rereading the entire guide.</p></div>
+  <div class="practice"><b>Practice drill</b><p>Run a 45-minute mock: answer ten rapid questions, draw one batch and one streaming architecture, then diagnose a duplicate-data incident without opening this document.</p></div>
+  
+    </section><footer class="footer">Built from your 30-day tracker and MAQ topic list. Practice links appear immediately below the topic drill that uses them.</footer></main></div>
+<script>
+  const beginnerNotes = {
+    'etl-elt': {
+      simple: `ETL mein data ko destination par rakhne se <strong>pehle</strong> clean aur transform karte hain. ELT mein raw data pehle destination mein load hota hai aur transformation baad mein wahi hoti hai.`,
+      example: `Socho kapde almari mein rakhne hain. ETL = pehle wash/fold, phir almari. ELT = pehle laundry basket mein collect, phir zarurat ke hisaab se wash/fold.`,
+      remember: `Sensitive/raw data target mein allowed nahi hai to ETL useful. Target ke paas powerful compute hai aur raw history reuse karni hai to ELT useful. Real projects often hybrid hote hain.`,
+      link: `https://www.datacamp.com/tutorial/introduction-to-data-pipelines-for-data-professionals`,
+      label: `DataCamp — Data Pipelines and ETL vs ELT`,
+      why: `Pipeline flow ko basic example aur diagram ke saath samjhata hai.`
+    },
+    'batch-streaming': {
+      simple: `Batch processing data ko fixed groups mein, jaise hourly ya daily, process karti hai. Streaming data aate hi continuously process karti hai. Micro-batch har kuch seconds/minutes ka chhota batch hai.`,
+      example: `Monthly salary report = batch. UPI fraud alert = streaming. Har 5 minute dashboard refresh = micro-batch ya near-real-time.`,
+      remember: `Decision ka main point “latest technology” nahi, required latency hai. Result kal chahiye to streaming ka extra cost aur complexity justify nahi hota.`,
+      link: `https://www.datacamp.com/blog/batch-vs-stream-processing`,
+      label: `DataCamp — Batch vs Stream Processing`,
+      why: `Use cases aur decision factors beginner-friendly language mein.`
+    },
+    'incremental-cdc': {
+      simple: `Full load har run mein poora data uthata hai. Incremental load sirf naya/changed data uthata hai. Watermark last processed value, jaise last_updated timestamp, yaad rakhta hai. CDC database ke change log se insert, update aur delete events pakad sakta hai.`,
+      example: `10 crore orders ko daily reload karna full load hai. Kal 10 baje ke baad badle orders lena watermark incremental hai. Database log se I/U/D events lena CDC hai.`,
+      remember: `Watermark-based load ko blindly full CDC mat bolo: timestamp filter deletes miss kar sakta hai. Tied timestamps ke liye timestamp + unique ID composite boundary safer hai.`,
+      link: `https://www.datacamp.com/blog/change-data-capture`,
+      label: `DataCamp — Change Data Capture: Beginner Guide`,
+      why: `CDC ka purpose, methods aur real examples clearly cover karta hai.`
+    },
+    'idempotency': {
+      simple: `Idempotent pipeline ko same logical input ke saath 2 ya 10 baar run karo, final target state correct aur same rehni chahiye—duplicate business effect nahi hona chahiye.`,
+      example: `Order 101 ko retry karne par do rows insert nahi honi chahiye. Stable order_id par MERGE/upsert karo aur successful target write ke baad hi checkpoint update karo.`,
+      remember: `Retry sirf dobara chalana hai; idempotency dobara chalne ko safe banati hai. Stable key + deterministic logic + atomic publish/checkpoint sequence yaad rakho.`,
+      link: `https://www.datacamp.com/tutorial/getting-started-with-apache-airflow`,
+      label: `DataCamp — Airflow Best Practices`,
+      why: `Determinism, idempotency aur safe DAG reruns ko simple examples se samjhata hai.`
+    },
+    'backfill': {
+      simple: `Backfill ka matlab purane missing ya wrong date-range ko dobara process karke correct output banana hai. Ye normal current-day run se separate, bounded aur auditable hona chahiye.`,
+      example: `Discount logic 1–7 July ke liye galat thi. Sirf wahi dates versioned code se rerun karo, output reconcile karo aur current pipeline ki capacity protect karo.`,
+      remember: `Backfill = range + correct code/input version + isolated compute + idempotent write + reconciliation + rollback plan. Bas “job rerun kar denge” incomplete answer hai.`,
+      link: `https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#backfill`,
+      label: `Apache Airflow — Backfill Concept`,
+      why: `Past logical dates ko controlled way mein rerun karne ka direct reference.`
+    },
+    'late-data': {
+      simple: `Event time batata hai event actually kab hua; arrival time batata hai system ko kab mila. Network/device delay ki wajah se purana event baad mein aa sakta hai. Watermark decide karta hai system kitni lateness tak wait/state maintain karega.`,
+      example: `Ride 10:00 par complete hui, event 10:07 par aaya. 10-minute watermark hai to aggregation update ho sakti hai; 5-minute boundary hai to event late path/drop policy mein ja sakta hai.`,
+      remember: `Longer watermark = better completeness but more state, memory aur delayed final result. Bahut late correction ke liye separate repair/recompute path rakho.`,
+      link: `https://learn.microsoft.com/en-us/azure/stream-analytics/event-ordering`,
+      label: `Microsoft Learn — Late and Out-of-Order Events`,
+      why: `Event time, arrival time aur lateness policy ko numbers wale example se dikhata hai.`
+    },
+    'schema-contracts': {
+      simple: `Schema batata hai fields, types aur structure kya hai. Schema evolution planned compatible change hai; schema drift unexpected change hai. Data contract producer aur consumer ke beech rules ka agreement hai.`,
+      example: `Nullable middle_name add karna usually compatible ho sakta hai. customer_id ko string se object banana ya column rename karna consumer ko break kar sakta hai.`,
+      remember: `Har change ke liye owner, version, compatibility rule, validation aur rollout plan bolo. “Auto schema evolution on kar denge” governance ka substitute nahi hai.`,
+      link: `https://www.datacamp.com/blog/data-observability`,
+      label: `DataCamp — Schema as an Observability Pillar`,
+      why: `Unexpected schema changes pipeline ko kaise break karti hain, simple examples ke saath.`
+    },
+    'quality-reconciliation': {
+      simple: `Data quality checks poochti hain: data complete, valid, unique, consistent aur fresh hai? Reconciliation prove karti hai ki source se nikla data target mein expected rules ke baad mathematically account ho raha hai.`,
+      example: `Source 1,000 rows = 970 valid target + 20 rejected + 10 intentionally filtered. Sirf target row count 970 dekhna enough nahi; 30-row difference explain bhi hona chahiye.`,
+      remember: `Critical rule fail ho to publish roko; non-critical bad rows quarantine karo. Count, sum, distinct keys, nulls, duplicates aur business totals compare karo.`,
+      link: `https://www.datacamp.com/blog/data-quality`,
+      label: `DataCamp — Data Quality: Identify and Measure`,
+      why: `Quality dimensions, checks aur monitoring ko beginner level par cover karta hai.`
+    },
+    'observability': {
+      simple: `Monitoring batata hai job chali ya fail hui. Data observability batati hai data healthy hai ya nahi—freshness, volume, schema, value distribution aur lineage sab dekhkar.`,
+      example: `Pipeline green hai, par aaj sales rows 90% kam hain. Job monitoring ise success bolegi; volume/freshness observability alert karegi.`,
+      remember: `SLA promise hai; SLO measurable internal target. Alert actionable hona chahiye: impact, owner, evidence aur runbook link ke saath.`,
+      link: `https://www.datacamp.com/blog/data-observability`,
+      label: `DataCamp — Data Observability Explained`,
+      why: `Freshness, distribution, volume, schema aur lineage ko examples se samjhata hai.`
+    },
+    'delivery-semantics': {
+      simple: `At-most-once mein event maximum ek baar process hota hai, lekin failure par lose ho sakta hai. At-least-once loss avoid karta hai, par retry se duplicate aa sakta hai. Exactly-once ka real goal ek hi business effect hai.`,
+      example: `Payment event do baar deliver ho sakta hai, par idempotency key se account sirf ek baar debit hota hai. Delivery duplicate ho sakti hai, business effect duplicate nahi.`,
+      remember: `Exactly-once sirf source setting nahi: replayable source + durable progress + deterministic processing + transactional/idempotent sink ka end-to-end result hai.`,
+      link: `https://kafka.apache.org/documentation/#semantics`,
+      label: `Apache Kafka — Message Delivery Semantics`,
+      why: `At-most, at-least aur exactly-once guarantees ka canonical comparison.`
+    },
+    'lake-warehouse-lakehouse': {
+      simple: `Data lake cheap flexible storage hai jahan raw, semi-structured aur unstructured data reh sakta hai. Warehouse clean structured tables aur fast BI queries ke liye optimized hota hai. Lakehouse lake storage par warehouse-like reliability/governance add karta hai.`,
+      example: `Lake = bada raw storeroom. Warehouse = labelled showroom. Lakehouse = storeroom ki flexibility ke saath catalog, transactions aur fast query counters.`,
+      remember: `Lakehouse “lake + magic” nahi. Iske liye table format/transaction log, catalog, schema controls aur query engine chahiye. Workload dekhkar choose karo.`,
+      link: `https://www.datacamp.com/blog/what-is-a-data-lakehouse`,
+      label: `DataCamp — Data Lakehouse Explained`,
+      why: `Lake, warehouse aur lakehouse ko side-by-side beginner-friendly way mein compare karta hai.`
+    },
+    'file-formats': {
+      simple: `CSV simple flat text hai; JSON nested API data ke liye flexible; Avro row-oriented aur schema-based streaming/exchange ke liye useful; Parquet columnar analytics ke liye; Delta table format Parquet files ke saath transaction log add karta hai.`,
+      example: `50-column sales table se sirf date aur amount read karna ho to Parquet unnecessary columns skip kar sakta hai; CSV ko poori rows parse karni padti hain.`,
+      remember: `Format workload se choose karo: human exchange, nested events, row streaming ya column analytics. Delta ko “file format only” mat bolo—transaction log major part hai.`,
+      link: `https://www.datacamp.com/tutorial/what-is-a-parquet-file`,
+      label: `DataCamp — What Is a Parquet File?`,
+      why: `Columnar storage, compression aur CSV comparison concrete example se.`
+    },
+    'partitioning-files': {
+      simple: `Partitioning data ko folders/chunks mein divide karti hai, usually query filter ke according. Partition pruning irrelevant partitions ko read hi nahi karta. Bahut chhoti files metadata aur task overhead badhati hain.`,
+      example: `Sales ko year/month/date se partition kiya; 4 August query sirf us date ka folder padhegi. User_id par partition karoge to lakhon tiny partitions ban sakte hain.`,
+      remember: `Common low/medium-cardinality filter column choose karo. File size, query pattern aur write frequency balance karo; blindly more partitions better nahi.`,
+      link: `https://www.datacamp.com/blog/what-is-data-partitioning`,
+      label: `DataCamp — Data Partitioning for Beginners`,
+      why: `Partitioning ko manageable chunks aur performance examples se samjhata hai.`
+    },
+    'oltp-olap': {
+      simple: `OLTP application ke chhote fast inserts/updates aur current records ke liye hota hai. OLAP large historical scans, joins aur aggregations ke liye. Normalization duplicate data kam karke writes safe banati hai; denormalization analytics reads simple/fast banati hai.`,
+      example: `Amazon order place/update database = OLTP. Pichhle 3 saal ki category-wise revenue report = OLAP.`,
+      remember: `OLTP often normalized and row-oriented; OLAP often dimensional/denormalized and columnar—but “always” mat bolo. Workload is the reason.`,
+      link: `https://www.datacamp.com/blog/oltp-vs-olap`,
+      label: `DataCamp — OLTP vs OLAP Beginner Guide`,
+      why: `Operational transactions aur analytical queries ka direct comparison.`
+    },
+    'dimensional-core': {
+      simple: `Grain ek fact row ka exact meaning hai. Fact table event/measurement rakhti hai; dimension us event ko describe karti hai. Natural key source ka business ID hai; surrogate key warehouse-generated ID hai.`,
+      example: `Grain: one row per order item. Fact: quantity, price. Dimensions: customer, product, date. customer_id natural key; customer_sk surrogate key.`,
+      remember: `Sabse pehle grain declare karo, phir dimensions aur measures. Different grains ko ek fact table mein mix karna double counting karwa sakta hai.`,
+      link: `https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-fact-tables`,
+      label: `Microsoft Learn — Fact Tables and Grain`,
+      why: `Facts, measures, keys aur granularity ko worked examples ke saath explain karta hai.`
+    },
+    'schema-fact-types': {
+      simple: `Star schema mein dimensions directly central fact se judti hain. Snowflake mein dimensions aur normalize hokar sub-tables mein toot sakti hain. Fact type business process ke time behavior ko represent karta hai.`,
+      example: `Transaction fact = har sale. Periodic snapshot = daily account balance. Accumulating snapshot = order lifecycle ki ek row jisme placed/shipped/delivered dates update hoti hain.`,
+      remember: `Star BI users ke liye simple aur fewer joins deta hai. Snowflake redundancy kam kar sakta hai, par query complexity badhti hai. Choice ko trade-off se justify karo.`,
+      link: `https://www.datacamp.com/tutorial/data-modeling-in-power-bi-tutorial`,
+      label: `DataCamp — Data Modeling and Star Schema`,
+      why: `Fact/dimension relationships aur star design ko visual example se cover karta hai.`
+    },
+    'scd-late-dimensions': {
+      simple: `SCD Type 1 old value overwrite karta hai—history nahi. Type 2 change par nayi dimension row banata hai aur effective dates/current flag se history rakhta hai. Late dimension ka fact dimension record se pehle aa jata hai.`,
+      example: `Customer city Delhi se Pune: Type 1 mein Delhi replace; Type 2 mein Delhi row expire aur Pune row insert. Unknown customer fact ko temporary unknown surrogate key dekar baad mein repair kar sakte hain.`,
+      remember: `Type 2 ke liye business key, surrogate key, effective_from, effective_to, is_current aur change detection clearly explain karo.`,
+      link: `https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables`,
+      label: `Microsoft Learn — Dimension Tables and SCD`,
+      why: `Dimension keys, history tracking aur SCD patterns ko clear examples se.`
+    },
+    'kafka-core': {
+      simple: `Producer events topic mein likhta hai. Topic partitions mein split hota hai aur brokers unhe store karte hain. Consumer offsets ke through partitions se events read karta hai. Ordering ek partition ke andar guaranteed hoti hai.`,
+      example: `order_id ko key banaya to same order ke events same partition mein ja sakte hain, isliye unka order preserve hoga. Different orders parallel process ho sakte hain.`,
+      remember: `Topic = named event stream, partition = ordered shard, broker = server, offset = partition position. Key choice ordering aur load distribution dono affect karti hai.`,
+      link: `https://www.datacamp.com/tutorial/apache-kafka-for-beginners-a-comprehensive-guide/`,
+      label: `DataCamp — Apache Kafka for Beginners`,
+      why: `Producer, topic, partition, broker aur consumer ko diagrams aur walkthrough se.`
+    },
+    'kafka-reliability': {
+      simple: `Consumer group mein ek partition ko ek time par group ka ek consumer read karta hai. Offset bookmark hai. Producer acknowledgements durability control karte hain. Retention decide karti hai events kitni der replay ke liye available rahenge.`,
+      example: `4 partitions aur 2 consumers hain to roughly 2-2 partitions mil sakti hain. Third consumer add/remove hone par rebalance ownership redistribute karega.`,
+      remember: `More consumers than partitions se extra consumers idle ho sakte hain. Offset commit timing loss vs duplicate risk affect karti hai; sink idempotency isliye important hai.`,
+      link: `https://www.datacamp.com/courses/introduction-to-apache-kafka`,
+      label: `DataCamp — Introduction to Apache Kafka`,
+      why: `Topics, producers, consumers aur troubleshooting ke guided exercises.`
+    },
+    'kafka-contracts-eventhubs': {
+      simple: `Kafka open-source event-streaming platform hai jise tum operate ya managed service se use kar sakti ho. Azure Event Hubs fully managed Azure event ingestion service hai aur Kafka protocol endpoint bhi de sakta hai. Schema Registry event structure/version ko centrally manage karti hai.`,
+      example: `Producer v2 event mein new optional field add karta hai. Compatibility check pass ho to old consumers continue; breaking rename/type change ko new version/controlled rollout chahiye.`,
+      remember: `Kafka vs Event Hubs ko “same” mat bolo. Concepts similar ho sakte hain, par operations, feature surface, ecosystem, scaling controls aur Azure integration compare karo.`,
+      link: `https://learn.microsoft.com/en-us/azure/event-hubs/azure-event-hubs-kafka-overview`,
+      label: `Microsoft Learn — Event Hubs for Kafka`,
+      why: `Kafka-compatible Event Hubs flow aur important differences ka official overview.`
+    },
+    'orchestration-airflow': {
+      simple: `Orchestrator decide karta hai kaunsa task kab aur kis dependency ke baad chalega. Airflow DAG tasks aur dependencies define karta hai; heavy data processing khud Airflow worker mein karna zaroori nahi—woh Spark/Databricks job trigger kar sakta hai.`,
+      example: `Extract successful → quality check → transform → publish. Transform fail ho to configured retry chale; publish tab tak start na ho.`,
+      remember: `DAG directed aur acyclic hota hai. Scheduling, retries, state, backfill aur observability Airflow ke jobs hain; massive transformation specialized engine ka.`,
+      link: `https://www.datacamp.com/tutorial/getting-started-with-apache-airflow`,
+      label: `DataCamp — Getting Started with Airflow`,
+      why: `Tasks, dependencies, scheduler, executor aur first DAG ko visual way mein samjhata hai.`
+    },
+    'governance-security': {
+      simple: `Governance defines data ka owner kaun, meaning kya, quality rule kya, access kisko aur retention kitni. Security in rules ko authentication, authorization, encryption, masking aur audit ke through enforce karti hai.`,
+      example: `Analyst customer sales aggregate dekh sakta hai, full phone/email nahi. Support masked phone dekhe; audited privileged role hi raw PII access kare.`,
+      remember: `Classify PII → least privilege → encrypt → mask/tokenize → audit → retention/delete. Lineage batati hai sensitive field kahan-kahan gaya.`,
+      link: `https://www.datacamp.com/courses/data-governance-concepts`,
+      label: `DataCamp — Data Governance Concepts`,
+      why: `Governance ka meaning, roles aur framework basic theory se start karta hai.`
+    },
+    'cost-performance': {
+      simple: `Performance tuning ka first step bigger cluster nahi; bottleneck measure karna aur unnecessary scan, shuffle, rows, columns aur repeated work reduce karna hai. Cost ko workload aur business SLA ke saath measure karo.`,
+      example: `Query 50 columns scan kar rahi hai par 4 chahiye; partition filter missing hai; 20,000 tiny files hain. Pehle ye fix karo, phir compute resize evaluate karo.`,
+      remember: `Measure → scan less → shuffle less → good files/partitions/stats → reuse/cache carefully → bounded scaling → re-measure runtime and cost.`,
+      link: `https://www.datacamp.com/blog/what-is-data-partitioning`,
+      label: `DataCamp — Partitioning and Query Performance`,
+      why: `Large data ko split karke scans aur performance ka relation simple terms mein.`
+    },
+    'dataops-cicd': {
+      simple: `CI code commit par tests chalata hai. CD tested artifact ko controlled environments mein promote/deploy karta hai. Data pipelines mein code ke saath schema, data contracts, checkpoints aur historical outputs ka impact bhi test karna padta hai.`,
+      example: `Transformation change → unit tests → schema contract test → sample integration run → same artifact test/prod → canary range → reconciliation → rollback if needed.`,
+      remember: `Rollback only old code deploy karna nahi. New schema/state ko old code samjhega ya nahi, aur produced bad data repair kaise hoga—ye bhi plan karo.`,
+      link: `https://www.datacamp.com/blog/ci-cd-in-data-engineering`,
+      label: `DataCamp — CI/CD in Data Engineering`,
+      why: `Build, test aur deployment pipeline ko data-engineering context mein samjhata hai.`
+    },
+    'batch-system-design': {
+      simple: `Batch design ko tools ki list se nahi, requirements se start karo: sources, volume, frequency, keys, deletes, quality, retention aur consumers. Phir raw replayable layer se clean/modelled serving tak flow banao.`,
+      example: `DB/file → incremental ingestion → immutable Bronze → validated/deduped Silver → facts/dimensions Gold → BI. Har range ka run ID, counts, status aur checkpoint record ho.`,
+      remember: `Interview flow: requirement → architecture → state/idempotency → quality/reconciliation → failure/backfill → security/monitoring → scale/cost.`,
+      link: `https://www.datacamp.com/tutorial/introduction-to-data-pipelines-for-data-professionals`,
+      label: `DataCamp — Introduction to Data Pipelines`,
+      why: `Source-to-destination pipeline blocks aur common tooling ka simple overview.`
+    },
+    'streaming-system-design': {
+      simple: `Streaming design continuous events ko broker se processor aur serving sink tak le jata hai. Tumhe partition key, ordering, replay retention, checkpoint, late data, duplicates, state size aur sink guarantee explicitly decide karne hote hain.`,
+      example: `Order events keyed by order_id → Event Hubs/Kafka → streaming transform with watermark → idempotent Delta/serving upsert → dashboard; raw events retained for repair.`,
+      remember: `Happy-path diagram enough nahi. Consumer crash, duplicate event, hot partition, schema break, very late correction aur broker retention expiry ka recovery answer ready rakho.`,
+      link: `https://www.datacamp.com/courses/streaming-concepts`,
+      label: `DataCamp — Streaming Concepts`,
+      why: `Batching, queuing, streaming aur real-world streaming systems ko basic level se.`
+    },
+    'incident-revision': {
+      simple: `Incident mein goal jaldi random fix nahi; wrong data ka spread rokna, impact samajhna, known-good boundary se recover karna aur correctness prove karna hai.`,
+      example: `Gold table duplicates: publish pause → affected dates/consumers identify → last deployment/input compare → deduped range repair → source-target reconcile → dashboard reopen → preventive test add.`,
+      remember: `Five words: Detect, Contain, Diagnose, Recover, Prevent. Har step mein evidence, owner, affected range aur communication clear rakho.`,
+      link: `https://www.datacamp.com/blog/data-observability`,
+      label: `DataCamp — Observability for Faster Incident Detection`,
+      why: `Bad data ko early detect aur root cause trace karne ke practical signals.`
+    }
+  };
+
+  const beginnerNotesEnglish = {
+    'etl-elt': {
+      simple: `In ETL, data is cleaned and transformed <strong>before</strong> it is loaded into the destination. In ELT, raw data is loaded first and transformed inside the destination later.`,
+      example: `Think of putting clothes into a cupboard. ETL means wash and fold them first, then store them. ELT means collect them first, then wash and organize them when needed.`,
+      remember: `Prefer ETL when raw or sensitive data must not enter the target. Prefer ELT when the target has strong compute and raw history will be reused. Most real systems use a hybrid.`,
+      label: `DataCamp — Data Pipelines and ETL vs ELT`,
+      why: `Explains the pipeline flow with basic examples and diagrams.`
+    },
+    'batch-streaming': {
+      simple: `Batch processing handles a fixed group of records on a schedule. Streaming processes events continuously as they arrive. Micro-batching processes very small batches every few seconds or minutes.`,
+      example: `A monthly salary report is batch processing. A UPI fraud alert is streaming. A dashboard refreshed every five minutes is usually micro-batch or near-real-time.`,
+      remember: `Choose from the required latency, not from what sounds modern. If the result is needed tomorrow, the extra cost and complexity of streaming may not be justified.`,
+      label: `DataCamp — Batch vs Stream Processing`,
+      why: `Uses simple use cases and decision factors to compare both approaches.`
+    },
+    'incremental-cdc': {
+      simple: `A full load reads every row on each run. An incremental load reads only new or changed rows. A watermark stores the last processed value. CDC can read database changes and capture inserts, updates, and deletes.`,
+      example: `Reloading all 100 million orders daily is a full load. Reading rows changed after 10:00 is watermark-based incremental loading. Reading I/U/D operations from the database log is CDC.`,
+      remember: `Do not call every timestamp-based load full CDC. A timestamp filter may miss deletes. A timestamp plus a unique ID is safer when several rows share the same timestamp.`,
+      label: `DataCamp — Change Data Capture: Beginner Guide`,
+      why: `Covers the purpose, common methods, and examples of CDC.`
+    },
+    'idempotency': {
+      simple: `An idempotent pipeline produces the same correct target state when the same logical input is processed once, twice, or many times. Retries must not create duplicate business effects.`,
+      example: `Retrying order 101 must not insert two orders. Use a stable order ID with MERGE or upsert, and update the checkpoint only after the target write succeeds.`,
+      remember: `A retry runs the work again; idempotency makes that retry safe. Remember: stable key, deterministic logic, safe write, and checkpoint after success.`,
+      label: `DataCamp — Airflow Best Practices`,
+      why: `Explains determinism, idempotency, and safe DAG reruns with examples.`
+    },
+    'backfill': {
+      simple: `A backfill reprocesses a bounded historical range because data was missing, logic was wrong, or a new output is required. It should be separate, controlled, and auditable.`,
+      example: `Discount logic was wrong from 1–7 July. Reprocess only those dates with the correct code version, reconcile the result, and protect the capacity needed by current runs.`,
+      remember: `A complete backfill answer includes the range, input and code version, isolated compute, idempotent writes, reconciliation, and rollback. “Rerun the job” is not enough.`,
+      label: `Apache Airflow — Backfill Concept`,
+      why: `Shows how past logical dates are rerun in a controlled way.`
+    },
+    'late-data': {
+      simple: `Event time is when an event actually happened; arrival time is when the system received it. Network or device delays can make old events arrive late. A watermark defines how much lateness the system will tolerate.`,
+      example: `A ride ended at 10:00 but its event arrived at 10:07. A ten-minute watermark can still update the result; a five-minute policy may send it to a late-data path or drop it.`,
+      remember: `A longer watermark improves completeness but keeps more state and delays final results. Very late corrections need a separate repair or recomputation path.`,
+      label: `Microsoft Learn — Late and Out-of-Order Events`,
+      why: `Explains event time, arrival time, and lateness policies with numeric examples.`
+    },
+    'schema-contracts': {
+      simple: `A schema defines fields, types, and structure. Schema evolution is a planned compatible change; schema drift is an unexpected change. A data contract is the agreement between producers and consumers.`,
+      example: `Adding an optional middle_name field may be compatible. Renaming customer_id or changing it from a string to an object can break existing consumers.`,
+      remember: `For every change, define the owner, version, compatibility rule, validation, and rollout plan. Automatic schema evolution does not replace governance.`,
+      label: `DataCamp — Schema as an Observability Pillar`,
+      why: `Shows how unexpected schema changes can break a pipeline.`
+    },
+    'quality-reconciliation': {
+      simple: `Data quality asks whether data is complete, valid, unique, consistent, and fresh. Reconciliation proves that all source data is mathematically accounted for after business rules are applied.`,
+      example: `1,000 source rows may become 970 valid target rows, 20 rejected rows, and 10 intentionally filtered rows. The difference is acceptable only when all 1,000 rows are explained.`,
+      remember: `Stop publication for critical failures and quarantine non-critical bad rows. Compare counts, sums, distinct keys, nulls, duplicates, and important business totals.`,
+      label: `DataCamp — Data Quality: Identify and Measure`,
+      why: `Introduces quality dimensions, checks, and monitoring at a beginner level.`
+    },
+    'observability': {
+      simple: `Job monitoring tells you whether a task ran or failed. Data observability tells you whether the data is healthy by checking freshness, volume, schema, value distribution, and lineage.`,
+      example: `A pipeline is green, but today’s sales volume is 90% lower. Job monitoring reports success; volume and freshness observability detects the real problem.`,
+      remember: `An SLA is a promise; an SLO is a measurable internal target. A useful alert includes impact, evidence, owner, and a runbook.`,
+      label: `DataCamp — Data Observability Explained`,
+      why: `Explains freshness, distribution, volume, schema, and lineage with examples.`
+    },
+    'delivery-semantics': {
+      simple: `At-most-once may lose an event but will not process it twice. At-least-once avoids loss but can create duplicates after a retry. Exactly-once aims for one correct business effect.`,
+      example: `A payment event may be delivered twice, but an idempotency key ensures that the account is debited only once. Duplicate delivery does not create a duplicate effect.`,
+      remember: `Exactly-once is an end-to-end result: replayable source, durable progress, deterministic processing, and a transactional or idempotent sink.`,
+      label: `Apache Kafka — Message Delivery Semantics`,
+      why: `Provides the canonical comparison of at-most, at-least, and exactly-once.`
+    },
+    'lake-warehouse-lakehouse': {
+      simple: `A data lake is flexible, low-cost storage for raw and diverse data. A warehouse stores clean structured tables for fast BI queries. A lakehouse adds warehouse-like reliability and governance to lake storage.`,
+      example: `A lake is a large raw storeroom. A warehouse is an organized showroom. A lakehouse combines flexible storage with catalogs, transactions, and efficient query access.`,
+      remember: `A lakehouse requires more than object storage: it needs a table format or transaction log, catalog, schema controls, and a query engine. Choose based on the workload.`,
+      label: `DataCamp — Data Lakehouse Explained`,
+      why: `Compares lakes, warehouses, and lakehouses side by side.`
+    },
+    'file-formats': {
+      simple: `CSV is simple flat text; JSON is flexible for nested API data; Avro is row-oriented and schema-based; Parquet is columnar and optimized for analytics; Delta adds a transaction log around Parquet data.`,
+      example: `If a 50-column sales table query needs only date and amount, Parquet can skip the other columns. CSV normally requires parsing complete rows.`,
+      remember: `Choose the format for the workload: human exchange, nested events, row-based streaming, or column-based analytics. Delta is not just a file format; the transaction log is essential.`,
+      label: `DataCamp — What Is a Parquet File?`,
+      why: `Uses concrete examples to explain columnar storage, compression, and CSV comparison.`
+    },
+    'partitioning-files': {
+      simple: `Partitioning divides data into folders or chunks, usually around common filters. Partition pruning avoids reading irrelevant partitions. Too many tiny files create metadata and task overhead.`,
+      example: `Sales partitioned by date allows a 4 August query to read only that date. Partitioning by user_id could create millions of tiny partitions.`,
+      remember: `Choose a commonly filtered, low- or medium-cardinality column. Balance file size, query pattern, and write frequency; more partitions are not always better.`,
+      label: `DataCamp — Data Partitioning for Beginners`,
+      why: `Explains partitions as manageable chunks and connects them to performance.`
+    },
+    'oltp-olap': {
+      simple: `OLTP supports small, fast application inserts and updates. OLAP supports large historical scans, joins, and aggregations. Normalization protects writes; denormalization simplifies analytical reads.`,
+      example: `The database used to place and update an Amazon order is OLTP. A three-year category revenue report is OLAP.`,
+      remember: `OLTP is often normalized and row-oriented; OLAP is often dimensional and columnar. These are common patterns, not absolute rules—the workload is the reason.`,
+      label: `DataCamp — OLTP vs OLAP Beginner Guide`,
+      why: `Directly compares operational transactions and analytical queries.`
+    },
+    'dimensional-core': {
+      simple: `Grain defines exactly what one fact row represents. A fact table stores events or measurements; dimensions describe those events. A natural key comes from the source, while a surrogate key is generated in the warehouse.`,
+      example: `Grain: one row per order item. Facts: quantity and price. Dimensions: customer, product, and date. customer_id is natural; customer_sk is surrogate.`,
+      remember: `Declare the grain first, then choose dimensions and measures. Mixing different grains in one fact table can cause double counting.`,
+      label: `Microsoft Learn — Fact Tables and Grain`,
+      why: `Explains facts, measures, keys, and granularity with worked examples.`
+    },
+    'schema-fact-types': {
+      simple: `In a star schema, dimensions connect directly to a central fact table. In a snowflake schema, dimensions are normalized into more tables. Fact-table types represent different time behavior.`,
+      example: `Transaction fact: one row per sale. Periodic snapshot: daily account balance. Accumulating snapshot: one order row updated with placed, shipped, and delivered dates.`,
+      remember: `A star schema is simpler for BI and uses fewer joins. A snowflake can reduce redundancy but adds query complexity. Explain the trade-off.`,
+      label: `DataCamp — Data Modeling and Star Schema`,
+      why: `Uses a visual example to explain fact/dimension relationships and star design.`
+    },
+    'scd-late-dimensions': {
+      simple: `SCD Type 1 overwrites the old value and keeps no history. Type 2 inserts a new dimension row and preserves history with effective dates and a current flag. A late-arriving dimension appears after its fact.`,
+      example: `If a customer moves from Delhi to Pune, Type 1 replaces Delhi. Type 2 expires the Delhi row and inserts a Pune row. An early fact can temporarily use an Unknown surrogate key.`,
+      remember: `For Type 2, clearly explain the business key, surrogate key, effective_from, effective_to, is_current, and change-detection logic.`,
+      label: `Microsoft Learn — Dimension Tables and SCD`,
+      why: `Explains dimension keys, history tracking, and SCD patterns.`
+    },
+    'kafka-core': {
+      simple: `A producer writes events to a topic. A topic is divided into partitions stored by brokers. A consumer reads partitions using offsets. Ordering is guaranteed only inside one partition.`,
+      example: `Using order_id as the key can place all events for one order in the same partition, preserving their order while different orders are processed in parallel.`,
+      remember: `Topic = named event stream; partition = ordered shard; broker = server; offset = position. The key affects both ordering and load distribution.`,
+      label: `DataCamp — Apache Kafka for Beginners`,
+      why: `Uses diagrams and a walkthrough to explain producers, topics, partitions, brokers, and consumers.`
+    },
+    'kafka-reliability': {
+      simple: `Inside a consumer group, one partition is read by one active consumer at a time. An offset is a bookmark. Producer acknowledgements affect durability, and retention controls how long events remain replayable.`,
+      example: `With four partitions and two consumers, each may own two partitions. Adding or removing a consumer triggers a rebalance that redistributes ownership.`,
+      remember: `Extra consumers beyond the partition count can remain idle. Offset commit timing changes the loss-versus-duplicate risk, which is why an idempotent sink matters.`,
+      label: `DataCamp — Introduction to Apache Kafka`,
+      why: `Provides guided lessons on topics, producers, consumers, and troubleshooting.`
+    },
+    'kafka-contracts-eventhubs': {
+      simple: `Kafka is an open-source event-streaming platform. Azure Event Hubs is a fully managed Azure ingestion service that can expose a Kafka-compatible endpoint. Schema Registry centrally manages event structure and versions.`,
+      example: `Adding an optional field to event version 2 may remain compatible with old consumers. Renaming a field or changing its type needs a new version or a controlled migration.`,
+      remember: `Kafka and Event Hubs share concepts but are not identical. Compare operations, feature surface, ecosystem, scaling controls, and Azure integration.`,
+      label: `Microsoft Learn — Event Hubs for Kafka`,
+      why: `Explains the Kafka-compatible Event Hubs flow and the important differences.`
+    },
+    'orchestration-airflow': {
+      simple: `An orchestrator decides which task runs, when it runs, and which dependencies must finish first. Airflow defines tasks and dependencies; it can trigger Spark or Databricks instead of performing heavy processing itself.`,
+      example: `Extract succeeds → quality check → transform → publish. If transform fails, its retry runs and publish remains blocked.`,
+      remember: `A DAG is directed and acyclic. Airflow handles scheduling, state, retries, backfills, and visibility; a specialized engine handles large transformations.`,
+      label: `DataCamp — Getting Started with Airflow`,
+      why: `Visually explains tasks, dependencies, the scheduler, the executor, and a first DAG.`
+    },
+    'governance-security': {
+      simple: `Governance defines ownership, meaning, quality rules, access, and retention. Security enforces those rules through authentication, authorization, encryption, masking, and auditing.`,
+      example: `An analyst can view aggregated customer sales but not raw phone numbers or email addresses. Only an audited privileged role can access raw PII.`,
+      remember: `Classify PII, apply least privilege, encrypt, mask or tokenize, audit access, and enforce retention. Lineage shows where sensitive data has travelled.`,
+      label: `DataCamp — Data Governance Concepts`,
+      why: `Starts with the meaning, roles, and basic framework of governance.`
+    },
+    'cost-performance': {
+      simple: `Performance tuning should begin by measuring the bottleneck and reducing unnecessary scans, rows, columns, shuffles, and repeated work—not by immediately buying a larger cluster.`,
+      example: `A query scans 50 columns but needs four, lacks a partition filter, and reads 20,000 tiny files. Fix these problems before increasing compute.`,
+      remember: `Measure → scan less → shuffle less → improve files, partitions, and statistics → reuse carefully → scale with limits → measure runtime and cost again.`,
+      label: `DataCamp — Partitioning and Query Performance`,
+      why: `Connects data partitioning, reduced scanning, and performance in simple terms.`
+    },
+    'dataops-cicd': {
+      simple: `CI tests changes after a commit. CD promotes or deploys a tested artifact through controlled environments. Data pipelines must also protect schemas, contracts, checkpoints, and historical outputs.`,
+      example: `Code change → unit tests → schema contract test → sample integration run → same artifact in test and production → canary range → reconciliation → rollback if required.`,
+      remember: `Rollback is not only deploying old code. Ask whether old code understands the new schema or state and how already-produced bad data will be repaired.`,
+      label: `DataCamp — CI/CD in Data Engineering`,
+      why: `Explains build, test, and deployment stages in a data-engineering context.`
+    },
+    'batch-system-design': {
+      simple: `Start a batch design with requirements: sources, volume, frequency, keys, deletes, quality, retention, and consumers. Then design a replayable path from raw data to clean and modelled outputs.`,
+      example: `Database/files → incremental ingestion → immutable Bronze → validated and deduplicated Silver → facts and dimensions in Gold → BI. Record run ID, counts, status, and checkpoint.`,
+      remember: `Use this interview order: requirements → architecture → state and idempotency → quality → failure and backfill → security and monitoring → scale and cost.`,
+      label: `DataCamp — Introduction to Data Pipelines`,
+      why: `Introduces source-to-destination pipeline blocks and common tools.`
+    },
+    'streaming-system-design': {
+      simple: `A streaming design moves continuous events from a broker through a processor into a serving sink. It must explicitly define partitioning, ordering, replay, checkpoints, late data, duplicates, state, and sink behavior.`,
+      example: `Order events keyed by order_id → Kafka or Event Hubs → streaming transform with watermark → idempotent Delta/serving upsert → dashboard, with raw events retained for repair.`,
+      remember: `A happy-path diagram is not enough. Explain consumer crashes, duplicate events, hot partitions, schema breaks, very late corrections, and retention expiry.`,
+      label: `DataCamp — Streaming Concepts`,
+      why: `Starts with batching and queuing, then builds toward real streaming systems.`
+    },
+    'incident-revision': {
+      simple: `During a data incident, the goal is not a random quick fix. Stop the spread of bad data, understand the impact, recover from a known-good boundary, and prove correctness.`,
+      example: `Duplicate Gold data: pause publication → identify dates and consumers → compare recent code and inputs → repair the range → reconcile → reopen dashboards → add a preventive test.`,
+      remember: `Use five steps: Detect, Contain, Diagnose, Recover, Prevent. At every step, state the evidence, owner, affected range, and communication plan.`,
+      label: `DataCamp — Observability for Faster Incident Detection`,
+      why: `Shows the signals used to detect bad data and trace its cause.`
+    }
+  };
+
+  document.querySelector('.hero-meta').insertAdjacentHTML('beforeend','<span class="pill beginner-pill">Beginner-friendly English</span>');
+  Object.entries(beginnerNotesEnglish).forEach(([id, note]) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const lead = section.querySelector('.chapter-lead');
+    if (!lead) return;
+    const box = document.createElement('div');
+    box.className = 'beginner-box';
+    const resource = beginnerNotes[id];
+    box.innerHTML = `<div class="beginner-title"><span>Start here</span>Understand it in simple language</div>
+      <div class="beginner-grid">
+        <div class="beginner-item"><b>Simple meaning</b><p>${note.simple}</p></div>
+        <div class="beginner-item"><b>Real example</b><p>${note.example}</p></div>
+        <div class="beginner-item"><b>Key rule to remember</b><p>${note.remember}</p></div>
+      </div>
+      <a class="beginner-link" target="_blank" rel="noopener" href="${resource.link}"><span class="beginner-arrow">↗</span><span>${note.label}<small>${note.why}</small></span></a>`;
+    lead.insertAdjacentElement('afterend', box);
+  });
+
+  const checks = [...document.querySelectorAll('[data-done]')];
+  const saved = JSON.parse(localStorage.getItem('genericDeMastery') || '{}');
+  checks.forEach(c => { c.checked = Boolean(saved[c.dataset.done]); c.addEventListener('change', updateProgress); });
+  function updateProgress(){ const state={}; checks.forEach(c=>state[c.dataset.done]=c.checked); localStorage.setItem('genericDeMastery',JSON.stringify(state)); const done=checks.filter(c=>c.checked).length; const pct=checks.length?Math.round(done*100/checks.length):0; document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressText').textContent=pct+'%'; }
+  updateProgress();
+  document.getElementById('printButton').addEventListener('click',()=>window.print());
+  document.getElementById('resetButton').addEventListener('click',()=>{ if(confirm('Reset all mastery checkboxes?')){ checks.forEach(c=>c.checked=false); updateProgress(); }});
+  let expanded=false; document.getElementById('expandButton').addEventListener('click',e=>{ expanded=!expanded; document.querySelectorAll('details.qa').forEach(d=>d.open=expanded); e.currentTarget.textContent=expanded?'Collapse all Q&A':'Expand all Q&A'; });
+  document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{ const value=btn.closest('.code-wrap').querySelector('code').innerText; try{ if(!navigator.clipboard) throw new Error('Clipboard API unavailable'); await navigator.clipboard.writeText(value); }catch(_error){ const area=document.createElement('textarea'); area.value=value; area.style.position='fixed'; area.style.opacity='0'; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); } const old=btn.textContent; btn.textContent='Copied'; setTimeout(()=>btn.textContent=old,1000); }));
+  document.getElementById('topicSearch').addEventListener('input',e=>{ const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.chapter').forEach(s=>{ s.classList.toggle('hidden',q && !s.innerText.toLowerCase().includes(q)); }); });
+  const links=[...document.querySelectorAll('.nav-link')]; const observer=new IntersectionObserver(entries=>{ entries.filter(e=>e.isIntersecting).forEach(e=>{ links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)); }); },{rootMargin:'-15% 0px -72%'}); document.querySelectorAll('.chapter').forEach(s=>observer.observe(s));
+</script></body></html>
