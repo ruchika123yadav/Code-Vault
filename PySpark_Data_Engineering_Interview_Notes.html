@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PySpark Master - Data Engineering Interview Notes</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#172033;
+    --muted:#5c667a;
+    --brand:#0b5cad;
+    --brand2:#16a3b8;
+    --accent:#e85d04;
+    --line:#e3e8ef;
+    --soft:#eef8fb;
+    --soft2:#f6f8fb;
+    --good:#198754;
+    --bad:#c9342b;
+    --purple:#6f42c1;
+    --warn:#f6b73c;
+    --syntax-bg:#101828;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#eef2f7;line-height:1.62;font-size:16px;}
+  .page{max-width:940px;margin:28px auto;background:var(--bg);padding:54px 62px;box-shadow:0 6px 28px rgba(20,40,80,.10);border-radius:10px;}
+  .cover{background:linear-gradient(135deg,#0b2145 0%,#0b5cad 50%,#16a3b8 100%);color:#fff;border-radius:14px;padding:58px 52px;margin-bottom:30px;box-shadow:0 10px 30px rgba(11,92,173,.28);}
+  .cover .kicker{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.9;margin:0 0 10px;}
+  .cover h1{font-size:44px;margin:0 0 8px;line-height:1.1;font-weight:800;}
+  .cover h2{font-size:19px;font-weight:500;margin:0 0 22px;opacity:.95;}
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:30px;font-size:13px;font-weight:600;}
+  h2.section{font-size:26px;color:var(--brand);border-bottom:3px solid var(--brand2);padding-bottom:8px;margin:46px 0 18px;font-weight:800;}
+  h3{font-size:20px;color:#0b2145;margin:30px 0 8px;font-weight:750;}
+  h4{font-size:16.5px;color:var(--accent);margin:22px 0 6px;font-weight:750;}
+  h5{font-size:14.5px;color:var(--brand);margin:16px 0 4px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+  p{margin:10px 0;}
+  ul,ol{margin:8px 0 14px;padding-left:24px;}
+  li{margin:6px 0;}
+  a{color:var(--brand);text-decoration:none;font-weight:650;}
+  a:hover{text-decoration:underline;}
+  .term{color:var(--brand);font-weight:750;}
+  code{background:#f4f7fa;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-family:"Consolas","Monaco",monospace;font-size:13px;color:#b5246e;}
+  pre{background:var(--syntax-bg);color:#e6edf3;border-radius:9px;padding:14px 16px;overflow-x:auto;font-family:"Consolas","Monaco",monospace;font-size:13px;line-height:1.55;margin:14px 0;}
+  pre code{background:transparent;border:0;color:inherit;padding:0;font-size:13px;}
+  .note,.tip,.warn,.exam,.q,.pattern,.mistake{border-radius:9px;padding:14px 18px;margin:18px 0;font-size:15px;}
+  .note{background:var(--soft);border-left:5px solid var(--brand2);}
+  .tip{background:#eafaf1;border-left:5px solid var(--good);}
+  .warn{background:#fdecea;border-left:5px solid var(--bad);}
+  .exam{background:#fff8e6;border-left:5px solid var(--warn);}
+  .mistake{background:#fdecea;border:1px solid #f5c6cb;border-left:5px solid var(--bad);}
+  .mistake::before{content:"COMMON MISTAKE";display:block;font-weight:800;color:var(--bad);margin-bottom:5px;font-size:12.5px;letter-spacing:.5px;}
+  .pattern{background:#fff4e6;border:1px solid #f5d5a0;border-left:5px solid var(--accent);}
+  .pattern::before{content:"PATTERN RECOGNITION";display:block;font-weight:800;color:var(--accent);margin-bottom:5px;font-size:12.5px;letter-spacing:.5px;}
+  .keypoint{background:#fff8e6;border:2px solid var(--warn);border-radius:10px;padding:14px 18px;margin:16px 0;}
+  .keypoint::before{content:"KEY INTERVIEW POINT";display:block;font-weight:800;color:#7a4b00;margin-bottom:5px;font-size:12.5px;letter-spacing:.5px;}
+  .q{background:#f0f8fb;border:1px solid #cfe6ee;border-left:5px solid var(--brand);}
+  .q .qlabel{display:inline-block;background:var(--brand);color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px;padding:2px 9px;border-radius:20px;margin-bottom:6px;text-transform:uppercase;}
+  .q .qtext{font-weight:750;color:#0b2145;font-size:15.5px;margin-bottom:4px;}
+  .practice{background:#f4f0ff;border:1px solid #d5c9f0;border-left:5px solid var(--purple);border-radius:9px;padding:14px 18px;margin:18px 0;}
+  .practice h5{color:var(--purple);margin-top:0;}
+  .toc{background:var(--soft);border-radius:10px;padding:18px 26px;margin:24px 0;}
+  .toc h3{margin-top:0;color:var(--brand);}
+  .toc ol{columns:2;column-gap:40px;}
+  .toc a{color:var(--ink);font-weight:500;}
+  table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14.5px;overflow:hidden;border-radius:8px;box-shadow:0 1px 0 var(--line);}
+  th,td{border:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top;}
+  th{background:var(--brand);color:#fff;font-weight:750;}
+  tr:nth-child(even) td{background:var(--soft2);}
+  .twocol{display:flex;gap:18px;flex-wrap:wrap;}
+  .twocol > div{flex:1;min-width:260px;}
+  .card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:#fff;}
+  .card.green{border-top:4px solid var(--good);}
+  .card.red{border-top:4px solid var(--bad);}
+  .card.blue{border-top:4px solid var(--brand2);}
+  .small{font-size:13.5px;color:var(--muted);}
+  .execorder{background:var(--syntax-bg);border-radius:12px;padding:22px 18px;margin:18px 0;}
+  .exec-step{display:flex;align-items:center;gap:12px;padding:8px 12px;margin:4px 0;background:rgba(255,255,255,.04);border-radius:6px;}
+  .exec-n{background:var(--brand2);color:#fff;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;font-weight:800;font-size:13px;flex-shrink:0;}
+  .exec-kw{color:#ffad66;font-family:"Consolas",monospace;font-weight:750;min-width:128px;font-size:14px;}
+  .exec-desc{color:#cfd8e6;font-size:13.5px;}
+  .footer{margin-top:50px;border-top:2px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;text-align:center;}
+  @media print{
+    body{background:#fff;}
+    .page{box-shadow:none;margin:0;border-radius:0;max-width:100%;padding:24px 30px;}
+    .cover{box-shadow:none;}
+    h2.section{page-break-after:avoid;}
+    table,.card,.q,.note,.exam,pre,.mistake,.pattern,.keypoint,.practice{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <p class="kicker">Data Engineering - Interview Prep</p>
+    <h1>PySpark Master</h1>
+    <h2>Deep Notes, Patterns, Performance, Streaming, Delta & Scenario Answers</h2>
+    <div class="badge-row">
+      <span class="badge">Spark 4.1.2 checked</span>
+      <span class="badge">Interviewer perspective</span>
+      <span class="badge">Production scenarios</span>
+      <span class="badge">Code patterns</span>
+      <span class="badge">60+ Q&amp;A</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>How to study this document:</b> do not memorize lines blindly. For every topic, learn the mental model, the PySpark syntax, the performance trap, and the interviewer-ready answer. In real interviews, a strong answer sounds like this: define the concept, explain why it matters in distributed processing, give a small code example, mention trade-offs, then add production checks such as data size, skew, partitions, retries, and monitoring.
+  </div>
+
+  <div class="tip">
+    <b>Interviewer mindset:</b> PySpark interviews are usually not testing only syntax. They test whether you can think like a data engineer: process large data safely, reduce shuffles, debug slow jobs, design incremental pipelines, handle late data, and explain your choices clearly.
+  </div>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#mindset">Interviewer's Perspective</a></li>
+      <li><a href="#architecture">Spark Architecture</a></li>
+      <li><a href="#execution">PySpark Execution Model</a></li>
+      <li><a href="#apis">DataFrame vs RDD vs SQL</a></li>
+      <li><a href="#session-schema">SparkSession & Schemas</a></li>
+      <li><a href="#dataframe">DataFrame Transformations</a></li>
+      <li><a href="#nulls-dates">Nulls, Dates & Types</a></li>
+      <li><a href="#joins">Joins & Join Strategies</a></li>
+      <li><a href="#agg-window">Aggregations & Window Functions</a></li>
+      <li><a href="#shuffle">Partitions, Shuffle & Files</a></li>
+      <li><a href="#formats">Parquet, ORC, CSV & Data Lakes</a></li>
+      <li><a href="#performance">Performance Tuning</a></li>
+      <li><a href="#udfs">UDFs, Pandas UDFs & Arrow</a></li>
+      <li><a href="#cache">Cache, Persist & Checkpoint</a></li>
+      <li><a href="#streaming">Structured Streaming</a></li>
+      <li><a href="#delta">Delta Lake & Lakehouse</a></li>
+      <li><a href="#incremental">Incremental ETL & CDC</a></li>
+      <li><a href="#production">Production Reliability</a></li>
+      <li><a href="#troubleshooting">Troubleshooting Scenarios</a></li>
+      <li><a href="#patterns">Pattern Cheat Sheet</a></li>
+      <li><a href="#configs">Config Quick Reference</a></li>
+      <li><a href="#qa">Most-Asked Interview Q&amp;A</a></li>
+      <li><a href="#sources">Sources Used</a></li>
+    </ol>
+  </div>
+
+  <h2 class="section" id="mindset">1. Interviewer's Perspective</h2>
+  <p>A PySpark data engineering interview usually has four layers. First, the interviewer checks if you know Spark vocabulary: driver, executor, partition, stage, task, shuffle, cache, and action. Second, they test whether you can write clean DataFrame code. Third, they ask performance and production questions because real Spark jobs fail at scale. Fourth, they check data engineering judgment: incremental loads, schema evolution, idempotency, late data, orchestration, and data quality.</p>
+  <div class="keypoint">
+    A strong PySpark answer is never only "use repartition" or "use cache." Always explain <b>why</b>: what data moves, where memory is used, what happens to partitions, and how you would verify it in the Spark UI or execution plan.
+  </div>
+  <table>
+    <tr><th>What interviewer asks</th><th>What they are really testing</th><th>Best answer style</th></tr>
+    <tr><td>"Why is this job slow?"</td><td>Can you find bottlenecks instead of guessing?</td><td>Check Spark UI, stage time, shuffle read/write, skew, spill, task failures, input file sizes, and query plan.</td></tr>
+    <tr><td>"DataFrame vs RDD?"</td><td>Do you know modern Spark best practice?</td><td>Prefer DataFrame/Spark SQL for Catalyst optimization; use RDD only for low-level custom logic.</td></tr>
+    <tr><td>"How do you handle duplicates?"</td><td>Can you design deterministic pipelines?</td><td>Define business key, ordering column, window row_number, keep latest, make the write idempotent.</td></tr>
+    <tr><td>"How do you optimize joins?"</td><td>Do you understand shuffles and data movement?</td><td>Filter early, project columns, broadcast small dimensions, handle skew, inspect physical plan.</td></tr>
+  </table>
+
+  <h2 class="section" id="architecture">2. Spark Architecture</h2>
+  <p><span class="term">Apache Spark</span> is a distributed processing engine. In PySpark, your Python code builds a plan, Spark executes the heavy work across the cluster, and results are returned only when an action needs them.</p>
+  <div class="execorder">
+    <div class="exec-step"><span class="exec-n">1</span><span class="exec-kw">Driver</span><span class="exec-desc">Runs your SparkSession, builds the logical plan, schedules jobs, and coordinates executors.</span></div>
+    <div class="exec-step"><span class="exec-n">2</span><span class="exec-kw">Cluster Manager</span><span class="exec-desc">Allocates resources. Examples: YARN, Kubernetes, Spark Standalone.</span></div>
+    <div class="exec-step"><span class="exec-n">3</span><span class="exec-kw">Executors</span><span class="exec-desc">Worker JVM processes that run tasks, store cached data, and write shuffle output.</span></div>
+    <div class="exec-step"><span class="exec-n">4</span><span class="exec-kw">Partitions</span><span class="exec-desc">Chunks of data. One task processes one partition at a time.</span></div>
+    <div class="exec-step"><span class="exec-n">5</span><span class="exec-kw">Job/Stage/Task</span><span class="exec-desc">Action creates a job; shuffles split job into stages; stages contain many tasks.</span></div>
+  </div>
+  <div class="q"><span class="qlabel">Interview Q</span><div class="qtext">Explain driver, executor, job, stage, and task.</div>
+  Driver is the coordinator. Executors are worker processes. A job is created by an action like <code>count()</code> or <code>write()</code>. Spark splits a job into stages whenever a shuffle boundary appears. Each stage has tasks, and each task processes one data partition. If a task fails, Spark can retry it because transformations are tracked through lineage.</div>
+
+  <h2 class="section" id="execution">3. PySpark Execution Model</h2>
+  <p>Most PySpark bugs come from forgetting that Spark is <span class="term">lazy and distributed</span>. Transformations build a plan; actions execute the plan. A DataFrame is not the data itself - it is a distributed query plan plus schema.</p>
+  <div class="twocol">
+    <div class="card blue"><h4>Transformations: lazy</h4><p><code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>join</code>, <code>groupBy</code>, <code>repartition</code>. They return a new DataFrame and do not execute immediately.</p></div>
+    <div class="card green"><h4>Actions: execute</h4><p><code>count</code>, <code>show</code>, <code>collect</code>, <code>take</code>, <code>write</code>. They trigger planning, scheduling, and cluster execution.</p></div>
+  </div>
+  <pre><code>from pyspark.sql import functions as F
+
+df2 = (
+    spark.read.parquet("/data/orders")
+    .filter(F.col("order_date") &gt;= "2026-01-01")
+    .groupBy("customer_id")
+    .agg(F.sum("amount").alias("revenue"))
+)
+
+# No cluster work yet. This action triggers execution.
+df2.write.mode("overwrite").parquet("/curated/customer_revenue")</code></pre>
+  <h3>Logical plan to physical execution</h3>
+  <ol>
+    <li><b>Unresolved logical plan:</b> Spark records what you wrote.</li>
+    <li><b>Analyzed logical plan:</b> Spark resolves columns, functions, table names, and types.</li>
+    <li><b>Optimized logical plan:</b> Catalyst applies rules such as predicate pushdown, column pruning, constant folding, and join reordering when possible.</li>
+    <li><b>Physical plan:</b> Spark chooses concrete operators such as broadcast hash join, sort merge join, hash aggregate, and file scan.</li>
+    <li><b>Execution:</b> Whole-stage code generation and the execution engine run tasks across partitions.</li>
+  </ol>
+  <div class="keypoint">Use <code>df.explain("formatted")</code> or <code>df.explain("cost")</code> to see what Spark is actually planning. Interviewers love candidates who say "I would verify with explain and Spark UI" instead of blindly tuning.</div>
+  <pre><code>df2.explain("formatted")
+df2.explain("cost")       # useful when table statistics are available</code></pre>
+
+  <h2 class="section" id="apis">4. DataFrame vs RDD vs SQL vs Pandas</h2>
+  <table>
+    <tr><th>API</th><th>Use it when</th><th>Interview note</th></tr>
+    <tr><td>DataFrame</td><td>Most ETL, joins, aggregations, transformations, file reads/writes.</td><td>Best default for PySpark DE. It gets Catalyst optimization and a schema.</td></tr>
+    <tr><td>Spark SQL</td><td>SQL-heavy transformations, analysts' logic, temporary views, warehouse queries.</td><td>Same execution engine as DataFrame, so choose whichever is clearer.</td></tr>
+    <tr><td>RDD</td><td>Very low-level transformations, custom partition control, unsupported data structures.</td><td>RDD is powerful but misses DataFrame query optimization. Avoid unless justified.</td></tr>
+    <tr><td>pandas</td><td>Small local data that fits in driver memory.</td><td>Do not use <code>toPandas()</code> on large data. It collects to driver.</td></tr>
+  </table>
+  <div class="note">In Python, Spark does not expose the strongly typed Dataset API that Scala/Java have. For PySpark interviews, speak mainly in DataFrame/Spark SQL terms.</div>
+  <div class="mistake">Saying "RDD is always faster" is a red flag. DataFrames are usually faster and safer for structured data because Spark understands the schema and can optimize the query.</div>
+
+  <h2 class="section" id="session-schema">5. SparkSession & Schemas</h2>
+  <p><code>SparkSession</code> is the entry point for DataFrame and SQL work. In production ETL, always prefer explicit schemas over inference for CSV/JSON. Schema inference scans data, can infer wrong types, and can break when new files arrive with dirty values.</p>
+  <pre><code>from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, TimestampType, DecimalType
+
+spark = (
+    SparkSession.builder
+    .appName("orders-etl")
+    .getOrCreate()
+)
+
+order_schema = StructType([
+    StructField("order_id", StringType(), False),
+    StructField("customer_id", StringType(), False),
+    StructField("order_ts", TimestampType(), True),
+    StructField("amount", DecimalType(18, 2), True),
+    StructField("status", StringType(), True)
+])
+
+orders = (
+    spark.read
+    .option("header", "true")
+    .schema(order_schema)
+    .csv("/landing/orders/")
+)</code></pre>
+  <div class="q"><span class="qlabel">Interview Q</span><div class="qtext">Why should you avoid inferSchema in production?</div>
+  Because it costs extra scanning and can produce inconsistent types when files differ. A column that looks numeric in one file but contains an alphanumeric value later can fail or become null. Explicit schema makes the contract clear and makes pipeline failures easier to debug.</div>
+
+  <h2 class="section" id="dataframe">6. DataFrame Transformations</h2>
+  <p>PySpark DataFrame code should be declarative: describe columns and transformations, let Spark optimize. Avoid Python row-by-row loops because they pull logic out of Spark's optimized engine.</p>
+  <pre><code>from pyspark.sql import functions as F
+
+clean = (
+    orders
+    .select(
+        "order_id",
+        "customer_id",
+        F.to_date("order_ts").alias("order_date"),
+        F.col("amount").cast("decimal(18,2)").alias("amount"),
+        F.upper(F.trim("status")).alias("status")
+    )
+    .filter(F.col("amount") &gt; 0)
+    .withColumn(
+        "status_group",
+        F.when(F.col("status").isin("SHIPPED", "DELIVERED"), F.lit("COMPLETE"))
+         .when(F.col("status").isin("CANCELLED", "RETURNED"), F.lit("FAILED"))
+         .otherwise(F.lit("OPEN"))
+    )
+)</code></pre>
+  <table>
+    <tr><th>Need</th><th>Good PySpark pattern</th><th>Avoid</th></tr>
+    <tr><td>Add or replace column</td><td><code>withColumn("x", expression)</code></td><td>Python loop over rows</td></tr>
+    <tr><td>Multiple derived columns</td><td><code>select</code> with aliases, or chained <code>withColumn</code></td><td>Repeated actions after each column</td></tr>
+    <tr><td>Filter rows</td><td><code>filter(F.col("x") &gt; 0)</code></td><td>Collecting and filtering in Python</td></tr>
+    <tr><td>Complex condition</td><td><code>when(...).otherwise(...)</code></td><td>Plain Python <code>if</code> on a Column</td></tr>
+  </table>
+  <div class="mistake">A PySpark <code>Column</code> is not a Python value. You cannot write <code>if F.col("amount") &gt; 0:</code>. Use <code>when</code>, <code>filter</code>, or SQL expressions.</div>
+
+  <h2 class="section" id="nulls-dates">7. Nulls, Dates & Types</h2>
+  <p>Data engineering pipelines fail quietly when nulls, timestamps, and decimals are handled casually. Interviewers often ask these because they reveal production experience.</p>
+  <div class="twocol">
+    <div class="card blue"><h4>Null rules</h4><ul><li><code>NULL</code> means unknown/missing.</li><li>Use <code>isNull()</code> and <code>isNotNull()</code>.</li><li>Use <code>coalesce</code> for defaults.</li><li>Use <code>eqNullSafe</code> when null equals null should match.</li></ul></div>
+    <div class="card green"><h4>Date rules</h4><ul><li>Parse strings with explicit formats.</li><li>Be careful with time zones.</li><li>Partition by date only when queries filter by date.</li><li>Do not store dates as free-form strings.</li></ul></div>
+  </div>
+  <pre><code>df = (
+    raw
+    .withColumn("event_ts", F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss"))
+    .withColumn("event_date", F.to_date("event_ts"))
+    .withColumn("amount", F.coalesce(F.col("amount"), F.lit(0)))
+    .filter(F.col("event_ts").isNotNull())
+)
+
+# Null-safe join condition: true when both sides are null
+joined = left.join(right, left.customer_id.eqNullSafe(right.customer_id), "left")</code></pre>
+  <div class="pattern">Question says "including missing values", "unknown customer", or "null-safe match" -> mention null semantics explicitly. Use <code>coalesce</code>, <code>isNull</code>, or <code>eqNullSafe</code> depending on the requirement.</div>
+
+  <h2 class="section" id="joins">8. Joins & Join Strategies</h2>
+  <p>Joins are where Spark interviews get serious because joins often cause shuffles. Your job is to reduce data before the join, choose the right join type, and know when broadcast is appropriate.</p>
+  <table>
+    <tr><th>Join type</th><th>Use case</th><th>Example</th></tr>
+    <tr><td>inner</td><td>Keep matching rows only.</td><td>orders with valid customers</td></tr>
+    <tr><td>left</td><td>Keep all left rows, add right data if present.</td><td>all orders even if customer missing</td></tr>
+    <tr><td>left_semi</td><td>Keep left rows that have a match, but do not return right columns.</td><td>customers who placed orders</td></tr>
+    <tr><td>left_anti</td><td>Keep left rows that have no match.</td><td>customers with no orders</td></tr>
+    <tr><td>full</td><td>Keep all rows from both sides.</td><td>reconciliation between two systems</td></tr>
+  </table>
+  <pre><code>from pyspark.sql.functions import broadcast
+
+# Good habit: select only needed columns before joining
+orders_small = orders.select("order_id", "customer_id", "amount")
+customers_small = customers.select("customer_id", "customer_tier")
+
+# Broadcast small dimension table to avoid shuffling the large fact table
+enriched = orders_small.join(
+    broadcast(customers_small),
+    on="customer_id",
+    how="left"
+)
+
+# Anti-join: find records in landing that do not exist in target
+new_records = landing.join(target.select("business_key"), "business_key", "left_anti")</code></pre>
+  <h3>Join strategies you should know</h3>
+  <table>
+    <tr><th>Strategy</th><th>How it works</th><th>When to mention</th></tr>
+    <tr><td>Broadcast hash join</td><td>Small table copied to every executor; large table does not shuffle.</td><td>One side is small enough to fit executor memory. Spark's default auto broadcast threshold is 10 MB unless configured.</td></tr>
+    <tr><td>Sort merge join</td><td>Both sides shuffle by key, sort, then merge.</td><td>Large-large equi-joins. Common default when broadcast is not possible.</td></tr>
+    <tr><td>Shuffle hash join</td><td>Both sides shuffle; one side per partition is hashed.</td><td>Can be efficient when one side is smaller per partition.</td></tr>
+    <tr><td>Broadcast nested loop</td><td>Used for some non-equi joins or cross conditions.</td><td>Potentially expensive. Explain why the condition prevents hash join.</td></tr>
+  </table>
+  <div class="mistake">Broadcasting a table because it is "smaller" is not enough. It must fit in executor memory. If the broadcast side is too large, you can cause executor OOM or long broadcast timeouts.</div>
+  <div class="pattern">Question says "one big fact table joins a small dimension table" -> filter/project both sides, broadcast the dimension, verify with <code>explain</code> that Spark chose <code>BroadcastHashJoin</code>.</div>
+
+  <h2 class="section" id="agg-window">9. Aggregations & Window Functions</h2>
+  <p>Aggregations usually shuffle because rows with the same key must meet on the same partition. Window functions also often shuffle and sort within partitions. These are common in DE coding rounds.</p>
+  <pre><code>revenue = (
+    orders
+    .groupBy("customer_id")
+    .agg(
+        F.count("*").alias("order_count"),
+        F.sum("amount").alias("total_amount"),
+        F.max("order_ts").alias("last_order_ts")
+    )
+)
+
+from pyspark.sql.window import Window
+
+w = Window.partitionBy("customer_id").orderBy(F.col("order_ts").desc())
+
+latest_order = (
+    orders
+    .withColumn("rn", F.row_number().over(w))
+    .filter(F.col("rn") == 1)
+    .drop("rn")
+)</code></pre>
+  <table>
+    <tr><th>Question wording</th><th>Pattern</th><th>PySpark tool</th></tr>
+    <tr><td>"latest record per key"</td><td>rank rows inside each key</td><td><code>row_number</code> over partition/order</td></tr>
+    <tr><td>"top 3 per department"</td><td>ranking with ties or no ties</td><td><code>dense_rank</code> for ties, <code>row_number</code> for exact N rows</td></tr>
+    <tr><td>"running total"</td><td>ordered window frame</td><td><code>sum().over(Window.orderBy(...).rowsBetween(...))</code></td></tr>
+    <tr><td>"deduplicate by latest timestamp"</td><td>deterministic row_number</td><td>partition by business key, order by timestamp desc and tie-breaker desc</td></tr>
+  </table>
+  <div class="keypoint">For deduplication, always define the business key and tie-breaker. "dropDuplicates" is fine for exact duplicates, but it is not enough when you need "latest row per customer."</div>
+
+  <h2 class="section" id="shuffle">10. Partitions, Shuffle & Files</h2>
+  <p>A <span class="term">partition</span> is a chunk of distributed data. A <span class="term">shuffle</span> is data movement across executors. Shuffles are expensive because Spark writes intermediate data, transfers it over the network, and often sorts or aggregates it.</p>
+  <table>
+    <tr><th>Concept</th><th>Meaning</th><th>Interview answer</th></tr>
+    <tr><td>Narrow transformation</td><td>Each output partition depends on one input partition.</td><td><code>filter</code>, <code>select</code>, simple <code>map</code>. Usually no shuffle.</td></tr>
+    <tr><td>Wide transformation</td><td>Output depends on many input partitions.</td><td><code>groupBy</code>, <code>join</code>, <code>distinct</code>, <code>orderBy</code>. Usually causes shuffle.</td></tr>
+    <tr><td>repartition(n)</td><td>Full shuffle to create n partitions.</td><td>Use to increase parallelism or partition by key before heavy operations/writes.</td></tr>
+    <tr><td>coalesce(n)</td><td>Usually reduces partitions without full shuffle.</td><td>Use after filtering to reduce output files, but avoid creating huge partitions.</td></tr>
+  </table>
+  <pre><code># Reduce output files after a big filter
+small = huge_df.filter("event_date = '2026-07-10'")
+small.coalesce(20).write.mode("overwrite").parquet("/curated/events/date=2026-07-10")
+
+# Repartition by key before writing a partitioned dataset
+(
+    events
+    .repartition("event_date")
+    .write
+    .mode("append")
+    .partitionBy("event_date")
+    .parquet("/curated/events")
+)</code></pre>
+  <div class="mistake">Do not set partitions randomly. Too few partitions underuse the cluster and create giant tasks. Too many partitions create scheduling overhead and many small files. Tune based on data size, cluster cores, and output file target size.</div>
+
+  <h2 class="section" id="formats">11. Parquet, ORC, CSV & Data Lakes</h2>
+  <p>For data engineering, file format choice matters. Columnar formats such as Parquet and ORC are preferred for analytics because Spark can read only needed columns and use metadata for pruning.</p>
+  <table>
+    <tr><th>Format</th><th>Best for</th><th>Notes</th></tr>
+    <tr><td>Parquet</td><td>Analytics, data lakes, Spark SQL, column pruning.</td><td>Columnar, compressed, self-describing, preserves schema.</td></tr>
+    <tr><td>ORC</td><td>Hive-heavy ecosystems and analytics.</td><td>Columnar and efficient.</td></tr>
+    <tr><td>CSV</td><td>Simple exchange/raw landing.</td><td>No strong schema, slow for analytics, quoting/escaping issues.</td></tr>
+    <tr><td>JSON</td><td>Semi-structured raw events.</td><td>Flexible but expensive to parse. Normalize into Parquet/Delta for analytics.</td></tr>
+  </table>
+  <h3>Partitioning data lake paths</h3>
+  <p>Path partitioning stores files under folders like <code>event_date=2026-07-10/country=US/</code>. Spark can discover these partition columns while reading supported file sources. Good partitions match common filters and have manageable cardinality.</p>
+  <pre><code># Good: most queries filter by event_date
+(
+    df.write
+    .mode("append")
+    .partitionBy("event_date")
+    .parquet("/lake/silver/events")
+)
+
+# Read only one date; Spark can prune other date folders
+one_day = spark.read.parquet("/lake/silver/events").filter("event_date = '2026-07-10'")</code></pre>
+  <div class="mistake">Do not partition by high-cardinality columns like user_id. You will create too many small directories/files and slow listing. Prefer date or low/medium-cardinality business columns used in filters.</div>
+
+  <h2 class="section" id="performance">12. Performance Tuning Deep Dive</h2>
+  <p>Performance tuning is not magic. The priority order is: read less data, process fewer columns, reduce shuffles, handle skew, use the right join strategy, tune partitions, cache only reused data, and inspect plans/UI.</p>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause</th><th>What to check</th><th>Fix</th></tr>
+    <tr><td>One task runs much longer</td><td>Data skew</td><td>Spark UI task duration and shuffle size distribution</td><td>Salt hot keys, broadcast small side, pre-aggregate, split skewed key</td></tr>
+    <tr><td>Many tiny output files</td><td>Too many partitions before write</td><td>Output directory file count and average size</td><td><code>coalesce</code>, tune write partitions, compact later</td></tr>
+    <tr><td>Executor OOM</td><td>Huge partition, bad broadcast, group too large, collect</td><td>Executor logs, spilled bytes, memory tab</td><td>Increase partitions, avoid collect, reduce broadcast, aggregate earlier</td></tr>
+    <tr><td>Long shuffle read/write</td><td>Large join/groupBy/orderBy</td><td>Stage metrics, shuffle read/write size</td><td>Filter/project early, broadcast small table, AQE, repartition by key when useful</td></tr>
+    <tr><td>Slow file listing</td><td>Too many small files/partitions</td><td>Driver time before stages, object store listing</td><td>Compact files, reduce partition cardinality, use table format metadata</td></tr>
+  </table>
+  <h3>AQE - Adaptive Query Execution</h3>
+  <p>Adaptive Query Execution can re-optimize parts of the physical plan at runtime using real statistics. It can coalesce small shuffle partitions and optimize skewed joins. In modern Spark, AQE is enabled by default, but you still need to design data and joins well.</p>
+  <pre><code>spark.conf.set("spark.sql.adaptive.enabled", "true")
+
+# Useful while learning:
+df.explain("formatted")</code></pre>
+  <div class="keypoint">A great answer to "how do you optimize Spark job?" starts with measurement: Spark UI, explain plan, stage metrics, input size, shuffle, skew, spill, and executor logs. Then tune based on evidence.</div>
+
+  <h2 class="section" id="udfs">13. UDFs, Pandas UDFs & Arrow</h2>
+  <p>Python UDFs are convenient but can hurt performance because Spark loses optimization visibility and data crosses the JVM/Python boundary. Built-in SQL functions are almost always better.</p>
+  <table>
+    <tr><th>Approach</th><th>Performance</th><th>Use when</th></tr>
+    <tr><td>Built-in functions</td><td>Best</td><td>Most transformations: string, date, array, JSON, math, conditional logic.</td></tr>
+    <tr><td>SQL expression</td><td>Best</td><td>Readable complex expressions and functions.</td></tr>
+    <tr><td>Python UDF</td><td>Usually slowest</td><td>Only when no built-in equivalent exists.</td></tr>
+    <tr><td>Pandas UDF</td><td>Better than row UDF for vectorized work</td><td>Vectorized Python/Pandas logic using Arrow transfer.</td></tr>
+  </table>
+  <pre><code># Prefer built-in functions
+df = df.withColumn("email_domain", F.lower(F.split("email", "@").getItem(1)))
+
+# Pandas UDF example - use only when built-ins cannot express the logic
+import pandas as pd
+from pyspark.sql.functions import pandas_udf
+
+@pandas_udf("double")
+def normalize_amount(s: pd.Series) -&gt; pd.Series:
+    return (s - s.mean()) / s.std()
+
+df.select(normalize_amount("amount").alias("amount_zscore"))</code></pre>
+  <div class="warn">Even with Arrow, <code>toPandas()</code> and <code>toArrow()</code> collect all records to the driver. Use them only on small subsets.</div>
+
+  <h2 class="section" id="cache">14. Cache, Persist & Checkpoint</h2>
+  <p>Caching stores a DataFrame/RDD for reuse. It is useful when the same expensive result is used multiple times. It is harmful when used blindly because cached data competes with execution memory.</p>
+  <pre><code>expensive = (
+    events
+    .filter("event_date &gt;= '2026-01-01'")
+    .join(customers, "customer_id")
+    .select("customer_id", "event_type", "event_ts")
+)
+
+expensive.cache()
+expensive.count()       # materializes cache
+
+daily = expensive.groupBy(F.to_date("event_ts").alias("dt")).count()
+by_type = expensive.groupBy("event_type").count()
+
+expensive.unpersist()</code></pre>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th><th>Interview wording</th></tr>
+    <tr><td><code>cache()</code></td><td>Persist with default storage level.</td><td>Use only for reused DataFrames after expensive transformations.</td></tr>
+    <tr><td><code>persist(level)</code></td><td>Choose memory/disk/serialized storage level.</td><td>Use when memory is limited or recomputation is expensive.</td></tr>
+    <tr><td>checkpoint</td><td>Materialize and truncate lineage.</td><td>Useful for very long lineage or streaming state/checkpoints.</td></tr>
+  </table>
+  <div class="mistake">Calling <code>cache()</code> alone does not immediately store data. It is lazy; an action such as <code>count()</code> materializes it.</div>
+
+  <h2 class="section" id="streaming">15. Structured Streaming</h2>
+  <p>Structured Streaming lets you write streaming logic using DataFrame-like APIs. A streaming DataFrame represents unbounded data. Spark runs the query incrementally using triggers, maintains state when needed, and uses checkpointing for recovery.</p>
+  <pre><code>from pyspark.sql import functions as F
+
+schema = "order_id string, customer_id string, event_time timestamp, amount double"
+
+stream = (
+    spark.readStream
+    .schema(schema)
+    .json("/landing/orders_stream")
+)
+
+agg = (
+    stream
+    .withWatermark("event_time", "30 minutes")
+    .groupBy(F.window("event_time", "10 minutes"), "customer_id")
+    .agg(F.sum("amount").alias("revenue"))
+)
+
+query = (
+    agg.writeStream
+    .format("parquet")
+    .option("path", "/curated/order_revenue_10min")
+    .option("checkpointLocation", "/checkpoints/order_revenue_10min")
+    .outputMode("append")
+    .start()
+)</code></pre>
+  <h3>Streaming terms interviewers expect</h3>
+  <table>
+    <tr><th>Term</th><th>Meaning</th><th>Why it matters</th></tr>
+    <tr><td>Trigger</td><td>When Spark processes available data.</td><td>Controls latency vs cost.</td></tr>
+    <tr><td>Checkpoint</td><td>Stores offsets, progress, and state metadata.</td><td>Required for recovery and avoiding reprocessing chaos.</td></tr>
+    <tr><td>Watermark</td><td>Bound on how late data can arrive for stateful operations.</td><td>Lets Spark drop old state and control memory.</td></tr>
+    <tr><td>Append mode</td><td>Writes only finalized/new rows.</td><td>Common for file sinks and finalized window results.</td></tr>
+    <tr><td>Update mode</td><td>Writes rows changed since last trigger.</td><td>Useful for updatable sinks, not all sinks support it.</td></tr>
+    <tr><td>Complete mode</td><td>Writes whole result table every trigger.</td><td>Aggregation use cases, can be expensive.</td></tr>
+  </table>
+  <div class="keypoint">For stateful streaming, always discuss checkpointing, watermarking, output mode, sink guarantees, and idempotency. That is how you sound production-ready.</div>
+
+  <h2 class="section" id="delta">16. Delta Lake & Lakehouse</h2>
+  <p>Many data engineering roles use Spark with Delta Lake. Delta Lake adds table reliability features on top of data lakes: ACID transactions, scalable metadata handling, schema enforcement, time travel, and merge/upsert support.</p>
+  <pre><code>from delta.tables import DeltaTable
+from pyspark.sql import functions as F
+
+target = DeltaTable.forPath(spark, "/lake/silver/customers")
+updates = spark.read.parquet("/landing/customer_updates")
+
+(
+    target.alias("t")
+    .merge(
+        updates.alias("s"),
+        "t.customer_id = s.customer_id"
+    )
+    .whenMatchedUpdate(set={
+        "email": "s.email",
+        "updated_at": "s.updated_at"
+    })
+    .whenNotMatchedInsert(values={
+        "customer_id": "s.customer_id",
+        "email": "s.email",
+        "updated_at": "s.updated_at"
+    })
+    .execute()
+)</code></pre>
+  <h3>SCD Type 1 vs Type 2</h3>
+  <table>
+    <tr><th>Type</th><th>Meaning</th><th>PySpark/Delta approach</th></tr>
+    <tr><td>SCD Type 1</td><td>Overwrite old value, no history.</td><td>MERGE with update on matching key.</td></tr>
+    <tr><td>SCD Type 2</td><td>Keep history by expiring old row and inserting new current row.</td><td>Use effective_from, effective_to, is_current, hash comparison, and transactional merge logic.</td></tr>
+  </table>
+  <div class="warn">Delta <code>DELETE</code> or <code>UPDATE</code> removes data from the latest table version, but old files may remain physically until retention and vacuum policies allow cleanup. Know this for privacy and storage questions.</div>
+
+  <h2 class="section" id="incremental">17. Incremental ETL & CDC</h2>
+  <p>Most real pipelines are incremental. The core idea is to process only new or changed records, make the write idempotent, and update the watermark only after successful completion.</p>
+  <div class="execorder">
+    <div class="exec-step"><span class="exec-n">1</span><span class="exec-kw">Read watermark</span><span class="exec-desc">Last successful timestamp, offset, file marker, or CDC version.</span></div>
+    <div class="exec-step"><span class="exec-n">2</span><span class="exec-kw">Extract changes</span><span class="exec-desc">Read rows where modified_at is greater than last watermark, or read CDC feed.</span></div>
+    <div class="exec-step"><span class="exec-n">3</span><span class="exec-kw">Deduplicate</span><span class="exec-desc">Keep latest per business key using event time and tie-breaker.</span></div>
+    <div class="exec-step"><span class="exec-n">4</span><span class="exec-kw">Merge/write</span><span class="exec-desc">Use idempotent upsert or overwrite only affected partitions.</span></div>
+    <div class="exec-step"><span class="exec-n">5</span><span class="exec-kw">Commit watermark</span><span class="exec-desc">Update only after target write and quality checks pass.</span></div>
+  </div>
+  <pre><code>from pyspark.sql.window import Window
+
+last_watermark = "2026-07-09 00:00:00"
+
+changes = source.filter(F.col("modified_at") &gt; F.lit(last_watermark))
+
+w = Window.partitionBy("business_key").orderBy(F.col("modified_at").desc(), F.col("ingest_id").desc())
+latest_changes = changes.withColumn("rn", F.row_number().over(w)).filter("rn = 1").drop("rn")
+
+# Then MERGE latest_changes into target table</code></pre>
+  <div class="pattern">Question says "daily pipeline", "only changed data", "avoid duplicates", "rerun safely" -> answer with watermark + dedup + idempotent merge + audit table + update watermark after success.</div>
+
+  <h2 class="section" id="production">18. Production Reliability</h2>
+  <p>Production PySpark is not just transformations. It includes observability, retries, data validation, schema contracts, and safe writes.</p>
+  <table>
+    <tr><th>Area</th><th>What to do</th><th>Why interviewer cares</th></tr>
+    <tr><td>Data quality</td><td>Check nulls, duplicates, row counts, referential rules, accepted values.</td><td>Prevents silent bad data.</td></tr>
+    <tr><td>Idempotency</td><td>Rerun should not create duplicates or corrupt target.</td><td>Real jobs fail and rerun.</td></tr>
+    <tr><td>Observability</td><td>Log input/output counts, bad rows, duration, watermark, target version.</td><td>Makes incidents diagnosable.</td></tr>
+    <tr><td>Safe writes</td><td>Write to temp/staging path, validate, then commit or merge.</td><td>Avoids partial output.</td></tr>
+    <tr><td>Secrets</td><td>Use secret manager or environment injection, not hardcoded credentials.</td><td>Security baseline.</td></tr>
+  </table>
+  <pre><code># Simple quality checks pattern
+total = df.count()
+bad_keys = df.filter(F.col("customer_id").isNull()).count()
+
+if total == 0:
+    raise ValueError("No input records found")
+if bad_keys &gt; 0:
+    raise ValueError(f"Found {bad_keys} records with null customer_id")</code></pre>
+
+  <h2 class="section" id="troubleshooting">19. Troubleshooting Scenarios</h2>
+  <div class="q"><span class="qlabel">Scenario</span><div class="qtext">A Spark job that normally runs in 20 minutes is now taking 2 hours. What do you do?</div>
+  I would first compare input size and file count with previous runs. Then I would open Spark UI and identify the slowest stage. If one or few tasks are slow, I suspect skew. If all tasks are slow with high shuffle, I inspect join/aggregation strategy. If there is spill or OOM, I tune partitions, memory, and reduce wide data. I would also check source changes, schema changes, small files, cluster resource availability, and whether AQE/broadcast behavior changed. Finally, I would fix the root cause and add monitoring so the same issue is caught earlier.</div>
+  <div class="q"><span class="qlabel">Scenario</span><div class="qtext">Your job creates thousands of tiny Parquet files. How do you fix it?</div>
+  First find why: too many input partitions, high-cardinality partitionBy columns, or streaming micro-batches writing too often. Fix by reducing partitions before write with <code>coalesce</code> when safe, tuning shuffle partitions, choosing better partition columns, batching writes, or running compaction. The target is fewer files with healthy size, not a single giant file.</div>
+  <div class="q"><span class="qlabel">Scenario</span><div class="qtext">One join key has 70 percent of all rows. What happens and how do you solve it?</div>
+  That key causes skew: one reducer receives a huge amount of data, so one task runs very long or fails. Solutions include broadcasting the small side if possible, salting the hot key, pre-aggregating before join, splitting the hot key into a separate path, enabling AQE skew handling, or redesigning the data model.</div>
+
+  <h2 class="section" id="patterns">20. Pattern Cheat Sheet</h2>
+  <table>
+    <tr><th>Interview problem</th><th>Use this pattern</th><th>Key PySpark tools</th></tr>
+    <tr><td>Latest row per entity</td><td>Window rank then filter</td><td><code>Window.partitionBy().orderBy()</code>, <code>row_number</code></td></tr>
+    <tr><td>Deduplicate exact rows</td><td>Drop duplicate rows/keys</td><td><code>dropDuplicates</code></td></tr>
+    <tr><td>Deduplicate keeping latest</td><td>Business key + ordering tie-breaker</td><td><code>row_number</code>, deterministic order</td></tr>
+    <tr><td>Customers with no orders</td><td>Anti-join</td><td><code>join(..., "left_anti")</code></td></tr>
+    <tr><td>Fact + small dimension</td><td>Broadcast join</td><td><code>broadcast(dim)</code>, <code>explain</code></td></tr>
+    <tr><td>Slow large aggregation</td><td>Reduce columns, tune shuffle, handle skew</td><td><code>groupBy</code>, <code>spark.sql.shuffle.partitions</code>, AQE</td></tr>
+    <tr><td>Incremental load</td><td>Watermark + merge</td><td>high-watermark table, Delta <code>merge</code></td></tr>
+    <tr><td>Late streaming data</td><td>Event-time watermark</td><td><code>withWatermark</code>, output mode, checkpoint</td></tr>
+    <tr><td>Nested JSON flattening</td><td>Select nested fields, explode arrays</td><td><code>col("a.b")</code>, <code>explode</code>, <code>from_json</code></td></tr>
+    <tr><td>Small file problem</td><td>Coalesce/compact/repartition smarter</td><td><code>coalesce</code>, optimized write, compaction job</td></tr>
+  </table>
+
+  <h2 class="section" id="configs">21. Config Quick Reference</h2>
+  <table>
+    <tr><th>Config</th><th>Default in current docs</th><th>Use</th></tr>
+    <tr><td><code>spark.sql.shuffle.partitions</code></td><td>200</td><td>Number of partitions for shuffle joins/aggregations. Tune based on data and cluster.</td></tr>
+    <tr><td><code>spark.sql.files.maxPartitionBytes</code></td><td>128 MB</td><td>Max bytes per input partition for file sources such as Parquet/JSON/ORC.</td></tr>
+    <tr><td><code>spark.sql.autoBroadcastJoinThreshold</code></td><td>10 MB</td><td>Max size Spark may auto broadcast for joins. Set -1 to disable.</td></tr>
+    <tr><td><code>spark.sql.adaptive.enabled</code></td><td>true</td><td>Enable AQE runtime re-optimization.</td></tr>
+    <tr><td><code>spark.sql.adaptive.advisoryPartitionSizeInBytes</code></td><td>64 MB</td><td>Target size for AQE shuffle partition decisions.</td></tr>
+    <tr><td><code>spark.sql.execution.arrow.pyspark.enabled</code></td><td>false</td><td>Enable Arrow optimization for pandas conversion paths.</td></tr>
+  </table>
+  <div class="warn">Do not recite configs as magic numbers. Say: "I tune this after measuring input size, shuffle size, task duration, cluster cores, and spill."</div>
+
+  <h2 class="section" id="qa">22. Most-Asked Interview Q&amp;A</h2>
+  <h3>Fundamentals</h3>
+  <div class="q"><span class="qlabel">Interview Q 1</span><div class="qtext">What is PySpark?</div>PySpark is the Python API for Apache Spark. It lets Python developers build distributed batch, SQL, streaming, and ML workloads on Spark. In data engineering, we mostly use PySpark DataFrames and Spark SQL for ETL over large datasets.</div>
+  <div class="q"><span class="qlabel">Interview Q 2</span><div class="qtext">Why is Spark faster than traditional MapReduce?</div>Spark can keep intermediate data in memory, builds DAGs instead of forcing every step to write to disk, and has an optimized SQL/DataFrame engine. MapReduce is more rigid: map, shuffle, reduce, write. Spark still writes during shuffles, but it avoids unnecessary disk writes between every step.</div>
+  <div class="q"><span class="qlabel">Interview Q 3</span><div class="qtext">What is lazy evaluation?</div>Spark does not execute transformations immediately. It records them in a plan. Execution starts when an action runs. This allows Spark to optimize the whole plan, combine operations, push filters, prune columns, and avoid unnecessary work.</div>
+  <div class="q"><span class="qlabel">Interview Q 4</span><div class="qtext">What is lineage?</div>Lineage is Spark's record of how a DataFrame/RDD was derived from sources. It enables fault tolerance: if a partition is lost, Spark can recompute it from previous transformations instead of starting the whole application manually.</div>
+  <div class="q"><span class="qlabel">Interview Q 5</span><div class="qtext">What is the difference between transformation and action?</div>Transformations return a new DataFrame and are lazy, for example select, filter, join, groupBy. Actions trigger execution and return results or write output, for example count, show, collect, take, write.</div>
+  <div class="q"><span class="qlabel">Interview Q 6</span><div class="qtext">What is a partition?</div>A partition is a slice of distributed data. Spark runs one task per partition per stage. Partition sizing controls parallelism, memory pressure, and output file count.</div>
+  <div class="q"><span class="qlabel">Interview Q 7</span><div class="qtext">What is a shuffle?</div>A shuffle is redistribution of data across partitions/executors, usually by key. Joins, groupBy, distinct, and orderBy often cause shuffles. Shuffles are expensive because they involve disk, network, serialization, and often sorting.</div>
+  <div class="q"><span class="qlabel">Interview Q 8</span><div class="qtext">What is the difference between job, stage, and task?</div>An action creates a job. Spark splits a job into stages at shuffle boundaries. A stage contains tasks, where each task processes one partition.</div>
+  <div class="q"><span class="qlabel">Interview Q 9</span><div class="qtext">What is SparkSession?</div>SparkSession is the main entry point for DataFrame and SQL APIs. It wraps SparkContext and provides access to reading data, creating DataFrames, running SQL, and managing catalog/session configuration.</div>
+  <div class="q"><span class="qlabel">Interview Q 10</span><div class="qtext">What is Catalyst optimizer?</div>Catalyst is Spark SQL's optimizer. It analyzes and optimizes logical plans using rules and statistics, then helps choose physical plans. It is a major reason DataFrames/Spark SQL are preferred over low-level RDD code for structured data.</div>
+
+  <h3>DataFrame Coding</h3>
+  <div class="q"><span class="qlabel">Interview Q 11</span><div class="qtext">How do you select and rename columns?</div>Use <code>select</code> with <code>alias</code>: <code>df.select(F.col('customer_id').alias('id'))</code>. This is better than selecting all columns when you only need a few because it enables column pruning.</div>
+  <div class="q"><span class="qlabel">Interview Q 12</span><div class="qtext">How do you add a conditional column?</div>Use <code>when</code> and <code>otherwise</code>, not Python <code>if</code>. Example: <code>F.when(F.col('amount') &gt; 1000, 'HIGH').otherwise('NORMAL')</code>.</div>
+  <div class="q"><span class="qlabel">Interview Q 13</span><div class="qtext">How do you handle null values?</div>Use <code>isNull</code>, <code>isNotNull</code>, <code>coalesce</code>, <code>fillna</code>, or null-safe equality depending on the case. Never compare with Python <code>None</code> using normal equality for filter logic.</div>
+  <div class="q"><span class="qlabel">Interview Q 14</span><div class="qtext">How do you read CSV safely?</div>Specify schema, header, delimiter, quote/escape options, bad-record handling, and encoding if needed. Avoid relying on inferSchema in production.</div>
+  <div class="q"><span class="qlabel">Interview Q 15</span><div class="qtext">How do you flatten nested JSON?</div>Read JSON with a schema, select nested fields using dot notation, use <code>explode</code> or <code>explode_outer</code> for arrays, and normalize into a stable curated schema.</div>
+  <div class="q"><span class="qlabel">Interview Q 16</span><div class="qtext">How do you deduplicate exact duplicates?</div>Use <code>dropDuplicates()</code> for entire row duplicates or <code>dropDuplicates(['key1','key2'])</code> for duplicate keys when any row can be kept.</div>
+  <div class="q"><span class="qlabel">Interview Q 17</span><div class="qtext">How do you keep latest record per key?</div>Use a window: partition by business key, order by update timestamp descending and a deterministic tie-breaker, assign <code>row_number</code>, keep rn=1.</div>
+  <div class="q"><span class="qlabel">Interview Q 18</span><div class="qtext">When should you use Spark SQL instead of DataFrame API?</div>Use SQL when the logic is clearer, already owned by analysts, or involves SQL-heavy transformations. DataFrame and SQL use the same underlying engine, so performance is usually determined by the plan, not syntax style.</div>
+  <div class="q"><span class="qlabel">Interview Q 19</span><div class="qtext">What does collect() do and why is it dangerous?</div><code>collect()</code> brings all rows to the driver. It can crash the driver for large data. Use <code>show</code>, <code>take</code>, <code>limit</code>, or write distributed output instead.</div>
+  <div class="q"><span class="qlabel">Interview Q 20</span><div class="qtext">How do you compare two DataFrames?</div>For data reconciliation, compare counts, schemas, keys, aggregates, and use anti-joins in both directions. For exact equality, align schemas/order if needed and use except/subtract patterns, but remember row ordering is not guaranteed unless explicitly sorted.</div>
+
+  <h3>Joins and Aggregations</h3>
+  <div class="q"><span class="qlabel">Interview Q 21</span><div class="qtext">How do you optimize a join?</div>Project only needed columns, filter early, broadcast small dimensions, ensure join keys have matching types, inspect the physical plan, handle skew, and avoid unnecessary many-to-many joins.</div>
+  <div class="q"><span class="qlabel">Interview Q 22</span><div class="qtext">What is broadcast join?</div>Spark sends the small table to every executor, allowing each partition of the large table to join locally. It avoids shuffling the large table but requires the broadcast side to fit in memory.</div>
+  <div class="q"><span class="qlabel">Interview Q 23</span><div class="qtext">What is left semi join?</div>It returns rows from the left DataFrame that have a match on the right, without returning right columns. It is useful for existence checks and can be more efficient than inner join followed by selecting left columns.</div>
+  <div class="q"><span class="qlabel">Interview Q 24</span><div class="qtext">What is left anti join?</div>It returns rows from the left DataFrame that do not have a match on the right. It is the PySpark pattern for 'records missing in target' or 'customers with no orders'.</div>
+  <div class="q"><span class="qlabel">Interview Q 25</span><div class="qtext">How do you handle data skew in joins?</div>Detect skew in Spark UI by task duration and shuffle size. Fix with broadcast if possible, salting hot keys, pre-aggregation, splitting hot keys, AQE skew handling, or changing the data model.</div>
+  <div class="q"><span class="qlabel">Interview Q 26</span><div class="qtext">Why can groupBy be expensive?</div>Rows with the same key must be brought together, so groupBy usually causes shuffle. High-cardinality keys, skewed keys, and wide rows make it expensive.</div>
+  <div class="q"><span class="qlabel">Interview Q 27</span><div class="qtext">row_number vs rank vs dense_rank?</div><code>row_number</code> gives unique sequence even for ties. <code>rank</code> leaves gaps after ties. <code>dense_rank</code> does not leave gaps. Use dense_rank when top-N should include ties.</div>
+  <div class="q"><span class="qlabel">Interview Q 28</span><div class="qtext">How do you calculate running total?</div>Use a window ordered by time with frame from unbounded preceding to current row, then apply <code>sum</code> over that window.</div>
+  <div class="q"><span class="qlabel">Interview Q 29</span><div class="qtext">What is a Cartesian join and why is it dangerous?</div>A Cartesian join combines every row from one side with every row from the other. It can explode row counts massively. Use only when intentional and bounded.</div>
+  <div class="q"><span class="qlabel">Interview Q 30</span><div class="qtext">How do you avoid duplicate rows after a join?</div>Check join key uniqueness. If the right side has multiple rows per key, the join multiplies rows. Deduplicate or aggregate the right side before joining, or include more keys in the join condition.</div>
+
+  <h3>Performance</h3>
+  <div class="q"><span class="qlabel">Interview Q 31</span><div class="qtext">How do you optimize a slow Spark job?</div>Measure first: Spark UI, slow stages, task skew, shuffle, spill, input size, file count, and explain plan. Then reduce input/columns, filter early, optimize joins, tune partitions, handle skew, cache reused data, and fix small files.</div>
+  <div class="q"><span class="qlabel">Interview Q 32</span><div class="qtext">What is AQE?</div>Adaptive Query Execution re-optimizes query plans at runtime using actual statistics. It can coalesce shuffle partitions, change join strategies, and optimize skewed joins. It helps but does not replace good data design.</div>
+  <div class="q"><span class="qlabel">Interview Q 33</span><div class="qtext">When should you cache?</div>Cache when the same expensive DataFrame is reused multiple times. Do not cache one-time data. Materialize the cache with an action and unpersist after use.</div>
+  <div class="q"><span class="qlabel">Interview Q 34</span><div class="qtext">cache vs persist?</div><code>cache()</code> is shorthand for default persistence. <code>persist()</code> lets you choose storage level such as memory and disk. Use persist when memory pressure or recomputation cost requires a different storage strategy.</div>
+  <div class="q"><span class="qlabel">Interview Q 35</span><div class="qtext">repartition vs coalesce?</div><code>repartition</code> does a full shuffle and can increase or decrease partitions. <code>coalesce</code> usually avoids full shuffle and is used to reduce partitions. Use repartition for balanced redistribution, coalesce for reducing output files after filtering.</div>
+  <div class="q"><span class="qlabel">Interview Q 36</span><div class="qtext">Why is SELECT * bad in Spark?</div>It reads and carries unnecessary columns through the plan. In columnar formats, selecting only needed columns enables column pruning and reduces IO, memory, network, and shuffle size.</div>
+  <div class="q"><span class="qlabel">Interview Q 37</span><div class="qtext">What is predicate pushdown?</div>Spark pushes filters down to the data source when possible so less data is read. With Parquet, metadata can help skip row groups/files depending on the predicate and statistics.</div>
+  <div class="q"><span class="qlabel">Interview Q 38</span><div class="qtext">What is column pruning?</div>Spark reads and processes only columns required by the query. This is very effective with columnar formats like Parquet and ORC.</div>
+  <div class="q"><span class="qlabel">Interview Q 39</span><div class="qtext">What causes executor OOM?</div>Huge partitions, skew, bad broadcast, collecting too much data, large group state, excessive caching, or too few partitions. Fix by reducing data, increasing partitions, avoiding collect, tuning memory, and handling skew.</div>
+  <div class="q"><span class="qlabel">Interview Q 40</span><div class="qtext">How do you reduce small files?</div>Avoid over-partitioned writes, use coalesce before writing when safe, choose partition columns carefully, compact files, and avoid tiny streaming micro-batch files when possible.</div>
+
+  <h3>Storage and Pipeline Design</h3>
+  <div class="q"><span class="qlabel">Interview Q 41</span><div class="qtext">Why is Parquet preferred for analytics?</div>It is columnar, compressed, self-describing, and supports efficient reads with column pruning and metadata. It is much better for repeated analytics than CSV/JSON.</div>
+  <div class="q"><span class="qlabel">Interview Q 42</span><div class="qtext">What is partition pruning?</div>When a dataset is partitioned by a folder/table column and the query filters on that column, Spark can skip non-matching partitions and read far less data.</div>
+  <div class="q"><span class="qlabel">Interview Q 43</span><div class="qtext">How do you choose partition columns?</div>Choose columns frequently used in filters, usually date or region-like columns. Avoid high-cardinality columns that create too many small files/directories.</div>
+  <div class="q"><span class="qlabel">Interview Q 44</span><div class="qtext">What is schema evolution?</div>Schema evolution means the table schema changes over time, for example adding columns. Handle it deliberately with compatibility rules, schema validation, and controlled merge/evolution settings.</div>
+  <div class="q"><span class="qlabel">Interview Q 45</span><div class="qtext">Bronze, Silver, Gold layers?</div>Bronze stores raw or near-raw ingested data. Silver cleans, deduplicates, conforms, and enriches data. Gold contains business-ready aggregates or dimensional models for analytics/BI.</div>
+  <div class="q"><span class="qlabel">Interview Q 46</span><div class="qtext">How do you build an idempotent pipeline?</div>Use deterministic keys, deduplicate input, use merge/upsert or overwrite affected partitions, avoid append-only duplicates, record audit metadata, and update watermarks only after successful commit.</div>
+  <div class="q"><span class="qlabel">Interview Q 47</span><div class="qtext">How do you implement incremental load?</div>Read last successful watermark, extract changed rows, deduplicate by business key, merge into target, validate counts, then commit the new watermark.</div>
+  <div class="q"><span class="qlabel">Interview Q 48</span><div class="qtext">How do you handle late-arriving data?</div>In batch, reprocess an overlap window and merge idempotently. In streaming, use event-time watermarking and choose acceptable lateness based on business rules.</div>
+  <div class="q"><span class="qlabel">Interview Q 49</span><div class="qtext">What is CDC?</div>Change Data Capture records inserts, updates, and deletes from a source system. In Spark pipelines, CDC is often applied using merge/upsert logic into a target table, preserving idempotency and order.</div>
+  <div class="q"><span class="qlabel">Interview Q 50</span><div class="qtext">What is SCD Type 2?</div>Slowly Changing Dimension Type 2 keeps history by creating a new version when attributes change. Common columns are effective_from, effective_to, is_current, and hash/checksum for change detection.</div>
+
+  <h3>Streaming and Delta</h3>
+  <div class="q"><span class="qlabel">Interview Q 51</span><div class="qtext">What is Structured Streaming?</div>Spark's DataFrame-based streaming engine. You define transformations like batch DataFrames, and Spark incrementally processes new data using triggers, checkpoints, and state management.</div>
+  <div class="q"><span class="qlabel">Interview Q 52</span><div class="qtext">What is a watermark?</div>A watermark tells Spark how long to wait for late event-time data. It bounds state size by allowing Spark to drop old state once data is older than the watermark threshold.</div>
+  <div class="q"><span class="qlabel">Interview Q 53</span><div class="qtext">Why is checkpointLocation important?</div>It stores progress, offsets, and state needed to recover after failure. Without a stable checkpoint, a restarted streaming query may reprocess or lose track of progress.</div>
+  <div class="q"><span class="qlabel">Interview Q 54</span><div class="qtext">Append vs Update vs Complete output mode?</div>Append outputs only final/new rows. Update outputs rows changed since last trigger. Complete outputs the whole result table each trigger. Available modes depend on query type and sink.</div>
+  <div class="q"><span class="qlabel">Interview Q 55</span><div class="qtext">What is Delta Lake?</div>Delta Lake is an open-source storage layer for data lakes that adds ACID transactions, metadata handling, schema enforcement/evolution, time travel, and merge/update/delete support.</div>
+  <div class="q"><span class="qlabel">Interview Q 56</span><div class="qtext">Why use Delta merge?</div>Merge supports upserts: update matching target records and insert new records in one atomic operation. It is central for CDC, deduped incremental loads, and SCD implementations.</div>
+  <div class="q"><span class="qlabel">Interview Q 57</span><div class="qtext">What is time travel in Delta?</div>Time travel lets you read an older table version or timestamp. It is useful for rollback, audit, reproducibility, and debugging bad data loads.</div>
+  <div class="q"><span class="qlabel">Interview Q 58</span><div class="qtext">What does vacuum do?</div>Vacuum removes old physical files no longer needed by the latest table versions after retention rules. It can reduce storage but may limit time travel if old files are removed.</div>
+
+  <h3>Production Scenarios</h3>
+  <div class="q"><span class="qlabel">Interview Q 59</span><div class="qtext">Your pipeline failed halfway. How do you rerun safely?</div>Design for idempotency. Read the same input range, deduplicate, write with merge or overwrite affected partitions, and update audit/watermark only after success. Avoid plain append without keys.</div>
+  <div class="q"><span class="qlabel">Interview Q 60</span><div class="qtext">How do you monitor a PySpark job?</div>Capture input/output counts, rejected rows, job duration, Spark app ID, target version/path, watermark, schema version, and error logs. Use Spark UI/history server for stage/task metrics and executor health.</div>
+  <div class="q"><span class="qlabel">Interview Q 61</span><div class="qtext">How do you handle bad records?</div>Separate invalid records into a quarantine path/table with reason codes, keep counts, fail the job if thresholds are exceeded, and make business rules explicit.</div>
+  <div class="q"><span class="qlabel">Interview Q 62</span><div class="qtext">What is your approach to data quality?</div>Define checks for schema, nullability, uniqueness, referential integrity, accepted values, volume anomalies, and freshness. Run checks before publishing curated data and store metrics for observability.</div>
+  <div class="q"><span class="qlabel">Interview Q 63</span><div class="qtext">How do you explain PySpark project experience in interview?</div>State the business problem, data volume, sources/sinks, transformations, performance challenges, reliability design, orchestration, and measurable outcome. Mention trade-offs and what you monitored.</div>
+  <div class="q"><span class="qlabel">Interview Q 64</span><div class="qtext">What are red flags in PySpark code review?</div>Unbounded collect/toPandas, Python UDF where built-ins exist, no explicit schema, blind repartition/cache, writing too many small files, non-idempotent appends, missing checkpoint for streaming, and no data quality checks.</div>
+
+  <div class="tip">
+    <b>Final interview formula:</b> when asked a scenario, answer in this order: clarify data size and requirement, identify the distributed operation, write the clean DataFrame pattern, explain performance implications, and finish with production checks. This structure makes you sound calm and senior.
+  </div>
+
+  <h2 class="section" id="sources">23. Sources Used</h2>
+  <p class="small">These notes were synthesized from current official documentation and written in interview-prep language. Checked on July 10, 2026.</p>
+  <ul>
+    <li><a href="https://spark.apache.org/docs/latest/api/python/index.html">Apache Spark PySpark Overview - Spark 4.1.2</a></li>
+    <li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Apache Spark SQL, DataFrames and Datasets Guide</a></li>
+    <li><a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">Apache Spark SQL Performance Tuning</a></li>
+    <li><a href="https://spark.apache.org/docs/latest/sql-data-sources-parquet.html">Apache Spark Parquet Files Guide</a></li>
+    <li><a href="https://spark.apache.org/docs/latest/streaming/apis-on-dataframes-and-datasets.html">Apache Spark Structured Streaming Programming Guide</a></li>
+    <li><a href="https://spark.apache.org/docs/latest/api/python/tutorial/sql/arrow_pandas.html">Apache Arrow in PySpark</a></li>
+    <li><a href="https://docs.delta.io/">Delta Lake Documentation</a></li>
+  </ul>
+
+  <div class="footer">
+    <b>PySpark Master - Data Engineering Interview Notes</b><br>
+    Printable HTML document. Open in Chrome and use Ctrl+P to save as PDF.
+  </div>
+</div>
+</body>
+</html>
